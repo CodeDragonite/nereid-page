@@ -1,15 +1,25 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, CheckCircle2, Sparkles } from 'lucide-react';
+import { CheckCircle2, Sparkles, ArrowRight } from 'lucide-react';
 import { caseStudies } from '@/lib/portfolio';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const study = caseStudies.find((item) => item.slug === slug);
 
+  if (!study) {
+    return { title: 'Case Study | Nereid Systems', description: 'Case study details for Nereid Systems.' };
+  }
   return {
-    title: study ? `${study.title} | Nereid Systems` : 'Case Study | Nereid Systems',
-    description: study ? `Explore the ${study.title} case study.` : 'Case study details for Nereid Systems.',
+    title: `${study.title} | Nereid Systems Case Study`,
+    description: `${study.challenge.slice(0, 80)} — ${study.outcome.slice(0, 75)}`,
+    openGraph: {
+      title: `${study.title} | Nereid Systems`,
+      description: `${study.challenge} ${study.outcome}`,
+      url: `https://nereidsystems.com/portfolio/${study.slug}`,
+      type: 'article',
+    },
   };
 }
 
@@ -17,88 +27,223 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
   const { slug } = await params;
   const study = caseStudies.find((item) => item.slug === slug);
 
-    if (!study) {
-        return (
-            <div className="min-h-screen bg-background text-foreground">
-                <div className="container mx-auto px-4 py-20 text-center">
-                    <p className="text-sm text-accent mb-4">Case Study Not Found</p>
-                    <h1 className="text-4xl font-bold mb-4">This case study is still in development.</h1>
-                    <p className="text-muted-foreground mb-8">We are building more detailed project stories now. Please check back soon.</p>
-                    <Link
-                        href="/portfolio"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-background rounded-lg"
-                    >
-                        Back to Portfolio
-                    </Link>
-                </div>
-            </div>
-        );
-    }
-
+  if (!study) {
     return (
-        <div className="min-h-screen bg-gradient-to-b from-background to-surface">
-            <div className="container mx-auto px-4 py-16">
-                <Link
-                    href="/portfolio"
-                    className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors mb-8"
-                >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
-                    Back to Portfolio
-                </Link>
-
-                <article className="bg-surface/80 border border-accent/20 rounded-3xl p-10 shadow-[0_20px_80px_rgba(0,0,0,0.12)]">
-                    <header className="mb-10">
-                        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/15 text-accent text-sm font-semibold mb-4">
-                            <Sparkles size={16} /> Featured Case Study
-                        </span>
-                        <h1 className="text-5xl font-bold text-foreground mb-4">{study.title}</h1>
-                        <p className="text-muted-foreground text-lg max-w-3xl">{study.client} — {study.status === 'completed' ? 'Completed' : 'In progress'}</p>
-                    </header>
-
-                    <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-                        <section className="space-y-8">
-                            <div>
-                                <h2 className="text-2xl font-semibold text-foreground mb-3">Challenge</h2>
-                                <p className="text-text-secondary leading-8">{study.challenge}</p>
-                            </div>
-                            <div>
-                                <h2 className="text-2xl font-semibold text-foreground mb-3">Solution</h2>
-                                <p className="text-text-secondary leading-8">{study.solution}</p>
-                            </div>
-                            <div>
-                                <h2 className="text-2xl font-semibold text-foreground mb-3">Outcome</h2>
-                                <p className="text-text-secondary leading-8">{study.outcome}</p>
-                            </div>
-                        </section>
-
-                        <aside className="space-y-6 rounded-3xl bg-background/80 border border-border p-6">
-                            <div>
-                                <h3 className="text-xl font-semibold text-foreground mb-3">Tech Stack</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {study.tech.map((item) => (
-                                        <span
-                                            key={item}
-                                            className="inline-flex items-center gap-2 rounded-full border border-accent/15 bg-accent/10 px-3 py-2 text-sm text-accent"
-                                        >
-                                            <CheckCircle2 size={14} /> {item}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="rounded-3xl bg-accent/10 p-5">
-                                <p className="text-sm text-accent font-semibold">Want a similar result?</p>
-                                <p className="text-text-secondary leading-7 mt-3">Talk to us about a modern platform, automation workflow, or infrastructure upgrade that scales with your business.</p>
-                                <Link
-                                    href="/contact"
-                                    className="mt-5 inline-flex items-center justify-center w-full rounded-xl bg-accent px-4 py-3 text-sm font-semibold text-background"
-                                >
-                                    Request a free project review
-                                </Link>
-                            </div>
-                        </aside>
-                    </div>
-                </article>
-            </div>
+      <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "5rem 1.5rem" }}>
+        <div style={{ textAlign: "center", maxWidth: "480px" }}>
+          <p style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--accent)", marginBottom: "1rem" }}>
+            Case Study Not Found
+          </p>
+          <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.75rem, 4vw, 2.5rem)", color: "var(--text-primary)", marginBottom: "1rem" }}>
+            Still in Development
+          </h1>
+          <p style={{ color: "var(--text-secondary)", lineHeight: "1.7", marginBottom: "2rem" }}>
+            We&apos;re building more detailed project stories. Please check back soon.
+          </p>
+          <Link
+            href="/portfolio"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "8px",
+              background: "var(--accent)", color: "#05080f",
+              padding: "12px 22px", borderRadius: "8px",
+              fontWeight: 600, fontSize: "0.9rem", textDecoration: "none",
+            }}
+          >
+            Back to Portfolio
+          </Link>
         </div>
+      </main>
     );
+  }
+
+  return (
+    <main style={{ minHeight: "100vh", paddingTop: "68px" }}>
+      {/* Hero band */}
+      <div
+        style={{
+          position: "relative",
+          overflow: "hidden",
+          padding: "4rem 1.5rem 3rem",
+          borderBottom: "1px solid var(--border)",
+        }}
+      >
+        <div aria-hidden="true" className="hero-gradient" style={{ position: "absolute", inset: 0, zIndex: 0, opacity: 0.5 }} />
+        <div aria-hidden="true" className="grid-overlay" style={{ position: "absolute", inset: 0, zIndex: 1 }} />
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute", top: "10%", right: "5%",
+            width: "400px", height: "400px", borderRadius: "50%",
+            background: `radial-gradient(circle, color-mix(in srgb, ${study.color} 8%, transparent) 0%, transparent 70%)`,
+            zIndex: 1, pointerEvents: "none",
+          }}
+        />
+        <div style={{ position: "relative", zIndex: 2, maxWidth: "1200px", margin: "0 auto" }}>
+          <Breadcrumb items={[
+            { label: 'Home', href: '/' },
+            { label: 'Portfolio', href: '/portfolio' },
+            { label: study.title },
+          ]} />
+
+          <div style={{ marginBottom: "1rem" }}>
+            <span style={{
+              display: "inline-flex", alignItems: "center", gap: "6px",
+              padding: "4px 12px", borderRadius: "20px",
+              fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase",
+              background: `color-mix(in srgb, ${study.color} 15%, transparent)`,
+              color: study.color,
+            }}>
+              <Sparkles size={11} aria-hidden="true" />
+              {study.category} · Case Study
+            </span>
+          </div>
+
+          <h1 style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(2rem, 5vw, 3.5rem)",
+            color: "var(--text-primary)",
+            lineHeight: "1.1",
+            letterSpacing: "-0.02em",
+            marginBottom: "1rem",
+            maxWidth: "800px",
+          }}>
+            {study.title}
+          </h1>
+          <p style={{ color: "var(--text-muted)", fontSize: "1rem" }}>
+            {study.client} · {study.status === 'completed' ? 'Completed' : 'In Progress'}
+          </p>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "3rem 1.5rem 6rem" }}>
+        {/* Outcome highlight bar */}
+        <div style={{
+          background: `color-mix(in srgb, ${study.color} 10%, transparent)`,
+          border: `1px solid color-mix(in srgb, ${study.color} 30%, transparent)`,
+          borderLeft: `3px solid ${study.color}`,
+          borderRadius: "var(--radius-lg)",
+          padding: "1.25rem 1.5rem",
+          marginBottom: "2.5rem",
+          display: "flex", alignItems: "center", gap: "0.75rem",
+        }}>
+          <span style={{ fontSize: "1.25rem" }}>↑</span>
+          <p style={{ color: study.color, fontWeight: 600, fontSize: "1rem", margin: 0 }}>
+            {study.outcome}
+          </p>
+        </div>
+
+        {/* Main grid */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1fr",
+          gap: "2rem",
+        }}>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: "1.25rem",
+          }}>
+            {/* Challenge */}
+            <div style={{
+              background: "var(--bg-card)",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius-lg)",
+              padding: "1.75rem",
+              position: "relative",
+              overflow: "hidden",
+            }}>
+              <div aria-hidden="true" style={{
+                position: "absolute", top: 0, left: 0, right: 0, height: "2px",
+                background: `linear-gradient(90deg, ${study.color}, transparent)`,
+                opacity: 0.6,
+              }} />
+              <p style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: study.color, marginBottom: "0.75rem" }}>
+                The Challenge
+              </p>
+              <p style={{ color: "var(--text-secondary)", lineHeight: "1.75", fontSize: "0.95rem" }}>{study.challenge}</p>
+            </div>
+
+            {/* Solution */}
+            <div style={{
+              background: "var(--bg-card)",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius-lg)",
+              padding: "1.75rem",
+              position: "relative",
+              overflow: "hidden",
+            }}>
+              <div aria-hidden="true" style={{
+                position: "absolute", top: 0, left: 0, right: 0, height: "2px",
+                background: `linear-gradient(90deg, var(--accent), transparent)`,
+                opacity: 0.6,
+              }} />
+              <p style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: "0.75rem" }}>
+                Our Solution
+              </p>
+              <p style={{ color: "var(--text-secondary)", lineHeight: "1.75", fontSize: "0.95rem" }}>{study.solution}</p>
+            </div>
+          </div>
+
+          {/* Tech Stack + CTA row */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
+            <div style={{
+              background: "var(--bg-card)",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius-lg)",
+              padding: "1.75rem",
+            }}>
+              <p style={{ fontSize: "0.7rem", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: "1rem" }}>
+                Tech Stack
+              </p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                {study.tech.map((item) => (
+                  <span
+                    key={item}
+                    style={{
+                      display: "inline-flex", alignItems: "center", gap: "6px",
+                      padding: "6px 12px", borderRadius: "20px",
+                      border: `1px solid color-mix(in srgb, ${study.color} 30%, transparent)`,
+                      background: `color-mix(in srgb, ${study.color} 10%, transparent)`,
+                      fontSize: "0.8rem", color: study.color,
+                    }}
+                  >
+                    <CheckCircle2 size={12} aria-hidden="true" /> {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div style={{
+              background: `color-mix(in srgb, ${study.color} 8%, var(--bg-card))`,
+              border: `1px solid color-mix(in srgb, ${study.color} 25%, transparent)`,
+              borderRadius: "var(--radius-lg)",
+              padding: "1.75rem",
+              display: "flex", flexDirection: "column", gap: "0.75rem",
+            }}>
+              <p style={{ fontSize: "0.875rem", fontWeight: 600, color: study.color }}>
+                Want a similar result?
+              </p>
+              <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem", lineHeight: "1.7", flex: 1 }}>
+                Talk to us about a platform, automation workflow, or infrastructure upgrade that scales with your business.
+              </p>
+              <Link
+                href="/contact"
+                style={{
+                  display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "8px",
+                  background: study.color, color: "#05080f",
+                  padding: "12px 20px", borderRadius: "8px",
+                  fontWeight: 600, fontSize: "0.875rem", textDecoration: "none",
+                  marginTop: "0.5rem",
+                }}
+              >
+                Request a free review
+                <ArrowRight size={14} aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
 }

@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -23,16 +24,13 @@ export function Footer() {
           }}
         >
           <div>
-            <p
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "1.2rem",
-                color: "var(--text-primary)",
-                marginBottom: "0.5rem",
-              }}
-            >
-              Nereid Systems
-            </p>
+            <Image
+              src="/logo-name-below.svg"
+              alt="Nereid Systems"
+              width={180}
+              height={120}
+              style={{ width: "140px", height: "auto", marginBottom: "0.75rem" }}
+            />
             <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", lineHeight: "1.6" }}>
               Full-stack development, AI automation, and IT management for growing companies.
             </p>

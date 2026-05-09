@@ -8,6 +8,8 @@ export type CaseStudy = {
     outcome: string;
     status: 'completed' | 'in-progress';
     slug: string;
+    category: string;
+    color: string;
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -21,6 +23,8 @@ export const caseStudies: CaseStudy[] = [
         outcome: '99.9% uptime and a 40% reduction in support costs.',
         status: 'completed',
         slug: 'network-infra-smb',
+        category: 'Infrastructure',
+        color: '#3d7fff',
     },
     {
         id: 'ecommerce-platform',
@@ -32,6 +36,8 @@ export const caseStudies: CaseStudy[] = [
         outcome: '200% increase in online sales within 6 months.',
         status: 'completed',
         slug: 'ecommerce-platform',
+        category: 'Web/App Development',
+        color: '#00d4aa',
     },
     {
         id: 'ai-automation-workflow',
@@ -43,5 +49,7 @@ export const caseStudies: CaseStudy[] = [
         outcome: '80% reduction in processing time with 95% accuracy.',
         status: 'completed',
         slug: 'ai-automation-workflow',
+        category: 'AI/Automation',
+        color: '#fb923c',
     },
 ];

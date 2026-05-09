@@ -1,110 +1,286 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { ArrowLeft, ExternalLink } from 'lucide-react';
-import { caseStudies } from '@/lib/portfolio';
+"use client";
+import { useRef } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import Link from "next/link";
+import { ArrowRight, Target, ExternalLink } from "lucide-react";
+import { caseStudies } from "@/lib/portfolio";
 
-export const metadata: Metadata = {
-    title: 'Portfolio | Nereid Systems',
-    description: 'Explore our successful projects and case studies in network infrastructure, web development, and AI automation.',
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, delay: i * 0.12, ease: "easeOut" as const },
+  }),
 };
 
-const caseStudiesWithLink = caseStudies.map((study) => ({
-    ...study,
-    link: `/portfolio/${study.slug}`,
-}));
+function PortfolioHero() {
+  const reduced = useReducedMotion();
+  return (
+    <section
+      aria-labelledby="portfolio-heading"
+      style={{
+        position: "relative",
+        minHeight: "60vh",
+        display: "flex",
+        alignItems: "center",
+        overflow: "hidden",
+        paddingTop: "68px",
+      }}
+    >
+      <div aria-hidden="true" className="hero-gradient" style={{ position: "absolute", inset: 0, zIndex: 0 }} />
+      <div aria-hidden="true" className="grid-overlay" style={{ position: "absolute", inset: 0, zIndex: 1 }} />
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute", top: "15%", left: "5%",
+          width: "500px", height: "500px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(0,210,210,0.06) 0%, transparent 70%)",
+          zIndex: 1, pointerEvents: "none",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute", bottom: "10%", right: "10%",
+          width: "400px", height: "400px", borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(61,127,255,0.06) 0%, transparent 70%)",
+          zIndex: 1, pointerEvents: "none",
+        }}
+      />
+      <div style={{ position: "relative", zIndex: 2, maxWidth: "1200px", margin: "0 auto", padding: "5rem 1.5rem 4rem", width: "100%" }}>
+        <motion.div custom={0} initial={reduced ? "visible" : "hidden"} animate="visible" variants={fadeUp} style={{ marginBottom: "1.5rem" }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: "6px",
+            padding: "5px 12px", borderRadius: "20px", fontSize: "11px",
+            fontWeight: "600", letterSpacing: "0.1em", textTransform: "uppercase" as const,
+            background: "var(--accent-dim)", color: "var(--accent)", border: "1px solid var(--border-hover)",
+          }}>
+            <Target size={11} aria-hidden="true" />
+            Featured Work
+          </span>
+        </motion.div>
+        <motion.h1
+          id="portfolio-heading"
+          custom={1}
+          initial={reduced ? "visible" : "hidden"}
+          animate="visible"
+          variants={fadeUp}
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(2.5rem, 6vw, 5rem)",
+            lineHeight: "1.05",
+            color: "var(--text-primary)",
+            marginBottom: "1.5rem",
+            maxWidth: "820px",
+            letterSpacing: "-0.02em",
+          }}
+        >
+          Projects That Define Our{" "}
+          <em style={{ fontStyle: "italic", color: "var(--accent)" }}>Expertise</em>
+        </motion.h1>
+        <motion.p
+          custom={2}
+          initial={reduced ? "visible" : "hidden"}
+          animate="visible"
+          variants={fadeUp}
+          style={{ fontSize: "clamp(1rem, 2vw, 1.2rem)", color: "var(--text-secondary)", maxWidth: "560px", lineHeight: "1.7", marginBottom: "2.5rem" }}
+        >
+          Case studies showcasing our approach to solving complex challenges for real clients.
+        </motion.p>
+        <motion.div custom={3} initial={reduced ? "visible" : "hidden"} animate="visible" variants={fadeUp}>
+          <Link
+            href="/contact"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "8px",
+              background: "var(--accent)", color: "#05080f",
+              padding: "13px 24px", borderRadius: "9px",
+              fontWeight: "600", fontSize: "0.95rem", textDecoration: "none",
+              transition: "all 0.22s ease",
+            }}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.transform = "translateY(-2px)";
+              el.style.boxShadow = "0 6px 24px var(--accent-glow)";
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.transform = "translateY(0)";
+              el.style.boxShadow = "none";
+            }}
+          >
+            Start Your Project
+            <ArrowRight size={16} aria-hidden="true" />
+          </Link>
+        </motion.div>
+      </div>
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute", bottom: 0, left: 0, right: 0,
+          height: "120px", background: "linear-gradient(to bottom, transparent, var(--bg-base))",
+          zIndex: 2,
+        }}
+      />
+    </section>
+  );
+}
+
+function CaseStudyCard({ study, index }: { study: typeof caseStudies[0]; index: number }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const reduced = useReducedMotion();
+
+  return (
+    <motion.article
+      ref={ref}
+      initial={reduced ? { opacity: 1 } : { opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.45, delay: index * 0.07, ease: "easeOut" as const }}
+      whileHover={reduced ? {} : { scale: 1.02, y: -2 }}
+      style={{
+        background: "var(--bg-card)",
+        border: "1px solid var(--border)",
+        borderRadius: "var(--radius-lg)",
+        padding: "1.75rem",
+        boxShadow: "var(--shadow-card)",
+        position: "relative",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+      }}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.borderColor = "var(--border-hover)";
+        el.style.boxShadow = "var(--shadow-card-hover)";
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.borderColor = "var(--border)";
+        el.style.boxShadow = "var(--shadow-card)";
+      }}
+    >
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute", top: 0, left: 0, right: 0,
+          height: "2px",
+          background: `linear-gradient(90deg, ${study.color}, transparent)`,
+          opacity: 0.6,
+        }}
+      />
+
+      <div style={{ marginBottom: "1rem" }}>
+        <span style={{
+          display: "inline-block",
+          padding: "3px 10px",
+          borderRadius: "20px",
+          fontSize: "0.7rem",
+          fontWeight: "600",
+          letterSpacing: "0.08em",
+          textTransform: "uppercase" as const,
+          background: `color-mix(in srgb, ${study.color} 15%, transparent)`,
+          color: study.color,
+        }}>
+          {study.category}
+        </span>
+      </div>
+
+      <h3 style={{ fontSize: "1.25rem", fontWeight: 600, color: "var(--text-primary)", marginBottom: "0.5rem", lineHeight: "1.3" }}>
+        {study.title}
+      </h3>
+      <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "1rem" }}>
+        {study.client}
+      </p>
+
+      <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: "1.6", marginBottom: "0.75rem" }}>
+        <strong style={{ color: "var(--text-primary)", fontWeight: 500 }}>Challenge: </strong>
+        {study.challenge.length > 120 ? study.challenge.slice(0, 120) + "…" : study.challenge}
+      </p>
+
+      <p style={{ fontSize: "0.875rem", color: study.color, lineHeight: "1.6", marginBottom: "1rem", fontWeight: 500 }}>
+        ↑ {study.outcome}
+      </p>
+
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.375rem", marginBottom: "1.25rem", marginTop: "auto" }}>
+        {study.tech.map((t) => (
+          <span
+            key={t}
+            style={{
+              padding: "2px 8px",
+              borderRadius: "4px",
+              fontSize: "0.7rem",
+              background: `color-mix(in srgb, ${study.color} 10%, transparent)`,
+              color: "var(--text-secondary)",
+            }}
+          >
+            {t}
+          </span>
+        ))}
+      </div>
+
+      <Link
+        href={`/portfolio/${study.slug}`}
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "6px",
+          color: study.color,
+          textDecoration: "none",
+          fontSize: "0.875rem",
+          fontWeight: 600,
+          transition: "gap 0.2s ease",
+        }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.gap = "10px"; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.gap = "6px"; }}
+        aria-label={`View case study: ${study.title}`}
+      >
+        View Case Study
+        <ExternalLink size={14} aria-hidden="true" />
+      </Link>
+    </motion.article>
+  );
+}
+
+function CaseStudiesGrid() {
+  const headRef = useRef(null);
+  const headInView = useInView(headRef, { once: true, margin: "-80px" });
+  const reduced = useReducedMotion();
+
+  return (
+    <section
+      aria-labelledby="case-studies-heading"
+      style={{ padding: "4rem 1.5rem 6rem", maxWidth: "1200px", margin: "0 auto" }}
+    >
+      <motion.div
+        ref={headRef}
+        initial={reduced ? { opacity: 1 } : { opacity: 0, y: 20 }}
+        animate={headInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5 }}
+        style={{ textAlign: "center", marginBottom: "3rem" }}
+      >
+        <p style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--accent)", marginBottom: "0.75rem" }}>
+          Case Studies
+        </p>
+        <h2 id="case-studies-heading" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.75rem, 3vw, 2.5rem)", color: "var(--text-primary)", letterSpacing: "-0.02em" }}>
+          Real Outcomes for Real Clients
+        </h2>
+      </motion.div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "1.25rem" }}>
+        {caseStudies.map((study, i) => (
+          <CaseStudyCard key={study.id} study={study} index={i} />
+        ))}
+      </div>
+    </section>
+  );
+}
 
 export default function PortfolioPage() {
-    return (
-        <div className="min-h-screen bg-gradient-to-b from-background to-surface">
-            <div className="container mx-auto px-4 py-16">
-                {/* Header */}
-                <div className="text-center mb-16">
-                    <Link
-                        href="/"
-                        className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors mb-8"
-                    >
-                        <ArrowLeft className="w-4 h-4 mr-2" />
-                        Back to Home
-                    </Link>
-                    <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-accent to-foreground bg-clip-text text-transparent">
-                        Our Portfolio
-                    </h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                        Real results from real projects. Explore our case studies and see how we've helped businesses navigate their challenges.
-                    </p>
-                </div>
-
-                {/* Case Studies Grid */}
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {caseStudiesWithLink.map((study) => (
-                        <div
-                            key={study.id}
-                            className="bg-surface/50 backdrop-blur-sm border border-accent/20 rounded-lg p-6 hover:shadow-lg hover:shadow-accent/10 transition-all duration-300 hover:-translate-y-1"
-                        >
-                            <div className="flex justify-between items-start mb-4">
-                                <h3 className="text-xl font-semibold text-foreground">{study.title}</h3>
-                                {study.status === 'completed' && (
-                                    <span className="px-2 py-1 bg-accent/20 text-accent text-xs rounded-full">
-                                        Completed
-                                    </span>
-                                )}
-                            </div>
-
-                            <p className="text-sm text-muted-foreground mb-2">
-                                <strong>Client:</strong> {study.client}
-                            </p>
-
-                            <div className="mb-4">
-                                <p className="text-sm mb-2">
-                                    <strong>Challenge:</strong> {study.challenge}
-                                </p>
-                                <p className="text-sm mb-2">
-                                    <strong>Solution:</strong> {study.solution}
-                                </p>
-                                <p className="text-sm">
-                                    <strong>Outcome:</strong> {study.outcome}
-                                </p>
-                            </div>
-
-                            <div className="mb-4">
-                                <p className="text-sm font-medium mb-2">Tech Stack:</p>
-                                <div className="flex flex-wrap gap-1">
-                                    {study.tech.map((tech) => (
-                                        <span
-                                            key={tech}
-                                            className="px-2 py-1 bg-accent/10 text-accent text-xs rounded"
-                                        >
-                                            {tech}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <Link
-                                href={study.link}
-                                className="inline-flex items-center text-accent hover:text-accent/80 transition-colors"
-                            >
-                                View Case Study
-                                <ExternalLink className="w-4 h-4 ml-1" />
-                            </Link>
-                        </div>
-                    ))}
-                </div>
-
-                {/* CTA */}
-                <div className="text-center mt-16">
-                    <h2 className="text-2xl font-semibold mb-4">Ready to Start Your Project?</h2>
-                    <p className="text-muted-foreground mb-8">
-                        Let's discuss how we can help you achieve similar results.
-                    </p>
-                    <Link
-                        href="/contact"
-                        className="inline-flex items-center px-6 py-3 bg-accent text-background font-medium rounded-lg hover:bg-accent/90 transition-colors"
-                    >
-                        Get in Touch
-                    </Link>
-                </div>
-            </div>
-        </div>
-    );
+  return (
+    <main>
+      <PortfolioHero />
+      <CaseStudiesGrid />
+    </main>
+  );
 }

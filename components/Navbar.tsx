@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -61,35 +62,16 @@ export function Navbar() {
         <Link
           href="/"
           aria-label="Nereid Systems home"
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "1.35rem",
-            color: "var(--text-primary)",
-            textDecoration: "none",
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-          }}
+          style={{ display: "flex", alignItems: "center", textDecoration: "none" }}
         >
-          <span
-            aria-hidden="true"
-            style={{
-              width: "28px",
-              height: "28px",
-              borderRadius: "6px",
-              background: "linear-gradient(135deg, var(--accent), var(--accent2))",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "14px",
-              fontWeight: "700",
-              color: "#05080f",
-              fontFamily: "var(--font-body)",
-            }}
-          >
-            N
-          </span>
-          Nereid Systems
+          <Image
+            src="/logo-sidename.svg"
+            alt="Nereid Systems"
+            width={220}
+            height={120}
+            priority
+            style={{ height: "52px", width: "auto" }}
+          />
         </Link>
 
         {/* Desktop nav */}

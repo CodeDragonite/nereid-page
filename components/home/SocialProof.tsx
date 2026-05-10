@@ -1,6 +1,7 @@
 "use client";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useTranslations } from "next-intl";
 
 // Placeholder logo data — replace with real SVGs/images
 const logos = [
@@ -13,6 +14,7 @@ const logos = [
 ];
 
 export function SocialProof() {
+  const t = useTranslations("SocialProof");
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -42,7 +44,7 @@ export function SocialProof() {
             marginBottom: "2rem",
           }}
         >
-          Trusted by forward-thinking teams
+          {t("label")}
         </motion.p>
 
         <div
@@ -99,19 +101,6 @@ export function SocialProof() {
           ))}
         </div>
 
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          style={{
-            textAlign: "center",
-            color: "var(--text-muted)",
-            fontSize: "0.78rem",
-            marginTop: "1.5rem",
-          }}
-        >
-          Placeholder logos — real client logos coming soon
-        </motion.p>
       </div>
     </section>
   );

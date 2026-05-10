@@ -2,8 +2,10 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Mail, ArrowRight, CheckCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function LeadMagnet() {
+  const t = useTranslations("LeadMagnet");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const ref = useRef(null);
@@ -74,7 +76,7 @@ export function LeadMagnet() {
             letterSpacing: "-0.02em",
           }}
         >
-          Ready to simplify your tech?
+          {t("heading")}
         </h2>
         <p
           style={{
@@ -84,9 +86,7 @@ export function LeadMagnet() {
             marginBottom: "2rem",
           }}
         >
-          Get our free{" "}
-          <strong style={{ color: "var(--text-primary)" }}>IT Audit Checklist</strong>
-          —a practical guide to finding the gaps in your infrastructure before they find you.
+          {t.rich("body", { strong: (chunks) => <strong style={{ color: "var(--text-primary)" }}>{chunks}</strong> })}
         </p>
 
         {status === "success" ? (
@@ -108,12 +108,12 @@ export function LeadMagnet() {
             role="alert"
           >
             <CheckCircle size={20} aria-hidden="true" />
-            Sent! Check your inbox for the checklist.
+            {t("successMsg")}
           </motion.div>
         ) : (
           <form
             onSubmit={handleSubmit}
-            aria-label="IT Audit Checklist signup"
+            aria-label={t("formLabel")}
             style={{
               display: "flex",
               gap: "0.75rem",
@@ -122,14 +122,14 @@ export function LeadMagnet() {
             }}
           >
             <label htmlFor="lead-email" style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0,0,0,0)" }}>
-              Email address
+              {t("emailLabel")}
             </label>
             <input
               id="lead-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@company.com"
+              placeholder={t("placeholder")}
               required
               aria-required="true"
               aria-describedby="lead-desc"
@@ -178,9 +178,9 @@ export function LeadMagnet() {
                 (e.currentTarget as HTMLElement).style.boxShadow = "none";
               }}
             >
-              {status === "loading" ? "Sending…" : (
+              {status === "loading" ? t("submitting") : (
                 <>
-                  Send me the checklist
+                  {t("submit")}
                   <ArrowRight size={15} aria-hidden="true" />
                 </>
               )}
@@ -192,7 +192,7 @@ export function LeadMagnet() {
                 role="alert"
                 style={{ color: "#f87171", fontSize: "0.85rem", width: "100%", textAlign: "center" }}
               >
-                Something went wrong. Try emailing us directly at hello@nereidsystems.com
+                {t("errorMsg")}
               </p>
             )}
           </form>
@@ -206,7 +206,7 @@ export function LeadMagnet() {
             marginTop: "1rem",
           }}
         >
-          No spam. Unsubscribe anytime.
+          {t("disclaimer")}
         </p>
       </motion.div>
     </section>

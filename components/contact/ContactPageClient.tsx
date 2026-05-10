@@ -5,27 +5,18 @@ import { motion } from "framer-motion";
 import { Mail, Clock, CheckCircle, AlertCircle } from "lucide-react";
 import { z } from "zod";
 import type { Variants } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 const schema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
+  name: z.string().min(2),
+  email: z.string().email(),
   company: z.string().optional(),
-  service: z.string().min(1, "Please select a service"),
-  message: z.string().min(20, "Message must be at least 20 characters"),
+  service: z.string().min(1),
+  message: z.string().min(20),
 });
 
 type FormData = z.infer<typeof schema>;
 type Errors = Partial<Record<keyof FormData, string>>;
-
-const serviceOptions = [
-  "Network Infrastructure",
-  "Web Application Development",
-  "Mobile App Development",
-  "Systems Integration",
-  "AI Automation",
-  "IT Management",
-  "Other / Not sure yet",
-];
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -86,7 +77,14 @@ const inputStyle = (error?: string): React.CSSProperties => ({
 });
 
 export function ContactPageClient() {
+  const t = useTranslations("Contact");
   const searchParams = useSearchParams();
+
+  const serviceOptions = [
+    t("service0"), t("service1"), t("service2"), t("service3"),
+    t("service4"), t("service5"), t("service6"),
+  ];
+
   const [form, setForm] = useState<FormData>({
     name: "",
     email: "",
@@ -98,7 +96,6 @@ export function ContactPageClient() {
   const [touched, setTouched] = useState<Partial<Record<keyof FormData, boolean>>>({});
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  // Pre-fill service from query param
   useEffect(() => {
     const service = searchParams.get("service");
     if (service) {
@@ -107,14 +104,16 @@ export function ContactPageClient() {
       );
       if (matched) setForm((p) => ({ ...p, service: matched }));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const validate = (data: FormData): Errors => {
-    const result = schema.safeParse(data);
-    if (result.success) return {};
-    return Object.fromEntries(
-      result.error.issues.map((i) => [i.path[0], i.message])
-    ) as Errors;
+    const errs: Errors = {};
+    if (!data.name || data.name.length < 2) errs.name = t("nameError");
+    if (!data.email || !z.string().email().safeParse(data.email).success) errs.email = t("emailError");
+    if (!data.service) errs.service = t("serviceError");
+    if (!data.message || data.message.length < 20) errs.message = t("messageError");
+    return errs;
   };
 
   const handleChange = (
@@ -177,7 +176,7 @@ export function ContactPageClient() {
             animate={{ opacity: 1, y: 0 }}
             style={{ fontSize: "0.75rem", fontWeight: "600", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--accent)", marginBottom: "0.6rem" }}
           >
-            Let&apos;s talk
+            {t("eyebrow")}
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
@@ -185,7 +184,7 @@ export function ContactPageClient() {
             transition={{ delay: 0.08 }}
             style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem, 5vw, 3.5rem)", color: "var(--text-primary)", letterSpacing: "-0.02em", marginBottom: "0.75rem" }}
           >
-            Start a Conversation
+            {t("heading")}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -193,7 +192,7 @@ export function ContactPageClient() {
             transition={{ delay: 0.14 }}
             style={{ color: "var(--text-secondary)", fontSize: "1rem", maxWidth: "480px", margin: "0 auto", lineHeight: "1.7" }}
           >
-            Tell us what you&apos;re working on. We&apos;ll respond within 24 business hours with a clear next step.
+            {t("subheading")}
           </motion.p>
         </div>
       </div>
@@ -232,7 +231,7 @@ export function ContactPageClient() {
               marginBottom: "1.75rem",
             }}
           >
-            Send a Message
+            {t("formHeading")}
           </h2>
 
           {status === "success" ? (
@@ -264,17 +263,17 @@ export function ContactPageClient() {
                 <CheckCircle size={28} style={{ color: "#34d399" }} />
               </div>
               <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", color: "var(--text-primary)" }}>
-                Message sent!
+                {t("messageSentHeading")}
               </h3>
               <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: "1.6" }}>
-                Thanks! We&apos;ll reply within 24 business hours with a clear next step.
+                {t("messageSentBody")}
               </p>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} noValidate aria-label="Contact form">
+            <form onSubmit={handleSubmit} noValidate aria-label={t("formHeading")}>
               <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                  <Field label="Full Name" id="name" error={touched.name ? errors.name : undefined} required>
+                  <Field label={t("nameLabel")} id="name" error={touched.name ? errors.name : undefined} required>
                     <input
                       id="name"
                       name="name"
@@ -289,7 +288,7 @@ export function ContactPageClient() {
                       onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; }}
                     />
                   </Field>
-                  <Field label="Email" id="email" error={touched.email ? errors.email : undefined} required>
+                  <Field label={t("emailLabel")} id="email" error={touched.email ? errors.email : undefined} required>
                     <input
                       id="email"
                       name="email"
@@ -306,7 +305,7 @@ export function ContactPageClient() {
                   </Field>
                 </div>
 
-                <Field label="Company (optional)" id="company">
+                <Field label={t("companyLabel")} id="company">
                   <input
                     id="company"
                     name="company"
@@ -321,7 +320,7 @@ export function ContactPageClient() {
                   />
                 </Field>
 
-                <Field label="Service" id="service" error={touched.service ? errors.service : undefined} required>
+                <Field label={t("serviceLabel")} id="service" error={touched.service ? errors.service : undefined} required>
                   <select
                     id="service"
                     name="service"
@@ -333,14 +332,14 @@ export function ContactPageClient() {
                     style={{ ...inputStyle(touched.service ? errors.service : undefined), cursor: "pointer" }}
                     onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; }}
                   >
-                    <option value="">Select a service…</option>
+                    <option value="">{t("selectService")}</option>
                     {serviceOptions.map((o) => (
                       <option key={o} value={o}>{o}</option>
                     ))}
                   </select>
                 </Field>
 
-                <Field label="Message" id="message" error={touched.message ? errors.message : undefined} required>
+                <Field label={t("messageLabel")} id="message" error={touched.message ? errors.message : undefined} required>
                   <textarea
                     id="message"
                     name="message"
@@ -348,7 +347,7 @@ export function ContactPageClient() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     rows={5}
-                    placeholder="Tell us about your project, challenge, or goal…"
+                    placeholder={t("messagePlaceholder")}
                     aria-required="true"
                     aria-invalid={!!errors.message}
                     style={{
@@ -363,7 +362,7 @@ export function ContactPageClient() {
                 {status === "error" && (
                   <p role="alert" style={{ color: "#f87171", fontSize: "0.85rem", display: "flex", gap: "6px", alignItems: "center" }}>
                     <AlertCircle size={14} />
-                    Something went wrong. Please try emailing us directly.
+                    {t("errorMsg")}
                   </p>
                 )}
 
@@ -395,7 +394,7 @@ export function ContactPageClient() {
                     (e.currentTarget as HTMLElement).style.boxShadow = "none";
                   }}
                 >
-                  {status === "loading" ? "Sending…" : "Send Message"}
+                  {status === "loading" ? t("submitting") : t("submitBtn")}
                 </button>
               </div>
             </form>
@@ -426,16 +425,16 @@ export function ContactPageClient() {
                 marginBottom: "0.5rem",
               }}
             >
-              Book a Call
+              {t("bookCallHeading")}
             </h2>
             <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem", lineHeight: "1.6", marginBottom: "1.25rem" }}>
-              Skip the back-and-forth. Pick a 30-minute slot that works for you.
+              {t("bookCallBody")}
             </p>
             <a
               href={process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com"}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Open Calendly booking page (opens in new tab)"
+              aria-label={t("bookCallHeading")}
               style={{
                 display: "block",
                 background: "var(--accent-dim)",
@@ -456,7 +455,7 @@ export function ContactPageClient() {
                 (e.currentTarget as HTMLElement).style.background = "var(--accent-dim)";
               }}
             >
-              Open Booking Calendar →
+              {t("bookCallBtn")}
             </a>
             <p
               style={{
@@ -492,7 +491,7 @@ export function ContactPageClient() {
                 marginBottom: "1rem",
               }}
             >
-              Direct Contact
+              {t("directContactHeading")}
             </h3>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               <a
@@ -514,7 +513,7 @@ export function ContactPageClient() {
               </a>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", color: "var(--text-muted)", fontSize: "0.875rem" }}>
                 <Clock size={16} style={{ color: "var(--accent)" }} aria-hidden="true" />
-                Response within 24 business hours
+                {t("responseTime")}
               </div>
             </div>
           </motion.div>

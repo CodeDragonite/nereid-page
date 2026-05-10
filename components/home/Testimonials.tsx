@@ -2,32 +2,12 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Quote } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-const testimonials = [
-    {
-        quote: "Nereid Systems transformed our network infrastructure. What used to take weeks of downtime now runs smoothly 24/7. Their expertise in modern IT solutions is unmatched.",
-        author: "Sarah Chen",
-        role: "IT Director",
-        company: "Metro Healthcare Group",
-        avatar: "SC"
-    },
-    {
-        quote: "The AI automation workflow they built saved us 30 hours per week. We went from reactive to proactive, and our team can finally focus on strategic growth.",
-        author: "Marcus Rodriguez",
-        role: "Operations Manager",
-        company: "Swift Logistics",
-        avatar: "MR"
-    },
-    {
-        quote: "Their full-stack development approach delivered exactly what we needed: a scalable platform that grows with our business. Professional, reliable, and innovative.",
-        author: "Emily Watson",
-        role: "CEO",
-        company: "FinTech Innovations",
-        avatar: "EW"
-    }
-];
+const testimonialAvatars = ["SC", "MR", "EW"];
 
 export function Testimonials() {
+    const t = useTranslations("Testimonials");
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -57,7 +37,7 @@ export function Testimonials() {
                             marginBottom: "0.75rem",
                         }}
                     >
-                        What our clients say
+                        {t("eyebrow")}
                     </p>
                     <h2
                         style={{
@@ -67,7 +47,7 @@ export function Testimonials() {
                             letterSpacing: "-0.02em",
                         }}
                     >
-                        Trusted by Industry Leaders
+                        {t("heading")}
                     </h2>
                 </motion.div>
 
@@ -78,7 +58,7 @@ export function Testimonials() {
                         gap: "2rem",
                     }}
                 >
-                    {testimonials.map((testimonial, i) => (
+                    {testimonialAvatars.map((avatar, i) => (
                         <motion.div
                             key={i}
                             initial={{ opacity: 0, y: 24 }}
@@ -109,7 +89,7 @@ export function Testimonials() {
                                     fontStyle: "italic",
                                 }}
                             >
-                                "{testimonial.quote}"
+                                &ldquo;{t(`item${i}Quote`)}&rdquo;
                             </blockquote>
                             <div style={{ display: "flex", alignItems: "center" }}>
                                 <div
@@ -127,7 +107,7 @@ export function Testimonials() {
                                         marginRight: "1rem",
                                     }}
                                 >
-                                    {testimonial.avatar}
+                                    {avatar}
                                 </div>
                                 <div>
                                     <p
@@ -137,7 +117,7 @@ export function Testimonials() {
                                             marginBottom: "0.25rem",
                                         }}
                                     >
-                                        {testimonial.author}
+                                        {t(`item${i}Author`)}
                                     </p>
                                     <p
                                         style={{
@@ -145,7 +125,7 @@ export function Testimonials() {
                                             color: "var(--text-muted)",
                                         }}
                                     >
-                                        {testimonial.role}, {testimonial.company}
+                                        {t(`item${i}Role`)}, {t(`item${i}Company`)}
                                     </p>
                                 </div>
                             </div>
@@ -153,19 +133,6 @@ export function Testimonials() {
                     ))}
                 </div>
 
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={inView ? { opacity: 1 } : {}}
-                    transition={{ duration: 0.5, delay: 0.8 }}
-                    style={{
-                        textAlign: "center",
-                        color: "var(--text-muted)",
-                        fontSize: "0.78rem",
-                        marginTop: "3rem",
-                    }}
-                >
-                    Placeholder testimonials — real client feedback coming soon
-                </motion.p>
             </div>
         </section>
     );

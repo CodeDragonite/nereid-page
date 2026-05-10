@@ -6,6 +6,7 @@ import {
   Network, Globe, Smartphone, Layers, Bot, Server,
   ChevronDown, Clock, Code2, DollarSign, ArrowRight,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { AIChatWidget } from "./AIChatWidget";
 
 const iconMap: Record<string, React.ElementType> = {
@@ -26,6 +27,7 @@ type Service = {
 };
 
 function ServiceCard({ service, index }: { service: Service; index: number }) {
+  const t = useTranslations("Services");
   const [expanded, setExpanded] = useState(false);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -115,7 +117,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
             (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
           }}
         >
-          {expanded ? "Hide details" : "See scope, timeline & pricing"}
+          {expanded ? t("collapseLabel") : t("expandLabel")}
           <ChevronDown
             size={16}
             aria-hidden="true"
@@ -138,10 +140,10 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
             >
               <div style={{ paddingTop: "1.25rem", display: "flex", flexDirection: "column", gap: "0.9rem" }}>
                 {[
-                  { icon: ArrowRight, label: "Scope", value: service.scope },
-                  { icon: Clock, label: "Timeline", value: service.timeline },
-                  { icon: Code2, label: "Tech stack", value: service.stack },
-                  { icon: DollarSign, label: "Pricing", value: service.price },
+                  { icon: ArrowRight, label: t("scopeLabel"), value: service.scope },
+                  { icon: Clock, label: t("timelineLabel"), value: service.timeline },
+                  { icon: Code2, label: t("stackLabel"), value: service.stack },
+                  { icon: DollarSign, label: t("priceLabel"), value: service.price },
                 ].map(({ icon: DetailIcon, label, value }) => (
                   <div key={label} style={{ display: "flex", gap: "0.75rem" }}>
                     <DetailIcon size={15} style={{ color: service.color, flexShrink: 0, marginTop: "3px" }} aria-hidden="true" />
@@ -195,6 +197,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
 }
 
 export function ServicesPageClient({ services }: { services: Service[] }) {
+  const t = useTranslations("Services");
   return (
     <>
       {/* Page header */}
@@ -224,7 +227,7 @@ export function ServicesPageClient({ services }: { services: Service[] }) {
               marginBottom: "0.75rem",
             }}
           >
-            What we offer
+            {t("heroEyebrow")}
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
@@ -238,7 +241,7 @@ export function ServicesPageClient({ services }: { services: Service[] }) {
               marginBottom: "1rem",
             }}
           >
-            Services Built for Results
+            {t("heroHeading")}
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
@@ -252,7 +255,7 @@ export function ServicesPageClient({ services }: { services: Service[] }) {
               lineHeight: "1.7",
             }}
           >
-            Click any card to see full scope, typical timelines, tech stack, and starting price ranges.
+            {t("heroSubheading")}
           </motion.p>
         </div>
       </div>
@@ -290,10 +293,10 @@ export function ServicesPageClient({ services }: { services: Service[] }) {
             marginBottom: "0.75rem",
           }}
         >
-          Not sure which service fits your need?
+          {t("ctaHeading")}
         </h2>
         <p style={{ color: "var(--text-secondary)", marginBottom: "1.5rem", fontSize: "0.95rem" }}>
-          We&apos;ll map out the right solution on a free 30-minute call.
+          {t("ctaBody")}
         </p>
         <Link
           href="/contact"
@@ -319,7 +322,7 @@ export function ServicesPageClient({ services }: { services: Service[] }) {
             (e.currentTarget as HTMLElement).style.boxShadow = "none";
           }}
         >
-          Book a Free Consultation
+          {t("ctaBtn")}
           <ArrowRight size={16} aria-hidden="true" />
         </Link>
       </div>

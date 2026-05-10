@@ -4,47 +4,19 @@ import { useInView } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
 import { Network, Globe, Smartphone, Layers, Bot, Server } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-const services = [
-  {
-    icon: Network,
-    title: "Network Installation & Configuration",
-    outcome: "Reliable, secure infrastructure so your team stays connected—not stuck troubleshooting.",
-    color: "var(--accent)",
-  },
-  {
-    icon: Globe,
-    title: "Web Application Development",
-    outcome: "Fast, accessible web apps that convert visitors into customers and scale with demand.",
-    color: "var(--accent2)",
-  },
-  {
-    icon: Smartphone,
-    title: "Mobile App Development",
-    outcome: "iOS & Android apps that feel native, load instantly, and keep users coming back.",
-    color: "#a78bfa",
-  },
-  {
-    icon: Layers,
-    title: "Systems Integration",
-    outcome: "Legacy and modern systems working in harmony—no more data silos or manual workarounds.",
-    color: "#fb923c",
-  },
-  {
-    icon: Bot,
-    title: "AI Automation Workflows",
-    outcome: "Automate repetitive work with AI so your team focuses on what actually moves the needle.",
-    color: "#34d399",
-  },
-  {
-    icon: Server,
-    title: "IT Management for SMBs",
-    outcome: "Proactive IT support and monitoring so you never lose a workday to unexpected outages.",
-    color: "#f472b6",
-  },
+const serviceConfig = [
+  { key: "network" as const, icon: Network, color: "var(--accent)" },
+  { key: "web" as const, icon: Globe, color: "var(--accent2)" },
+  { key: "mobile" as const, icon: Smartphone, color: "#a78bfa" },
+  { key: "integration" as const, icon: Layers, color: "#fb923c" },
+  { key: "ai" as const, icon: Bot, color: "#34d399" },
+  { key: "it" as const, icon: Server, color: "#f472b6" },
 ];
 
-function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
+function ServiceCard({ service, index }: { service: typeof serviceConfig[0]; index: number }) {
+  const t = useTranslations("ServicesGrid");
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
   const reduced = useReducedMotion();
@@ -121,7 +93,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
           lineHeight: "1.3",
         }}
       >
-        {service.title}
+        {t(`${service.key}.title`)}
       </h3>
       <p
         style={{
@@ -131,13 +103,14 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
           margin: 0,
         }}
       >
-        {service.outcome}
+        {t(`${service.key}.outcome`)}
       </p>
     </motion.article>
   );
 }
 
 export function ServicesGrid() {
+  const t = useTranslations("ServicesGrid");
   const headRef = useRef(null);
   const headInView = useInView(headRef, { once: true, margin: "-80px" });
   const reduced = useReducedMotion();
@@ -168,7 +141,7 @@ export function ServicesGrid() {
             marginBottom: "0.75rem",
           }}
         >
-          What we do
+          {t("eyebrow")}
         </p>
         <h2
           id="services-heading"
@@ -180,7 +153,7 @@ export function ServicesGrid() {
             marginBottom: "1rem",
           }}
         >
-          Six Ways We Help You Scale
+          {t("heading")}
         </h2>
         <p
           style={{
@@ -191,8 +164,7 @@ export function ServicesGrid() {
             lineHeight: "1.7",
           }}
         >
-          From the network up to the app layer—we cover the full stack so you
-          don&apos;t have to manage multiple vendors.
+          {t("subheading")}
         </p>
       </motion.div>
 
@@ -203,8 +175,8 @@ export function ServicesGrid() {
           gap: "1.25rem",
         }}
       >
-        {services.map((service, i) => (
-          <ServiceCard key={service.title} service={service} index={i} />
+        {serviceConfig.map((service, i) => (
+          <ServiceCard key={service.key} service={service} index={i} />
         ))}
       </div>
 
@@ -229,7 +201,7 @@ export function ServicesGrid() {
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.gap = "10px"; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.gap = "6px"; }}
         >
-          See full service details & pricing →
+          {t("viewAll")}
         </Link>
       </motion.div>
     </section>

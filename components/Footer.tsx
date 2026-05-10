@@ -1,8 +1,11 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 export function Footer() {
+  const t = useTranslations("Footer");
+  const tNav = useTranslations("Nav");
   const year = new Date().getFullYear();
   return (
     <footer
@@ -25,14 +28,14 @@ export function Footer() {
         >
           <div>
             <Image
-              src="/logo-name-below.svg"
+              src="/nereid-logo.png"
               alt="Nereid Systems"
-              width={180}
-              height={120}
-              style={{ width: "140px", height: "auto", marginBottom: "0.75rem" }}
+              width={140}
+              height={46}
+              style={{ width: "140px", height: "auto", objectFit: "contain", marginBottom: "0.75rem" }}
             />
             <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", lineHeight: "1.6" }}>
-              Full-stack development, AI automation, and IT management for growing companies.
+              {t("description")}
             </p>
           </div>
 
@@ -47,13 +50,13 @@ export function Footer() {
                 marginBottom: "0.75rem",
               }}
             >
-              Pages
+              {t("pagesHeading")}
             </p>
             <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
               {[
-                { href: "/", label: "Home" },
-                { href: "/services", label: "Services" },
-                { href: "/contact", label: "Contact" },
+                { href: "/", label: tNav("home") },
+                { href: "/services", label: tNav("services") },
+                { href: "/contact", label: tNav("contact") },
               ].map(({ href, label }) => (
                 <li key={href}>
                   <Link
@@ -85,7 +88,7 @@ export function Footer() {
                 marginBottom: "0.75rem",
               }}
             >
-              Contact
+              {t("contactHeading")}
             </p>
             <a
               href="mailto:hello@nereidsystems.com"
@@ -98,7 +101,7 @@ export function Footer() {
               hello@nereidsystems.com
             </a>
             <p style={{ color: "var(--text-muted)", fontSize: "0.8rem", marginTop: "0.5rem" }}>
-              Response within 24 business hours
+              {t("responseTime")}
             </p>
           </div>
         </div>
@@ -115,10 +118,10 @@ export function Footer() {
           }}
         >
           <p style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>
-            © {year} Nereid Systems. All rights reserved.
+            {t("copyright", { year })}
           </p>
           <p style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>
-            Built with Next.js & Tailwind CSS
+            {t("builtWith")}
           </p>
         </div>
       </div>

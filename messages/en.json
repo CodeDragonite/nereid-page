@@ -1,0 +1,315 @@
+{
+  "Nav": {
+    "home": "Home",
+    "services": "Services",
+    "portfolio": "Portfolio",
+    "upcoming": "Upcoming",
+    "contact": "Contact",
+    "switchLang": "ES",
+    "switchLangLabel": "Cambiar a Español"
+  },
+  "Hero": {
+    "tag": "Full-Stack · AI · IT Management",
+    "headline": "We Build",
+    "headlineAccent": "What's Next",
+    "subheadline": "Full-stack development, AI automation, and IT management for companies that want to focus on their business—not their infrastructure.",
+    "ctaPrimary": "Get a Free Consultation",
+    "ctaSecondary": "View Our Services",
+    "stat1Value": "50+",
+    "stat1Label": "Projects delivered",
+    "stat2Value": "10+",
+    "stat2Label": "Years of experience",
+    "stat3Value": "24h",
+    "stat3Label": "Response time"
+  },
+  "ServicesGrid": {
+    "eyebrow": "What we do",
+    "heading": "Six Ways We Help You Scale",
+    "subheading": "From the network up to the app layer—we cover the full stack so you don't have to manage multiple vendors.",
+    "viewAll": "See full service details & pricing →",
+    "network": {
+      "title": "Network Installation & Configuration",
+      "outcome": "Reliable, secure infrastructure so your team stays connected—not stuck troubleshooting."
+    },
+    "web": {
+      "title": "Web Application Development",
+      "outcome": "Fast, accessible web apps that convert visitors into customers and scale with demand."
+    },
+    "mobile": {
+      "title": "Mobile App Development",
+      "outcome": "iOS & Android apps that feel native, load instantly, and keep users coming back."
+    },
+    "integration": {
+      "title": "Systems Integration",
+      "outcome": "Legacy and modern systems working in harmony—no more data silos or manual workarounds."
+    },
+    "ai": {
+      "title": "AI Automation Workflows",
+      "outcome": "Automate repetitive work with AI so your team focuses on what actually moves the needle."
+    },
+    "it": {
+      "title": "IT Management for SMBs",
+      "outcome": "Proactive IT support and monitoring so you never lose a workday to unexpected outages."
+    }
+  },
+  "SocialProof": {
+    "label": "Trusted by forward-thinking teams"
+  },
+  "Testimonials": {
+    "eyebrow": "What our clients say",
+    "heading": "Results That Speak for Themselves",
+    "item0Quote": "Nereid Systems transformed our network infrastructure. What used to take weeks of downtime now runs smoothly 24/7. Their expertise in modern IT solutions is unmatched.",
+    "item0Author": "Sarah Chen",
+    "item0Role": "IT Director",
+    "item0Company": "Metro Healthcare Group",
+    "item1Quote": "The AI automation workflow they built saved us 30 hours per week. We went from reactive to proactive, and our team can finally focus on strategic growth.",
+    "item1Author": "Marcus Rodriguez",
+    "item1Role": "Operations Manager",
+    "item1Company": "Swift Logistics",
+    "item2Quote": "Their full-stack development approach delivered exactly what we needed: a scalable platform that grows with our business. Professional, reliable, and innovative.",
+    "item2Author": "Emily Watson",
+    "item2Role": "CEO",
+    "item2Company": "FinTech Innovations"
+  },
+  "PortfolioPreview": {
+    "eyebrow": "Selected work",
+    "heading": "Projects That Drive Results",
+    "viewAll": "View all case studies",
+    "project0Title": "Multi-Tenant SaaS Platform",
+    "project0Client": "FinTech Startup",
+    "project0Result": "Reduced onboarding time from 2 weeks to 4 hours with automated provisioning",
+    "project1Title": "AI-Powered Operations Workflow",
+    "project1Client": "Regional Logistics Co.",
+    "project1Result": "Automated 68% of manual dispatch decisions, saving 30+ hours per week",
+    "project2Title": "SMB Network Modernization",
+    "project2Client": "Healthcare Practice",
+    "project2Result": "Zero unplanned downtime in 18 months post-deployment with proactive monitoring",
+    "tag0a": "Web App",
+    "tag0b": "API Integration",
+    "tag1a": "AI Automation",
+    "tag1b": "Integration",
+    "tag2a": "Network",
+    "tag2b": "IT Management",
+    "viewProject": "View project",
+    "viewDetails": "View details"
+  },
+  "UpcomingPreview": {
+    "eyebrow": "What's next",
+    "heading": "Upcoming Projects",
+    "viewAll": "View full roadmap",
+    "project0Title": "MedRating Panama",
+    "project0Desc": "AI-powered medical provider rating platform for Panama's healthcare system.",
+    "project0Timeline": "Q3 2026",
+    "project1Title": "Football Analyzer & Scout",
+    "project1Desc": "AI-driven talent scouting platform for football with predictive analytics.",
+    "project1Timeline": "Q4 2026",
+    "timeline": "Launch"
+  },
+  "LeadMagnet": {
+    "heading": "Ready to simplify your tech?",
+    "body": "Get our free {strong}—a practical guide to finding the gaps in your infrastructure before they find you.",
+    "strongText": "IT Audit Checklist",
+    "placeholder": "you@company.com",
+    "submit": "Send me the checklist",
+    "submitting": "Sending…",
+    "successMsg": "Sent! Check your inbox for the checklist.",
+    "errorMsg": "Something went wrong. Try emailing us directly at hello@nereidsystems.com",
+    "disclaimer": "No spam. Unsubscribe anytime.",
+    "formLabel": "IT Audit Checklist signup",
+    "emailLabel": "Email address"
+  },
+  "Footer": {
+    "description": "Full-stack development, AI automation, and IT management for growing companies.",
+    "pagesHeading": "Pages",
+    "contactHeading": "Contact",
+    "responseTime": "Response within 24 business hours",
+    "copyright": "© {year} Nereid Systems. All rights reserved.",
+    "builtWith": "Built with Next.js"
+  },
+  "Portfolio": {
+    "metaTitle": "Portfolio | Nereid Systems — Case Studies & Projects",
+    "metaDesc": "Explore case studies from Nereid Systems: network infrastructure, web development, AI automation, and more. Real outcomes for real clients.",
+    "heroTag": "Featured Work",
+    "heroHeadline": "Projects That Define Our",
+    "heroHeadlineAccent": "Expertise",
+    "heroSubheadline": "Case studies showcasing our approach to solving complex challenges for real clients.",
+    "heroCta": "Start Your Project",
+    "eyebrow": "Case Studies",
+    "heading": "Real Outcomes for Real Clients",
+    "challenge": "Challenge",
+    "viewCaseStudy": "View Case Study"
+  },
+  "CaseStudy": {
+    "notFoundTag": "Case Study Not Found",
+    "notFoundHeading": "Still in Development",
+    "notFoundBody": "We're building more detailed project stories. Please check back soon.",
+    "notFoundCta": "Back to Portfolio",
+    "breadcrumbHome": "Home",
+    "breadcrumbPortfolio": "Portfolio",
+    "badgeLabel": "Case Study",
+    "completed": "Completed",
+    "inProgress": "In Progress",
+    "outcomePrefix": "↑",
+    "theChallenge": "The Challenge",
+    "ourSolution": "Our Solution",
+    "techStack": "Tech Stack",
+    "wantSimilar": "Want a similar result?",
+    "wantSimilarBody": "Talk to us about a platform, automation workflow, or infrastructure upgrade that scales with your business.",
+    "wantSimilarCta": "Request a free review"
+  },
+  "Upcoming": {
+    "metaTitle": "Upcoming Projects | Nereid Systems — Innovation Pipeline",
+    "metaDesc": "Discover upcoming products from Nereid Systems: MedRating Panama for healthcare and Football Analyzer Scout for sports analytics.",
+    "heroTag": "Innovation Pipeline",
+    "heroHeadline": "What We're",
+    "heroHeadlineAccent": "Building Next",
+    "heroSubheadline": "Exploring new frontiers in healthcare technology and sports analytics. Join the waitlist and be first to know when we launch.",
+    "heroCta": "Get Notified",
+    "eyebrow": "In the Pipeline",
+    "heading": "Products We're Building",
+    "requestAccess": "Request Early Access",
+    "joinNetwork": "Join Scout Network",
+    "inDevelopment": "In Development",
+    "planningPhase": "Planning Phase",
+    "medrating": {
+      "title": "MedRating Panama",
+      "desc": "A comprehensive medical rating and review platform for healthcare providers in Panama. Features AI-powered sentiment analysis, patient feedback aggregation, and provider performance metrics.",
+      "f0": "Provider search and filtering",
+      "f1": "AI-powered review analysis",
+      "f2": "Patient satisfaction scoring",
+      "f3": "Real-time availability checking",
+      "f4": "Multi-language support (Spanish/English)"
+    },
+    "football": {
+      "title": "Football Analyzer & Scout",
+      "desc": "AI-driven football talent scouting platform that analyzes player performance data, provides predictive analytics, and helps scouts identify emerging talent.",
+      "f0": "Player performance tracking",
+      "f1": "Predictive career trajectory modeling",
+      "f2": "Video analysis with AI annotations",
+      "f3": "Scouting report generation",
+      "f4": "Team formation optimization"
+    }
+  },
+  "Services": {
+    "metaTitle": "Services | Nereid Systems",
+    "metaDesc": "Network infrastructure, web & mobile apps, AI automation, and IT management for growing companies. Transparent scope, timelines, and pricing.",
+    "heroEyebrow": "Our Services",
+    "heroHeading": "Full-Stack Technology Solutions",
+    "heroSubheading": "From infrastructure to the application layer—we cover the full stack.",
+    "expandLabel": "View details",
+    "collapseLabel": "Hide details",
+    "scopeLabel": "Scope",
+    "timelineLabel": "Estimated timeline",
+    "stackLabel": "Tech stack",
+    "priceLabel": "Price",
+    "network": {
+      "title": "Network Installation & Configuration",
+      "outcome": "Reliable, secure infrastructure so your team stays connected—not stuck troubleshooting.",
+      "scope": "Full network design, hardware procurement, switch/router configuration, VLAN segmentation, firewall setup, Wi-Fi deployment, and ongoing monitoring.",
+      "timeline": "1–4 weeks depending on office size and complexity",
+      "stack": "Cisco, Ubiquiti, Meraki, pfSense, Fortinet",
+      "price": "Starting at $2,500",
+      "cta": "Get a Network Quote"
+    },
+    "web": {
+      "title": "Web Application Development",
+      "outcome": "Fast, accessible web apps that convert visitors into customers and scale with demand.",
+      "scope": "Full-stack web application design and development: architecture, frontend, backend APIs, database design, authentication, deployment, and post-launch support.",
+      "timeline": "4–16 weeks depending on scope",
+      "stack": "Next.js, React, Node.js, Python/FastAPI, PostgreSQL, Redis, AWS/Vercel",
+      "price": "Starting at $8,000",
+      "cta": "Discuss My Web Project"
+    },
+    "mobile": {
+      "title": "Mobile App Development",
+      "outcome": "iOS & Android apps that feel native, load instantly, and keep users coming back.",
+      "scope": "Cross-platform mobile app design and development, App Store / Play Store submission, push notifications, offline support, and iterative post-launch updates.",
+      "timeline": "8–20 weeks depending on features",
+      "stack": "React Native, Expo, TypeScript, Firebase, Supabase",
+      "price": "Starting at $12,000",
+      "cta": "Discuss My App Idea"
+    },
+    "integration": {
+      "title": "Systems Integration",
+      "outcome": "Legacy and modern systems working in harmony—no more data silos or manual workarounds.",
+      "scope": "API design and development, ETL pipelines, ERP/CRM integrations, webhook infrastructure, legacy system adapters, and real-time data sync.",
+      "timeline": "2–10 weeks depending on system count and complexity",
+      "stack": "REST/GraphQL APIs, Zapier, n8n, custom Python/Node.js connectors",
+      "price": "Starting at $4,000",
+      "cta": "Map Out My Integration"
+    },
+    "ai": {
+      "title": "AI Automation Workflows",
+      "outcome": "Automate repetitive work with AI so your team focuses on what actually moves the needle.",
+      "scope": "Process identification, AI pipeline design, LLM API integration, structured data extraction, agent tooling, and workflow monitoring.",
+      "timeline": "3–12 weeks depending on workflow complexity",
+      "stack": "OpenAI, Anthropic Claude, LangChain, Python, n8n, AWS Lambda",
+      "price": "Starting at $6,000",
+      "cta": "Explore AI Automation"
+    },
+    "it": {
+      "title": "IT Management for SMBs",
+      "outcome": "Proactive IT support and monitoring so you never lose a workday to unexpected outages.",
+      "scope": "24/7 monitoring, patch management, backup and recovery, helpdesk support, vendor management, and annual IT planning.",
+      "timeline": "1–2 week onboarding; ongoing service",
+      "stack": "Microsoft 365, Google Workspace, monitoring tools, ticketing systems",
+      "price": "Starting at $800/month",
+      "cta": "Talk About IT Management"
+    },
+    "ctaHeading": "Not sure which service fits your need?",
+    "ctaBody": "We'll map out the right solution on a free 30-minute call.",
+    "ctaBtn": "Book a Free Consultation"
+  },
+  "Contact": {
+    "metaTitle": "Contact | Nereid Systems",
+    "metaDesc": "Book a free consultation or send us a message. We respond within 24 business hours.",
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "companyLabel": "Company (optional)",
+    "serviceLabel": "Service of interest",
+    "messageLabel": "Message",
+    "submitBtn": "Send Message",
+    "submitting": "Sending…",
+    "selectService": "Select a service",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "you@company.com",
+    "companyPlaceholder": "Your company",
+    "messagePlaceholder": "Tell us about your project or challenge…",
+    "successHeading": "Message sent!",
+    "successBody": "Thanks for reaching out. We'll get back to you within 24 business hours.",
+    "errorMsg": "Something went wrong. Please try again or email us at hello@nereidsystems.com",
+    "service0": "Network Infrastructure",
+    "service1": "Web Application Development",
+    "service2": "Mobile App Development",
+    "service3": "Systems Integration",
+    "service4": "AI Automation",
+    "service5": "IT Management",
+    "service6": "Other / Not sure yet",
+    "nameError": "Name must be at least 2 characters",
+    "emailError": "Please enter a valid email address",
+    "serviceError": "Please select a service",
+    "messageError": "Message must be at least 20 characters",
+    "responseTime": "Response within 24 business hours",
+    "directEmail": "or email us directly",
+    "eyebrow": "Let's talk",
+    "heading": "Start a Conversation",
+    "subheading": "Tell us what you're working on. We'll respond within 24 business hours with a clear next step.",
+    "formHeading": "Send a Message",
+    "bookCallHeading": "Book a Call",
+    "bookCallBody": "Skip the back-and-forth. Pick a 30-minute slot that works for you.",
+    "bookCallBtn": "Open Booking Calendar →",
+    "directContactHeading": "Direct Contact",
+    "messageSentHeading": "Message sent!",
+    "messageSentBody": "Thanks! We'll reply within 24 business hours with a clear next step."
+  },
+  "NotFound": {
+    "tag": "404 — Page Not Found",
+    "heading": "This page doesn't exist",
+    "body": "It may have been deleted, moved, or never existed.",
+    "cta": "Back to Home"
+  },
+  "Breadcrumb": {
+    "home": "Home",
+    "portfolio": "Portfolio"
+  }
+}

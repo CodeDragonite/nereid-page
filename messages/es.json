@@ -1,0 +1,315 @@
+{
+  "Nav": {
+    "home": "Inicio",
+    "services": "Servicios",
+    "portfolio": "Portafolio",
+    "upcoming": "Próximamente",
+    "contact": "Contacto",
+    "switchLang": "EN",
+    "switchLangLabel": "Switch to English"
+  },
+  "Hero": {
+    "tag": "Full-Stack · IA · Gestión de TI",
+    "headline": "Construimos",
+    "headlineAccent": "Lo Que Viene",
+    "subheadline": "Desarrollo full-stack, automatización con IA y gestión de TI para empresas que quieren enfocarse en su negocio—no en su infraestructura.",
+    "ctaPrimary": "Consulta Gratuita",
+    "ctaSecondary": "Ver Nuestros Servicios",
+    "stat1Value": "50+",
+    "stat1Label": "Proyectos entregados",
+    "stat2Value": "10+",
+    "stat2Label": "Años de experiencia",
+    "stat3Value": "24h",
+    "stat3Label": "Tiempo de respuesta"
+  },
+  "ServicesGrid": {
+    "eyebrow": "Lo que hacemos",
+    "heading": "Seis Formas de Ayudarte a Crecer",
+    "subheading": "Desde la red hasta la capa de aplicación—cubrimos el stack completo para que no tengas que gestionar múltiples proveedores.",
+    "viewAll": "Ver detalles completos de servicios →",
+    "network": {
+      "title": "Instalación y Configuración de Redes",
+      "outcome": "Infraestructura confiable y segura para que tu equipo esté conectado—sin perder tiempo solucionando problemas."
+    },
+    "web": {
+      "title": "Desarrollo de Aplicaciones Web",
+      "outcome": "Apps web rápidas y accesibles que convierten visitantes en clientes y escalan con la demanda."
+    },
+    "mobile": {
+      "title": "Desarrollo de Apps Móviles",
+      "outcome": "Apps para iOS y Android que se sienten nativas, cargan al instante y hacen que los usuarios regresen."
+    },
+    "integration": {
+      "title": "Integración de Sistemas",
+      "outcome": "Sistemas heredados y modernos trabajando en armonía—sin más silos de datos ni procesos manuales."
+    },
+    "ai": {
+      "title": "Flujos de Automatización con IA",
+      "outcome": "Automatiza el trabajo repetitivo con IA para que tu equipo se enfoque en lo que realmente mueve el negocio."
+    },
+    "it": {
+      "title": "Gestión de TI para PYMEs",
+      "outcome": "Soporte y monitoreo proactivo de TI para que nunca pierdas un día laboral por interrupciones inesperadas."
+    }
+  },
+  "SocialProof": {
+    "label": "Con la confianza de equipos innovadores"
+  },
+  "Testimonials": {
+    "eyebrow": "Lo que dicen nuestros clientes",
+    "heading": "Resultados que Hablan por Sí Solos",
+    "item0Quote": "Nereid Systems transformó nuestra infraestructura de red. Lo que antes tomaba semanas de inactividad ahora funciona sin problemas 24/7. Su experiencia en soluciones modernas de TI no tiene igual.",
+    "item0Author": "Sarah Chen",
+    "item0Role": "Directora de TI",
+    "item0Company": "Metro Healthcare Group",
+    "item1Quote": "El flujo de automatización con IA que construyeron nos ahorra 30 horas a la semana. Pasamos de ser reactivos a proactivos, y nuestro equipo ahora puede enfocarse en el crecimiento estratégico.",
+    "item1Author": "Marcus Rodríguez",
+    "item1Role": "Gerente de Operaciones",
+    "item1Company": "Swift Logistics",
+    "item2Quote": "Su enfoque de desarrollo full-stack entregó exactamente lo que necesitábamos: una plataforma escalable que crece con nuestro negocio. Profesionales, confiables e innovadores.",
+    "item2Author": "Emily Watson",
+    "item2Role": "CEO",
+    "item2Company": "FinTech Innovations"
+  },
+  "PortfolioPreview": {
+    "eyebrow": "Trabajo seleccionado",
+    "heading": "Proyectos Que Generan Resultados",
+    "viewAll": "Ver todos los casos de estudio",
+    "project0Title": "Plataforma SaaS Multi-Tenant",
+    "project0Client": "Startup FinTech",
+    "project0Result": "Tiempo de incorporación reducido de 2 semanas a 4 horas con aprovisionamiento automatizado",
+    "project1Title": "Flujo de Operaciones con IA",
+    "project1Client": "Empresa Regional de Logística",
+    "project1Result": "68% de las decisiones de despacho automatizadas, ahorrando 30+ horas por semana",
+    "project2Title": "Modernización de Red para PYMEs",
+    "project2Client": "Clínica de Salud",
+    "project2Result": "Cero tiempo de inactividad no planificado en 18 meses con monitoreo proactivo",
+    "tag0a": "App Web",
+    "tag0b": "Integración API",
+    "tag1a": "Automatización IA",
+    "tag1b": "Integración",
+    "tag2a": "Red",
+    "tag2b": "Gestión de TI",
+    "viewProject": "Ver proyecto",
+    "viewDetails": "Ver detalles"
+  },
+  "UpcomingPreview": {
+    "eyebrow": "Lo que viene",
+    "heading": "Próximos Proyectos",
+    "viewAll": "Ver hoja de ruta completa",
+    "project0Title": "MedRating Panamá",
+    "project0Desc": "Plataforma de calificación médica impulsada por IA para el sistema de salud de Panamá.",
+    "project0Timeline": "T3 2026",
+    "project1Title": "Football Analyzer & Scout",
+    "project1Desc": "Plataforma de scouting de talento impulsada por IA con analítica predictiva.",
+    "project1Timeline": "T4 2026",
+    "timeline": "Lanzamiento"
+  },
+  "LeadMagnet": {
+    "heading": "¿Listo para simplificar tu tecnología?",
+    "body": "Obtén nuestra {strong} gratuita—una guía práctica para encontrar los puntos débiles en tu infraestructura antes de que te encuentren a ti.",
+    "strongText": "Lista de Verificación de Auditoría de TI",
+    "placeholder": "tu@empresa.com",
+    "submit": "Envíame la lista",
+    "submitting": "Enviando…",
+    "successMsg": "¡Enviado! Revisa tu bandeja de entrada.",
+    "errorMsg": "Algo salió mal. Escríbenos directamente a hello@nereidsystems.com",
+    "disclaimer": "Sin spam. Cancela cuando quieras.",
+    "formLabel": "Registro para Lista de Verificación de Auditoría de TI",
+    "emailLabel": "Correo electrónico"
+  },
+  "Footer": {
+    "description": "Desarrollo full-stack, automatización con IA y gestión de TI para empresas en crecimiento.",
+    "pagesHeading": "Páginas",
+    "contactHeading": "Contacto",
+    "responseTime": "Respuesta en 24 horas hábiles",
+    "copyright": "© {year} Nereid Systems. Todos los derechos reservados.",
+    "builtWith": "Construido con Next.js"
+  },
+  "Portfolio": {
+    "metaTitle": "Portafolio | Nereid Systems — Casos de Estudio y Proyectos",
+    "metaDesc": "Explora casos de estudio de Nereid Systems: infraestructura de redes, desarrollo web, automatización con IA y más. Resultados reales para clientes reales.",
+    "heroTag": "Trabajo Destacado",
+    "heroHeadline": "Proyectos Que Definen Nuestra",
+    "heroHeadlineAccent": "Experiencia",
+    "heroSubheadline": "Casos de estudio que muestran nuestro enfoque para resolver desafíos complejos para clientes reales.",
+    "heroCta": "Inicia Tu Proyecto",
+    "eyebrow": "Casos de Estudio",
+    "heading": "Resultados Reales para Clientes Reales",
+    "challenge": "Desafío",
+    "viewCaseStudy": "Ver Caso de Estudio"
+  },
+  "CaseStudy": {
+    "notFoundTag": "Caso de Estudio No Encontrado",
+    "notFoundHeading": "Aún en Desarrollo",
+    "notFoundBody": "Estamos construyendo más historias detalladas de proyectos. Por favor vuelve pronto.",
+    "notFoundCta": "Volver al Portafolio",
+    "breadcrumbHome": "Inicio",
+    "breadcrumbPortfolio": "Portafolio",
+    "badgeLabel": "Caso de Estudio",
+    "completed": "Completado",
+    "inProgress": "En Progreso",
+    "outcomePrefix": "↑",
+    "theChallenge": "El Desafío",
+    "ourSolution": "Nuestra Solución",
+    "techStack": "Stack Tecnológico",
+    "wantSimilar": "¿Quieres un resultado similar?",
+    "wantSimilarBody": "Cuéntanos sobre tu plataforma, flujo de automatización o mejora de infraestructura que escale con tu negocio.",
+    "wantSimilarCta": "Solicita una revisión gratuita"
+  },
+  "Upcoming": {
+    "metaTitle": "Próximamente | Nereid Systems — Pipeline de Innovación",
+    "metaDesc": "Descubre los próximos productos de Nereid Systems: MedRating Panamá para salud y Football Analyzer Scout para analítica deportiva.",
+    "heroTag": "Pipeline de Innovación",
+    "heroHeadline": "Lo Que Estamos",
+    "heroHeadlineAccent": "Construyendo",
+    "heroSubheadline": "Explorando nuevas fronteras en tecnología de salud y analítica deportiva. Únete a la lista de espera y sé el primero en saber cuándo lanzamos.",
+    "heroCta": "Recibe Notificaciones",
+    "eyebrow": "En el Pipeline",
+    "heading": "Productos Que Estamos Desarrollando",
+    "requestAccess": "Solicitar Acceso Anticipado",
+    "joinNetwork": "Únete a la Red Scout",
+    "inDevelopment": "En Desarrollo",
+    "planningPhase": "Fase de Planificación",
+    "medrating": {
+      "title": "MedRating Panamá",
+      "desc": "Plataforma integral de calificación y reseñas médicas para proveedores de salud en Panamá. Con análisis de sentimiento con IA, agregación de retroalimentación de pacientes y métricas de desempeño de proveedores.",
+      "f0": "Búsqueda y filtrado de proveedores",
+      "f1": "Análisis de reseñas con IA",
+      "f2": "Puntuación de satisfacción del paciente",
+      "f3": "Verificación de disponibilidad en tiempo real",
+      "f4": "Soporte multiidioma (Español/Inglés)"
+    },
+    "football": {
+      "title": "Football Analyzer & Scout",
+      "desc": "Plataforma de scouting de talento futbolístico impulsada por IA que analiza datos de rendimiento de jugadores, proporciona analítica predictiva y ayuda a los cazatalentos a identificar talento emergente.",
+      "f0": "Seguimiento del rendimiento de jugadores",
+      "f1": "Modelado predictivo de trayectoria profesional",
+      "f2": "Análisis de video con anotaciones de IA",
+      "f3": "Generación de informes de scouting",
+      "f4": "Optimización de formación de equipos"
+    }
+  },
+  "Services": {
+    "metaTitle": "Servicios | Nereid Systems",
+    "metaDesc": "Infraestructura de redes, apps web y móviles, automatización con IA y gestión de TI para empresas en crecimiento.",
+    "heroEyebrow": "Nuestros Servicios",
+    "heroHeading": "Soluciones Tecnológicas Completas",
+    "heroSubheading": "Desde la infraestructura hasta la capa de aplicación—cubrimos el stack completo.",
+    "expandLabel": "Ver detalles",
+    "collapseLabel": "Ocultar detalles",
+    "scopeLabel": "Alcance",
+    "timelineLabel": "Tiempo estimado",
+    "stackLabel": "Stack tecnológico",
+    "priceLabel": "Precio",
+    "network": {
+      "title": "Instalación y Configuración de Redes",
+      "outcome": "Infraestructura confiable y segura para que tu equipo esté conectado—sin perder tiempo solucionando problemas.",
+      "scope": "Diseño completo de red, adquisición de hardware, configuración de switches/routers, segmentación VLAN, configuración de firewall, despliegue Wi-Fi y monitoreo continuo.",
+      "timeline": "1–4 semanas según tamaño y complejidad",
+      "stack": "Cisco, Ubiquiti, Meraki, pfSense, Fortinet",
+      "price": "Desde $2,500",
+      "cta": "Solicitar Cotización de Red"
+    },
+    "web": {
+      "title": "Desarrollo de Aplicaciones Web",
+      "outcome": "Apps web rápidas y accesibles que convierten visitantes en clientes y escalan con la demanda.",
+      "scope": "Diseño y desarrollo de aplicaciones web full-stack: arquitectura, frontend, APIs backend, diseño de base de datos, autenticación, despliegue y soporte post-lanzamiento.",
+      "timeline": "4–16 semanas según alcance",
+      "stack": "Next.js, React, Node.js, Python/FastAPI, PostgreSQL, Redis, AWS/Vercel",
+      "price": "Desde $8,000",
+      "cta": "Hablar de Mi Proyecto Web"
+    },
+    "mobile": {
+      "title": "Desarrollo de Apps Móviles",
+      "outcome": "Apps para iOS y Android que se sienten nativas, cargan al instante y hacen que los usuarios regresen.",
+      "scope": "Diseño y desarrollo de apps móviles multiplataforma, envío a App Store/Play Store, notificaciones push, soporte offline y actualizaciones post-lanzamiento.",
+      "timeline": "8–20 semanas según funcionalidades",
+      "stack": "React Native, Expo, TypeScript, Firebase, Supabase",
+      "price": "Desde $12,000",
+      "cta": "Hablar de Mi Idea de App"
+    },
+    "integration": {
+      "title": "Integración de Sistemas",
+      "outcome": "Sistemas heredados y modernos trabajando en armonía—sin más silos de datos ni procesos manuales.",
+      "scope": "Diseño y desarrollo de APIs, pipelines ETL, integraciones ERP/CRM, infraestructura de webhooks, adaptadores de sistemas legados y sincronización de datos en tiempo real.",
+      "timeline": "2–10 semanas según cantidad y complejidad de sistemas",
+      "stack": "REST/GraphQL APIs, Zapier, n8n, conectores personalizados Python/Node.js",
+      "price": "Desde $4,000",
+      "cta": "Planificar Mi Integración"
+    },
+    "ai": {
+      "title": "Flujos de Automatización con IA",
+      "outcome": "Automatiza el trabajo repetitivo con IA para que tu equipo se enfoque en lo que realmente mueve el negocio.",
+      "scope": "Identificación de procesos, diseño de pipelines de IA, integración con APIs de LLM, extracción de datos estructurados, herramientas de agentes y monitoreo de flujos de trabajo.",
+      "timeline": "3–12 semanas según complejidad del flujo",
+      "stack": "OpenAI, Anthropic Claude, LangChain, Python, n8n, AWS Lambda",
+      "price": "Desde $6,000",
+      "cta": "Explorar Automatización con IA"
+    },
+    "it": {
+      "title": "Gestión de TI para PYMEs",
+      "outcome": "Soporte y monitoreo proactivo de TI para que nunca pierdas un día laboral por interrupciones inesperadas.",
+      "scope": "Monitoreo 24/7, gestión de parches, respaldo y recuperación, soporte de helpdesk, gestión de proveedores y planificación anual de TI.",
+      "timeline": "Incorporación en 1–2 semanas; servicio continuo",
+      "stack": "Microsoft 365, Google Workspace, herramientas de monitoreo, sistemas de tickets",
+      "price": "Desde $800/mes",
+      "cta": "Hablar de Gestión de TI"
+    },
+    "ctaHeading": "¿No sabes qué servicio se adapta mejor a tu necesidad?",
+    "ctaBody": "Definimos la solución correcta en una llamada gratuita de 30 minutos.",
+    "ctaBtn": "Agendar Consulta Gratuita"
+  },
+  "Contact": {
+    "metaTitle": "Contacto | Nereid Systems",
+    "metaDesc": "Agenda una consulta gratuita o envíanos un mensaje. Respondemos en 24 horas hábiles.",
+    "nameLabel": "Nombre",
+    "emailLabel": "Correo electrónico",
+    "companyLabel": "Empresa (opcional)",
+    "serviceLabel": "Servicio de interés",
+    "messageLabel": "Mensaje",
+    "submitBtn": "Enviar Mensaje",
+    "submitting": "Enviando…",
+    "selectService": "Selecciona un servicio",
+    "namePlaceholder": "Tu nombre",
+    "emailPlaceholder": "tu@empresa.com",
+    "companyPlaceholder": "Tu empresa",
+    "messagePlaceholder": "Cuéntanos sobre tu proyecto o desafío…",
+    "successHeading": "¡Mensaje enviado!",
+    "successBody": "Gracias por contactarnos. Te responderemos en 24 horas hábiles.",
+    "errorMsg": "Algo salió mal. Por favor intenta de nuevo o escríbenos a hello@nereidsystems.com",
+    "service0": "Infraestructura de Red",
+    "service1": "Desarrollo de Aplicaciones Web",
+    "service2": "Desarrollo de Apps Móviles",
+    "service3": "Integración de Sistemas",
+    "service4": "Automatización con IA",
+    "service5": "Gestión de TI",
+    "service6": "Otro / No estoy seguro aún",
+    "nameError": "El nombre debe tener al menos 2 caracteres",
+    "emailError": "Por favor ingresa un correo electrónico válido",
+    "serviceError": "Por favor selecciona un servicio",
+    "messageError": "El mensaje debe tener al menos 20 caracteres",
+    "responseTime": "Respondemos en 24 horas hábiles",
+    "directEmail": "o escríbenos directamente",
+    "eyebrow": "Hablemos",
+    "heading": "Inicia una Conversación",
+    "subheading": "Cuéntanos en qué estás trabajando. Te respondemos en 24 horas hábiles con un próximo paso claro.",
+    "formHeading": "Enviar un Mensaje",
+    "bookCallHeading": "Agenda una Llamada",
+    "bookCallBody": "Evita el intercambio de correos. Elige un horario de 30 minutos que te convenga.",
+    "bookCallBtn": "Abrir Calendario de Reservas →",
+    "directContactHeading": "Contacto Directo",
+    "messageSentHeading": "¡Mensaje enviado!",
+    "messageSentBody": "Gracias. Te responderemos en 24 horas hábiles con un próximo paso claro."
+  },
+  "NotFound": {
+    "tag": "404 — Página No Encontrada",
+    "heading": "Esta página no existe",
+    "body": "Es posible que haya sido eliminada, movida o nunca haya existido.",
+    "cta": "Volver al Inicio"
+  },
+  "Breadcrumb": {
+    "home": "Inicio",
+    "portfolio": "Portafolio"
+  }
+}

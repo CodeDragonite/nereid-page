@@ -3,41 +3,32 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-const projects = [
+const projectConfig = [
   {
-    id: "1",
-    title: "Multi-Tenant SaaS Platform",
-    client: "FinTech Startup",
-    result: "Reduced onboarding time from 2 weeks to 4 hours with automated provisioning",
-    tags: ["Web App", "API Integration"],
+    id: "0",
     gradient: "linear-gradient(135deg, #00d2d2 0%, #3d7fff 100%)",
     emoji: "📊",
   },
   {
-    id: "2",
-    title: "AI-Powered Operations Workflow",
-    client: "Regional Logistics Co.",
-    result: "Automated 68% of manual dispatch decisions, saving 30+ hours per week",
-    tags: ["AI Automation", "Integration"],
+    id: "1",
     gradient: "linear-gradient(135deg, #34d399 0%, #059669 100%)",
     emoji: "🤖",
   },
   {
-    id: "3",
-    title: "SMB Network Modernization",
-    client: "Healthcare Practice",
-    result: "Zero unplanned downtime in 18 months post-deployment with proactive monitoring",
-    tags: ["Network", "IT Management"],
+    id: "2",
     gradient: "linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%)",
     emoji: "🏥",
   },
 ];
 
-function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {
+function ProjectCard({ project, index }: { project: typeof projectConfig[0]; index: number }) {
+  const t = useTranslations("PortfolioPreview");
   const [hovered, setHovered] = useState(false);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const tags = [t(`tag${project.id}a`), t(`tag${project.id}b`)];
 
   return (
     <motion.article
@@ -59,7 +50,6 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
         boxShadow: hovered ? "var(--shadow-card-hover)" : "var(--shadow-card)",
       } as React.CSSProperties}
     >
-      {/* Thumbnail */}
       <div
         aria-hidden="true"
         style={{
@@ -73,8 +63,6 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
         }}
       >
         {project.emoji}
-
-        {/* Hover overlay */}
         <div
           style={{
             position: "absolute",
@@ -88,7 +76,7 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
           }}
         >
           <Link
-            href={`/portfolio`}
+            href="/portfolio"
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -103,44 +91,23 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
             }}
           >
             <ExternalLink size={14} />
-            View Portfolio
+            {t("viewProject")}
           </Link>
         </div>
       </div>
 
       <div style={{ padding: "1.5rem" }}>
-        <p
-          style={{
-            fontSize: "0.75rem",
-            color: "var(--text-muted)",
-            marginBottom: "0.4rem",
-            fontWeight: "500",
-          }}
-        >
-          {project.client}
+        <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.4rem", fontWeight: "500" }}>
+          {t(`project${project.id}Client`)}
         </p>
-        <h3
-          style={{
-            fontSize: "1.05rem",
-            fontWeight: "600",
-            color: "var(--text-primary)",
-            marginBottom: "0.75rem",
-          }}
-        >
-          {project.title}
+        <h3 style={{ fontSize: "1.05rem", fontWeight: "600", color: "var(--text-primary)", marginBottom: "0.75rem" }}>
+          {t(`project${project.id}Title`)}
         </h3>
-        <p
-          style={{
-            fontSize: "0.875rem",
-            color: "var(--text-secondary)",
-            lineHeight: "1.6",
-            marginBottom: "1rem",
-          }}
-        >
-          {project.result}
+        <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: "1.6", marginBottom: "1rem" }}>
+          {t(`project${project.id}Result`)}
         </p>
         <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-          {project.tags.map((tag) => (
+          {tags.map((tag) => (
             <span
               key={tag}
               style={{
@@ -163,12 +130,13 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
 }
 
 export function PortfolioPreview() {
+  const t = useTranslations("PortfolioPreview");
   const headRef = useRef(null);
   const headInView = useInView(headRef, { once: true, margin: "-80px" });
 
   return (
     <section
-      aria-labelledby="portfolio-heading"
+      aria-labelledby="portfolio-preview-heading"
       style={{ padding: "6rem 1.5rem", maxWidth: "1200px", margin: "0 auto" }}
     >
       <motion.div
@@ -178,42 +146,38 @@ export function PortfolioPreview() {
         transition={{ duration: 0.5, ease: "easeOut" as const }}
         style={{ textAlign: "center", marginBottom: "3rem" }}
       >
-        <p
-          style={{
-            fontSize: "0.75rem",
-            fontWeight: "600",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "var(--accent)",
-            marginBottom: "0.75rem",
-          }}
-        >
-          Recent work
+        <p style={{ fontSize: "0.75rem", fontWeight: "600", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--accent)", marginBottom: "0.75rem" }}>
+          {t("eyebrow")}
         </p>
         <h2
-          id="portfolio-heading"
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)",
-            color: "var(--text-primary)",
-            letterSpacing: "-0.02em",
-          }}
+          id="portfolio-preview-heading"
+          style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", color: "var(--text-primary)", letterSpacing: "-0.02em" }}
         >
-          Projects That Moved the Needle
+          {t("heading")}
         </h2>
       </motion.div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-          gap: "1.5rem",
-        }}
-      >
-        {projects.map((project, i) => (
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "1.5rem" }}>
+        {projectConfig.map((project, i) => (
           <ProjectCard key={project.id} project={project} index={i} />
         ))}
       </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={headInView ? { opacity: 1 } : {}}
+        transition={{ delay: 0.5, duration: 0.4 }}
+        style={{ textAlign: "center", marginTop: "2.5rem" }}
+      >
+        <Link
+          href="/portfolio"
+          style={{ color: "var(--accent)", textDecoration: "none", fontSize: "0.9rem", fontWeight: "500", display: "inline-flex", alignItems: "center", gap: "6px", transition: "gap 0.2s ease" }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.gap = "10px"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.gap = "6px"; }}
+        >
+          {t("viewAll")} →
+        </Link>
+      </motion.div>
     </section>
   );
 }

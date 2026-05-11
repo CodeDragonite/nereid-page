@@ -104,7 +104,7 @@ export function ContactPageClient() {
       );
       if (matched) setForm((p) => ({ ...p, service: matched }));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const validate = (data: FormData): Errors => {
@@ -403,8 +403,9 @@ export function ContactPageClient() {
 
         {/* Sidebar */}
         <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+          {/* TODO: Transform this to different component */}
           {/* Calendly card */}
-          <motion.div
+          {/* <motion.div
             initial="hidden"
             animate="visible"
             custom={1}
@@ -467,7 +468,7 @@ export function ContactPageClient() {
             >
               Set NEXT_PUBLIC_CALENDLY_URL in .env.local
             </p>
-          </motion.div>
+          </motion.div> */}
 
           {/* Direct contact */}
           <motion.div

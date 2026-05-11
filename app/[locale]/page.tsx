@@ -11,9 +11,9 @@ export default function HomePage() {
     <>
       <HeroSection />
       <ServicesGrid />
-      <SocialProof />
-      <Testimonials />
-      <PortfolioPreview />
+      {/* <SocialProof />
+      <Testimonials /> */}
+      {/* <PortfolioPreview /> */}
       <UpcomingPreview />
       <LeadMagnet />
     </>

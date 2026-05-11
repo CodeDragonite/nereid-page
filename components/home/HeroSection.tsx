@@ -59,7 +59,7 @@ export function HeroSection() {
 
         <motion.div custom={4} initial={reduced ? "visible" : "hidden"} animate="visible" variants={fadeUp} style={{ display: "flex", gap: "2.5rem", marginTop: "4rem", flexWrap: "wrap" }}>
           {([
-            { value: t("stat1Value"), label: t("stat1Label") },
+            // { value: t("stat1Value"), label: t("stat1Label") },
             { value: t("stat2Value"), label: t("stat2Label") },
             { value: t("stat3Value"), label: t("stat3Label") },
           ] as const).map(({ value, label }) => (

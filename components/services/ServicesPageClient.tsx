@@ -143,7 +143,7 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
                   { icon: ArrowRight, label: t("scopeLabel"), value: service.scope },
                   { icon: Clock, label: t("timelineLabel"), value: service.timeline },
                   { icon: Code2, label: t("stackLabel"), value: service.stack },
-                  { icon: DollarSign, label: t("priceLabel"), value: service.price },
+                  // { icon: DollarSign, label: t("priceLabel"), value: service.price },
                 ].map(({ icon: DetailIcon, label, value }) => (
                   <div key={label} style={{ display: "flex", gap: "0.75rem" }}>
                     <DetailIcon size={15} style={{ color: service.color, flexShrink: 0, marginTop: "3px" }} aria-hidden="true" />

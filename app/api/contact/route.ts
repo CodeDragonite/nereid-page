@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-
+import { Resend } from "resend";
 const schema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
@@ -16,13 +16,13 @@ export async function POST(req: NextRequest) {
 
     // Replace with your actual email service (Resend, SendGrid, etc.)
     // Example with Resend:
-    // const resend = new Resend(process.env.RESEND_API_KEY);
-    // await resend.emails.send({
-    //   from: 'noreply@nereidsystems.com',
-    //   to: 'hello@nereidsystems.com',
-    //   subject: `New inquiry: ${data.service}`,
-    //   html: `<p><b>From:</b> ${data.name} (${data.email})</p>...`
-    // });
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    await resend.emails.send({
+      from: 'noreply@nereidsystems.com',
+      to: 'hello@nereidsystems.com',
+      subject: `New inquiry: ${data.service}`,
+      html: `<p><b>From:</b> ${data.name} (${data.email})</p>...`
+    });
 
     // Log for now (replace with actual send in production)
     console.log("[contact]", {

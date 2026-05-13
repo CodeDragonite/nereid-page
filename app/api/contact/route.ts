@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
       from: 'noreply@nereidsystems.com',
-      to: 'hello@nereidsystems.com',
+      to: 'nereidsystems@gmail.com',
       subject: `New inquiry: ${data.service}`,
       html: `<p><b>From:</b> ${data.name} (${data.email})</p>...`
     });

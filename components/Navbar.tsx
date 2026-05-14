@@ -161,6 +161,7 @@ export function Navbar() {
           .nav-logo { width: 120px !important; height: auto !important; }
         }
         @media (max-width: 768px) {
+          .nav-logo { display: none !important; }
           .hidden-mobile { display: none !important; }
           .show-mobile { display: flex !important; }
           .nav-btn { min-width: 44px !important; min-height: 44px !important; display: flex !important; align-items: center !important; justify-content: center !important; }

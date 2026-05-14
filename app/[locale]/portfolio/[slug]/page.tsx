@@ -55,7 +55,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       <div style={{ position: "relative", overflow: "hidden", padding: "4rem 1.5rem 3rem", borderBottom: "1px solid var(--border)" }}>
         <div aria-hidden="true" className="hero-gradient" style={{ position: "absolute", inset: 0, zIndex: 0, opacity: 0.5 }} />
         <div aria-hidden="true" className="grid-overlay" style={{ position: "absolute", inset: 0, zIndex: 1 }} />
-        <div aria-hidden="true" style={{ position: "absolute", top: "10%", right: "5%", width: "400px", height: "400px", borderRadius: "50%", background: `radial-gradient(circle, color-mix(in srgb, ${study.color} 8%, transparent) 0%, transparent 70%)`, zIndex: 1, pointerEvents: "none" }} />
+        <div aria-hidden="true" style={{ position: "absolute", top: "10%", right: "5%", width: "min(400px, 35vw)", height: "min(400px, 35vw)", borderRadius: "50%", background: `radial-gradient(circle, color-mix(in srgb, ${study.color} 8%, transparent) 0%, transparent 70%)`, zIndex: 1, pointerEvents: "none" }} />
         <div style={{ position: "relative", zIndex: 2, maxWidth: "1200px", margin: "0 auto" }}>
           <Breadcrumb items={[
             { label: tB("home"), href: "/" },

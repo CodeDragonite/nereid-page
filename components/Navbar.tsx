@@ -61,7 +61,7 @@ export function Navbar() {
       >
         {/* Logo */}
         <Link href="/" aria-label="Nereid Systems" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-          <Image src="/nereid-logo.png" alt="Nereid Systems" width={160} height={52} priority style={{ height: "52px", width: "auto", objectFit: "contain" }} />
+          <Image src="/nereid-logo.png" alt="Nereid Systems" width={160} height={52} priority className="nav-logo" style={{ height: "52px", width: "auto", objectFit: "contain" }} />
         </Link>
 
         {/* Desktop nav */}
@@ -89,7 +89,8 @@ export function Navbar() {
           <button
             onClick={switchLocale}
             aria-label={t("switchLangLabel")}
-            style={{ background: "none", border: "1px solid var(--border)", borderRadius: "8px", color: "var(--text-secondary)", cursor: "pointer", padding: "5px 10px", fontSize: "0.75rem", fontWeight: "700", letterSpacing: "0.08em", transition: "all var(--transition)" }}
+            className="nav-btn"
+            style={{ background: "none", border: "1px solid var(--border)", borderRadius: "8px", color: "var(--text-secondary)", cursor: "pointer", padding: "5px 10px", fontSize: "0.75rem", fontWeight: "700", letterSpacing: "0.08em", transition: "all var(--transition)" }} 
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.color = "var(--accent)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; }}
           >
@@ -100,6 +101,7 @@ export function Navbar() {
           <button
             onClick={toggle}
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            className="nav-btn"
             style={{ background: "none", border: "1px solid var(--border)", borderRadius: "8px", color: "var(--text-secondary)", cursor: "pointer", padding: "7px", display: "flex", alignItems: "center", justifyContent: "center", transition: "all var(--transition)" }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.color = "var(--accent)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; }}
@@ -155,9 +157,13 @@ export function Navbar() {
       </AnimatePresence>
 
       <style>{`
+        @media (max-width: 480px) {
+          .nav-logo { width: 120px !important; height: auto !important; }
+        }
         @media (max-width: 768px) {
           .hidden-mobile { display: none !important; }
           .show-mobile { display: flex !important; }
+          .nav-btn { min-width: 44px !important; min-height: 44px !important; display: flex !important; align-items: center !important; justify-content: center !important; }
         }
         @media (min-width: 769px) {
           .show-mobile { display: none !important; }

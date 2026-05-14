@@ -199,6 +199,7 @@ export function ContactPageClient() {
 
       {/* Content */}
       <div
+        id="contact-layout"
         style={{
           maxWidth: "1100px",
           margin: "0 auto",
@@ -272,7 +273,7 @@ export function ContactPageClient() {
           ) : (
             <form onSubmit={handleSubmit} noValidate aria-label={t("formHeading")}>
               <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                <div id="contact-form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
                   <Field label={t("nameLabel")} id="name" error={touched.name ? errors.name : undefined} required>
                     <input
                       id="name"
@@ -524,7 +525,12 @@ export function ContactPageClient() {
       {/* Responsive override */}
       <style>{`
         @media (max-width: 768px) {
-          .contact-grid {
+          #contact-layout {
+            grid-template-columns: 1fr !important;
+          }
+        }
+        @media (max-width: 480px) {
+          #contact-form-row {
             grid-template-columns: 1fr !important;
           }
         }

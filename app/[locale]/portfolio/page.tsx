@@ -25,8 +25,8 @@ function PortfolioHero() {
     >
       <div aria-hidden="true" className="hero-gradient" style={{ position: "absolute", inset: 0, zIndex: 0 }} />
       <div aria-hidden="true" className="grid-overlay" style={{ position: "absolute", inset: 0, zIndex: 1 }} />
-      <div aria-hidden="true" style={{ position: "absolute", top: "15%", left: "5%", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,210,210,0.06) 0%, transparent 70%)", zIndex: 1, pointerEvents: "none" }} />
-      <div aria-hidden="true" style={{ position: "absolute", bottom: "10%", right: "10%", width: "400px", height: "400px", borderRadius: "50%", background: "radial-gradient(circle, rgba(61,127,255,0.06) 0%, transparent 70%)", zIndex: 1, pointerEvents: "none" }} />
+      <div aria-hidden="true" style={{ position: "absolute", top: "15%", left: "5%", width: "min(500px, 45vw)", height: "min(500px, 45vw)", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,210,210,0.06) 0%, transparent 70%)", zIndex: 1, pointerEvents: "none" }} />
+      <div aria-hidden="true" style={{ position: "absolute", bottom: "10%", right: "10%", width: "min(400px, 35vw)", height: "min(400px, 35vw)", borderRadius: "50%", background: "radial-gradient(circle, rgba(61,127,255,0.06) 0%, transparent 70%)", zIndex: 1, pointerEvents: "none" }} />
       <div style={{ position: "relative", zIndex: 2, maxWidth: "1200px", margin: "0 auto", padding: "5rem 1.5rem 4rem", width: "100%" }}>
         <motion.div custom={0} initial={reduced ? "visible" : "hidden"} animate="visible" variants={fadeUp} style={{ marginBottom: "1.5rem" }}>
           <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", padding: "5px 12px", borderRadius: "20px", fontSize: "11px", fontWeight: "600", letterSpacing: "0.1em", textTransform: "uppercase" as const, background: "var(--accent-dim)", color: "var(--accent)", border: "1px solid var(--border-hover)" }}>

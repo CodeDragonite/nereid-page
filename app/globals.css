@@ -71,6 +71,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -80,6 +81,11 @@ body {
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 .skip-link {
@@ -138,5 +144,14 @@ body {
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 768px) {
+  section > div[style*="padding"],
+  header > div[style*="padding"],
+  footer > div[style*="padding"] {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
   }
 }

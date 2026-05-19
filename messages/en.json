@@ -171,6 +171,7 @@
     "joinNetwork": "Join Scout Network",
     "inDevelopment": "In Development",
     "planningPhase": "Planning Phase",
+    "designPhase": "Design Phase",
     "medrating": {
       "title": "MedRating Panama",
       "desc": "A comprehensive medical rating and review platform for healthcare providers in Panama. Features AI-powered sentiment analysis, patient feedback aggregation, and provider performance metrics.",
@@ -188,6 +189,15 @@
       "f2": "Video analysis with AI annotations",
       "f3": "Scouting report generation",
       "f4": "Team formation optimization"
+    },
+    "stoic": {
+      "title": "Stoic Guard",
+      "desc": "Stoic Guard is a digital wellbeing app that helps you live more intentionally by reframing your relationship with distracting technology. Built on Stoic principles, it treats attention as a sacred resource and uses psychological nudges and philosophical reflection to build lasting discipline.",
+      "f0": "Contextual nudges and reflections",
+      "f1": "Gentle attention coaching instead of blocking",
+      "f2": "Custom routines grounded in Stoic practice",
+      "f3": "Progress journaling and triggered prompts",
+      "f4": "Insightful usage analytics with reflective summaries"
     }
   },
   "Services": {

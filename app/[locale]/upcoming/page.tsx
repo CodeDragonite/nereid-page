@@ -2,7 +2,7 @@
 import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Rocket, Heart, Zap, Clock, CheckCircle } from "lucide-react";
+import { ArrowRight, Rocket, Heart, Zap, Clock, CheckCircle, Shield } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 const fadeUp = {
@@ -37,6 +37,18 @@ const projects = [
     ctaKey: "joinNetwork" as const,
     ctaUrl: "/contact?project=football-analyzer",
     tech: ["Python", "TensorFlow", "React", "D3.js", "AWS"],
+    featureCount: 5,
+  },
+  {
+    key: "stoic" as const,
+    category: "wellbeing",
+    color: "#60a5fa",
+    icon: Shield,
+    timeline: "Q3 2026",
+    phaseKey: "designPhase" as const,
+    ctaKey: "requestAccess" as const,
+    ctaUrl: "/contact?project=stoic-guard",
+    tech: ["Android", "Kotlin", "Jetpack Compose", "Room", "Hilt"],
     featureCount: 5,
   },
 ];

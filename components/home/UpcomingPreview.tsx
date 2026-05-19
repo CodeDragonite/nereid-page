@@ -4,8 +4,13 @@ import { useRef } from "react";
 import Link from "next/link";
 import { ArrowRight, Clock } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { upcomingProjects } from "../../lib/upcoming";
 
-const upcomingEmojis = ["🏥", "⚽"];
+const categoryEmoji: Record<string, string> = {
+  healthcare: "🏥",
+  sports: "🏈",
+  wellbeing: "🛡️",
+};
 
 export function UpcomingPreview() {
   const t = useTranslations("UpcomingPreview");
@@ -36,31 +41,31 @@ export function UpcomingPreview() {
       </motion.div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem" }}>
-        {upcomingEmojis.map((emoji, i) => (
+        {upcomingProjects.slice(0, 3).map((project, i) => (
           <motion.article
-            key={i}
+            key={project.id}
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" as const }}
             style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: "var(--radius-lg)", padding: "2rem", position: "relative" }}
           >
-            <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>{emoji}</div>
+            <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>{categoryEmoji[project.category] ?? "📱"}</div>
             <h3 style={{ fontSize: "1.25rem", fontWeight: "600", color: "var(--text-primary)", marginBottom: "0.75rem" }}>
-              {t(`project${i}Title`)}
+              {project.title}
             </h3>
             <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: "1.6", marginBottom: "1rem" }}>
-              {t(`project${i}Desc`)}
+              {project.description}
             </p>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div style={{ display: "flex", alignItems: "center", fontSize: "0.75rem", color: "var(--text-muted)" }}>
                 <Clock size={14} style={{ marginRight: "0.5rem" }} aria-hidden="true" />
-                {t(`project${i}Timeline`)}
+                {project.timeline}
               </div>
               <Link
-                href="/upcoming"
+                href={project.ctaUrl ?? "/upcoming"}
                 style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--accent)", textDecoration: "none", fontSize: "0.875rem", fontWeight: "500" }}
               >
-                {t("viewAll")}
+                {project.ctaText ?? t("viewAll")}
                 <ArrowRight size={14} aria-hidden="true" />
               </Link>
             </div>

@@ -171,6 +171,7 @@
     "joinNetwork": "Únete a la Red Scout",
     "inDevelopment": "En Desarrollo",
     "planningPhase": "Fase de Planificación",
+    "designPhase": "Fase de Diseño",
     "medrating": {
       "title": "MedRating Panamá",
       "desc": "Plataforma integral de calificación y reseñas médicas para proveedores de salud en Panamá. Con análisis de sentimiento con IA, agregación de retroalimentación de pacientes y métricas de desempeño de proveedores.",
@@ -188,6 +189,15 @@
       "f2": "Análisis de video con anotaciones de IA",
       "f3": "Generación de informes de scouting",
       "f4": "Optimización de formación de equipos"
+    },
+    "stoic": {
+      "title": "Stoic Guard",
+      "desc": "Stoic Guard es una aplicación de bienestar digital que te ayuda a vivir con más intención replanteando tu relación con la tecnología distractora. Construida sobre principios estoicos, trata la atención como un recurso sagrado y utiliza empujones psicológicos y reflexión filosófica para construir disciplina duradera.",
+      "f0": "Empujones y reflexiones contextuales",
+      "f1": "Coaching de atención gentil en lugar de bloqueo",
+      "f2": "Rutinas personalizadas basadas en práctica estoica",
+      "f3": "Diarios de progreso y mensajes desencadenados",
+      "f4": "Análisis de uso perspicaz con resúmenes reflexivos"
     }
   },
   "Services": {

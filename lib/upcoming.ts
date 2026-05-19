@@ -56,4 +56,25 @@ export const upcomingProjects: UpcomingProject[] = [
     ctaText: "Join Scout Network",
     ctaUrl: "/contact?project=football-analyzer",
   },
+  {
+    id: "stoic-guard",
+    title: "Stoic Guard",
+    slug: "stoic-guard",
+    description:
+      "Stoic Guard is a digital wellbeing app that helps you live more intentionally by reframing your relationship with distracting technology. Built on Stoic principles, it treats attention as a sacred resource and uses psychological nudges and philosophical reflection to build lasting discipline.",
+    features: [
+      "Contextual nudges and reflections",
+      "Gentle attention coaching instead of blocking",
+      "Custom routines grounded in Stoic practice",
+      "Progress journaling and triggered prompts",
+      "Insightful usage analytics with reflective summaries",
+    ],
+    tech: ["Android", "Kotlin", "Jetpack Compose", "Room", "Firebase"],
+    timeline: "Q3 2026",
+    phase: "Design Phase",
+    category: "wellbeing",
+    color: "#60a5fa",
+    ctaText: "Request Early Access",
+    ctaUrl: "/contact?project=stoic-guard",
+  },
 ];

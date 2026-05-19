@@ -90,7 +90,7 @@ export function Navbar() {
             onClick={switchLocale}
             aria-label={t("switchLangLabel")}
             className="nav-btn"
-            style={{ background: "none", border: "1px solid var(--border)", borderRadius: "8px", color: "var(--text-secondary)", cursor: "pointer", padding: "5px 10px", fontSize: "0.75rem", fontWeight: "700", letterSpacing: "0.08em", transition: "all var(--transition)" }} 
+            style={{ background: "none", border: "1px solid var(--border)", borderRadius: "8px", color: "var(--text-secondary)", cursor: "pointer", padding: "5px 10px", fontSize: "0.75rem", fontWeight: "700", letterSpacing: "0.08em", transition: "all var(--transition)" }}
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--accent)"; e.currentTarget.style.color = "var(--accent)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; }}
           >

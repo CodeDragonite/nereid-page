@@ -8,24 +8,58 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import "../globals.css";
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://nereidsystems.com"),
-  title: {
-    default: "Nereid Systems — Full-Stack Development & IT Management",
-    template: "%s | Nereid Systems",
-  },
-  description:
-    "Full-stack development, AI automation, and IT management for companies that want to focus on their business—not their infrastructure.",
-  openGraph: { siteName: "Nereid Systems", type: "website" },
-  twitter: { card: "summary_large_image" },
-  verification: {
-    google: "LidLJwBfYULmSxre9UO2fhZLFWJXTI_CYsUahF6HGUQ",
-    other: {
-      "msvalidate.01": "E790E7EA591EFA0B0F3F186A288FDCB8",
+const metadataBase = new URL("https://nereidsystems.com");
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const alternates = routing.locales.reduce((map, code) => {
+    map[code] = `${metadataBase.origin}/${code}`;
+    return map;
+  }, {} as Record<string, string>);
+
+  return {
+    metadataBase,
+    title: {
+      default: "Nereid Systems — Full-Stack Development & IT Management",
+      template: "%s | Nereid Systems",
     },
-  },
-  robots: { index: true, follow: true },
-};
+    description:
+      "Full-stack development, AI automation, and IT management for companies that want to focus on their business—not their infrastructure.",
+    openGraph: {
+      siteName: "Nereid Systems",
+      type: "website",
+      images: [
+        {
+          url: "/nereid-logo.png",
+          width: 1200,
+          height: 630,
+          alt: "Nereid Systems",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Nereid Systems — Full-stack development & IT management",
+      description:
+        "Full-stack development, AI automation, and IT management for companies that want to focus on their business—not their infrastructure.",
+      images: ["/nereid-logo.png"],
+    },
+    verification: {
+      google: "LidLJwBfYULmSxre9UO2fhZLFWJXTI_CYsUahF6HGUQ",
+      other: {
+        "msvalidate.01": "E790E7EA591EFA0B0F3F186A288FDCB8",
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    alternates: {
+      canonical: `${metadataBase.origin}/${locale}`,
+      languages: alternates,
+    },
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -59,6 +93,27 @@ export default async function LocaleLayout({
           rel="stylesheet"
         />
         <link rel="preconnect" href="https://calendly.com" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "name": "Nereid Systems",
+                  "url": "https://nereidsystems.com",
+                  "logo": "https://nereidsystems.com/nereid-logo.png",
+                },
+                {
+                  "@type": "WebSite",
+                  "url": "https://nereidsystems.com",
+                  "name": "Nereid Systems",
+                },
+              ],
+            }),
+          }}
+        />
       </head>
       <body>
         <NextIntlClientProvider messages={messages}>

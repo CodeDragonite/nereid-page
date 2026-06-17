@@ -18,6 +18,12 @@ export const metadata: Metadata = {
     "Full-stack development, AI automation, and IT management for companies that want to focus on their business—not their infrastructure.",
   openGraph: { siteName: "Nereid Systems", type: "website" },
   twitter: { card: "summary_large_image" },
+  verification: {
+    google: "LidLJwBfYULmSxre9UO2fhZLFWJXTI_CYsUahF6HGUQ",
+    other: {
+      "msvalidate.01": "E790E7EA591EFA0B0F3F186A288FDCB8",
+    },
+  },
   robots: { index: true, follow: true },
 };
 

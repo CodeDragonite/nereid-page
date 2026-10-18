@@ -11,8 +11,8 @@ mock.module("next-intl/server", () => ({
   setRequestLocale: () => {},
 }));
 
-mock.module("next/link", () => ({
-  default: ({ children, href, ...props }: any) =>
+mock.module("@/i18n/navigation", () => ({
+  Link: ({ children, href, ...props }: any) =>
     React.createElement("a", { ...props, href }, children),
 }));
 

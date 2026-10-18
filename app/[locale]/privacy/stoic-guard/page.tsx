@@ -1,15 +1,26 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { buildPageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export const metadata: Metadata = {
-  title: "Stoic Guard Privacy Policy",
-  description: "Privacy information for Stoic Guard on the Play Store.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Privacy" });
+  return buildPageMetadata({
+    locale,
+    path: "/privacy/stoic-guard",
+    title: t("stoicGuardMetaTitle"),
+    description: t("stoicGuardMetaDescription"),
+  });
+}
 
 export default async function StoicGuardPrivacyPage({
   params,

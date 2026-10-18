@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import {
   Network, Globe, Smartphone, Layers, Bot, Server,
   ChevronDown, Clock, Code2, DollarSign, ArrowRight,

@@ -1,4 +1,16 @@
 {
+  "Metadata": {
+    "homeTitle": "Nereid Systems — Full-Stack Development, AI & IT Management",
+    "homeDescription": "Full-stack development, AI automation, and IT management for companies that want to focus on their business—not their infrastructure."
+  },
+  "Privacy": {
+    "stoicGuardMetaTitle": "Stoic Guard Privacy Policy",
+    "stoicGuardMetaDescription": "Privacy policy for the Stoic Guard application.",
+    "accessibilityMetaTitle": "Accessibility — Stoic Guard",
+    "accessibilityMetaDescription": "Accessibility statement for Stoic Guard.",
+    "nightGameMetaTitle": "Night Game Athletics Command Privacy Policy",
+    "nightGameMetaDescription": "Privacy policy for the Night Game Athletics Command application."
+  },
   "Nav": {
     "home": "Home",
     "services": "Services",
@@ -107,8 +119,7 @@
   },
   "LeadMagnet": {
     "heading": "Ready to simplify your tech?",
-    "body": "Get our free {strong}—a practical guide to finding the gaps in your infrastructure before they find you.",
-    "strongText": "IT Audit Checklist",
+    "body": "Get our free <strong>IT Audit Checklist</strong>—a practical guide to finding the gaps in your infrastructure before they find you.",
     "placeholder": "you@company.com",
     "submit": "Send me the checklist",
     "submitting": "Sending…",
@@ -127,7 +138,7 @@
     "builtWith": "Built with Next.js"
   },
   "Portfolio": {
-    "metaTitle": "Portfolio | Nereid Systems — Case Studies & Projects",
+    "metaTitle": "Portfolio — Case Studies & Projects",
     "metaDesc": "Explore case studies from Nereid Systems: network infrastructure, web development, AI automation, and more. Real outcomes for real clients.",
     "heroTag": "Featured Work",
     "heroHeadline": "Projects That Define Our",
@@ -158,7 +169,7 @@
     "wantSimilarCta": "Request a free review"
   },
   "Upcoming": {
-    "metaTitle": "Upcoming Projects | Nereid Systems — Innovation Pipeline",
+    "metaTitle": "Upcoming Projects — Innovation Pipeline",
     "metaDesc": "Discover upcoming products from Nereid Systems: MedRating Panama for healthcare and Football Analyzer Scout for sports analytics.",
     "heroTag": "Innovation Pipeline",
     "heroHeadline": "What We're",
@@ -201,7 +212,7 @@
     }
   },
   "Services": {
-    "metaTitle": "Services | Nereid Systems",
+    "metaTitle": "Services — Development & IT Management",
     "metaDesc": "Network infrastructure, web & mobile apps, AI automation, and IT management for growing companies. Transparent scope, timelines, and pricing.",
     "heroEyebrow": "Our Services",
     "heroHeading": "Full-Stack Technology Solutions",
@@ -271,7 +282,7 @@
     "ctaBtn": "Book a Free Consultation"
   },
   "Contact": {
-    "metaTitle": "Contact | Nereid Systems",
+    "metaTitle": "Contact",
     "metaDesc": "Book a free consultation or send us a message. We respond within 24 business hours.",
     "nameLabel": "Name",
     "emailLabel": "Email",

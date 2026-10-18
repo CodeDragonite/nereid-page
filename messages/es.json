@@ -1,4 +1,16 @@
 {
+  "Metadata": {
+    "homeTitle": "Nereid Systems — Desarrollo Full-Stack, IA y Gestión de TI",
+    "homeDescription": "Desarrollo full-stack, automatización con IA y gestión de TI para empresas que quieren centrarse en su negocio, no en su infraestructura."
+  },
+  "Privacy": {
+    "stoicGuardMetaTitle": "Política de Privacidad — Stoic Guard",
+    "stoicGuardMetaDescription": "Política de privacidad de la aplicación Stoic Guard.",
+    "accessibilityMetaTitle": "Accesibilidad — Stoic Guard",
+    "accessibilityMetaDescription": "Declaración de accesibilidad de Stoic Guard.",
+    "nightGameMetaTitle": "Política de Privacidad — Night Game Athletics Command",
+    "nightGameMetaDescription": "Política de privacidad de la aplicación Night Game Athletics Command."
+  },
   "Nav": {
     "home": "Inicio",
     "services": "Servicios",
@@ -107,8 +119,7 @@
   },
   "LeadMagnet": {
     "heading": "¿Listo para simplificar tu tecnología?",
-    "body": "Obtén nuestra {strong} gratuita—una guía práctica para encontrar los puntos débiles en tu infraestructura antes de que te encuentren a ti.",
-    "strongText": "Lista de Verificación de Auditoría de TI",
+    "body": "Obtén nuestra <strong>Lista de Verificación de Auditoría de TI</strong> gratuita—una guía práctica para encontrar los puntos débiles en tu infraestructura antes de que te encuentren a ti.",
     "placeholder": "tu@empresa.com",
     "submit": "Envíame la lista",
     "submitting": "Enviando…",
@@ -127,7 +138,7 @@
     "builtWith": "Construido con Next.js"
   },
   "Portfolio": {
-    "metaTitle": "Portafolio | Nereid Systems — Casos de Estudio y Proyectos",
+    "metaTitle": "Portafolio — Casos de Estudio y Proyectos",
     "metaDesc": "Explora casos de estudio de Nereid Systems: infraestructura de redes, desarrollo web, automatización con IA y más. Resultados reales para clientes reales.",
     "heroTag": "Trabajo Destacado",
     "heroHeadline": "Proyectos Que Definen Nuestra",
@@ -158,7 +169,7 @@
     "wantSimilarCta": "Solicita una revisión gratuita"
   },
   "Upcoming": {
-    "metaTitle": "Próximamente | Nereid Systems — Pipeline de Innovación",
+    "metaTitle": "Próximos Proyectos e Innovación",
     "metaDesc": "Descubre los próximos productos de Nereid Systems: MedRating Panamá para salud y Football Analyzer Scout para analítica deportiva.",
     "heroTag": "Pipeline de Innovación",
     "heroHeadline": "Lo Que Estamos",
@@ -201,7 +212,7 @@
     }
   },
   "Services": {
-    "metaTitle": "Servicios | Nereid Systems",
+    "metaTitle": "Servicios de Desarrollo y Gestión de TI",
     "metaDesc": "Infraestructura de redes, apps web y móviles, automatización con IA y gestión de TI para empresas en crecimiento.",
     "heroEyebrow": "Nuestros Servicios",
     "heroHeading": "Soluciones Tecnológicas Completas",
@@ -271,7 +282,7 @@
     "ctaBtn": "Agendar Consulta Gratuita"
   },
   "Contact": {
-    "metaTitle": "Contacto | Nereid Systems",
+    "metaTitle": "Contacto",
     "metaDesc": "Agenda una consulta gratuita o envíanos un mensaje. Respondemos en 24 horas hábiles.",
     "nameLabel": "Nombre",
     "emailLabel": "Correo electrónico",

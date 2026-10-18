@@ -1,10 +1,9 @@
 "use client";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ArrowRight, Clock } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { upcomingProjects } from "../../lib/upcoming";
 
 const categoryEmoji: Record<string, string> = {
   healthcare: "🏥",
@@ -12,8 +11,35 @@ const categoryEmoji: Record<string, string> = {
   wellbeing: "🛡️",
 };
 
+// Language-neutral per-project data. Every user-visible string comes from the
+// "Upcoming" messages namespace so /es and /en render in the correct language.
+const projectConfig = [
+  {
+    key: "medrating",
+    category: "healthcare",
+    timeline: "Q3 2026",
+    ctaKey: "requestAccess",
+    ctaUrl: "/contact?project=medrating-panama",
+  },
+  {
+    key: "football",
+    category: "sports",
+    timeline: "Q4 2026",
+    ctaKey: "joinNetwork",
+    ctaUrl: "/contact?project=football-analyzer",
+  },
+  {
+    key: "stoic",
+    category: "wellbeing",
+    timeline: "Q3 2026",
+    ctaKey: "requestAccess",
+    ctaUrl: "/contact?project=stoic-guard",
+  },
+] as const;
+
 export function UpcomingPreview() {
   const t = useTranslations("UpcomingPreview");
+  const tUpcoming = useTranslations("Upcoming");
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -41,9 +67,9 @@ export function UpcomingPreview() {
       </motion.div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem" }}>
-        {upcomingProjects.slice(0, 3).map((project, i) => (
+        {projectConfig.map((project, i) => (
           <motion.article
-            key={project.id}
+            key={project.key}
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: i * 0.1, ease: "easeOut" as const }}
@@ -51,10 +77,10 @@ export function UpcomingPreview() {
           >
             <div style={{ fontSize: "2rem", marginBottom: "1rem" }}>{categoryEmoji[project.category] ?? "📱"}</div>
             <h3 style={{ fontSize: "1.25rem", fontWeight: "600", color: "var(--text-primary)", marginBottom: "0.75rem" }}>
-              {project.title}
+              {tUpcoming(`${project.key}.title`)}
             </h3>
             <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: "1.6", marginBottom: "1rem" }}>
-              {project.description}
+              {tUpcoming(`${project.key}.desc`)}
             </p>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div style={{ display: "flex", alignItems: "center", fontSize: "0.75rem", color: "var(--text-muted)" }}>
@@ -62,10 +88,10 @@ export function UpcomingPreview() {
                 {project.timeline}
               </div>
               <Link
-                href={project.ctaUrl ?? "/upcoming"}
+                href={project.ctaUrl}
                 style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--accent)", textDecoration: "none", fontSize: "0.875rem", fontWeight: "500" }}
               >
-                {project.ctaText ?? t("viewAll")}
+                {tUpcoming(project.ctaKey)}
                 <ArrowRight size={14} aria-hidden="true" />
               </Link>
             </div>

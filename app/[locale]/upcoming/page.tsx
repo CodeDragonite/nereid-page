@@ -1,7 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ArrowRight, Rocket, Heart, Zap, Clock, CheckCircle, Shield } from "lucide-react";
 import { useTranslations } from "next-intl";
 

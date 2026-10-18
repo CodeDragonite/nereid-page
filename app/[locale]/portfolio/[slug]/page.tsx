@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { CheckCircle2, Sparkles, ArrowRight } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { caseStudies } from "@/lib/portfolio";
+import { buildPageMetadata } from "@/lib/seo";
 import { Breadcrumb } from "@/components/Breadcrumb";
 
 export function generateStaticParams() {
@@ -15,17 +16,13 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; locale: string }> }): Promise<Metadata> {
   const { slug, locale } = await params;
   const study = caseStudies.find((s) => s.slug === slug);
-  if (!study) return { title: "Case Study | Nereid Systems" };
-  return {
-    title: `${study.title} | Nereid Systems`,
+  if (!study) return { title: { absolute: "Case Study | Nereid Systems" } };
+  return buildPageMetadata({
+    locale,
+    path: `/portfolio/${study.slug}`,
+    title: study.title,
     description: `${study.challenge.slice(0, 80)} — ${study.outcome.slice(0, 75)}`,
-    openGraph: {
-      title: `${study.title} | Nereid Systems`,
-      description: `${study.challenge} ${study.outcome}`,
-      url: `https://nereidsystems.com/${locale}/portfolio/${study.slug}`,
-      type: "article",
-    },
-  };
+  });
 }
 
 export default async function CaseStudyPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {

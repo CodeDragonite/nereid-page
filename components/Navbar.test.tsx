@@ -16,6 +16,8 @@ mock.module("next-intl", () => ({
 }));
 
 mock.module("@/i18n/navigation", () => ({
+  Link: ({ children, href, ...props }: any) =>
+    React.createElement("a", { ...props, href }, children),
   useRouter: () => ({ push: () => {} }),
 }));
 

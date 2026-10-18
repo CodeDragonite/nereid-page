@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { buildPageMetadata } from "@/lib/seo";
 import { ServicesPageClient } from "@/components/services/ServicesPageClient";
 
 export function generateStaticParams() {
@@ -10,11 +11,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Services" });
-  return {
+  return buildPageMetadata({
+    locale,
+    path: "/services",
     title: t("metaTitle"),
     description: t("metaDesc"),
-    openGraph: { title: t("metaTitle"), description: t("metaDesc") },
-  };
+  });
 }
 
 const serviceConfig = [

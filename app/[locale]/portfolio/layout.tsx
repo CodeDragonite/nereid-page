@@ -1,16 +1,19 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { buildPageMetadata, TITLE_TEMPLATE } from "@/lib/seo";
 
-export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
-  const { locale } = params;
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Portfolio" });
   return {
-    title: t("metaTitle"),
-    description: t("metaDesc"),
-    openGraph: {
+    ...buildPageMetadata({
+      locale,
+      path: "/portfolio",
       title: t("metaTitle"),
       description: t("metaDesc"),
-    },
+    }),
+    // Re-stash the brand template so /portfolio/[slug] keeps a single brand suffix.
+    title: { default: t("metaTitle"), template: TITLE_TEMPLATE },
   };
 }
 

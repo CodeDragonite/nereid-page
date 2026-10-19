@@ -26,6 +26,35 @@ const dmSerifDisplay = DM_Serif_Display({
 
 const metadataBase = new URL("https://nereidsystems.com");
 
+/**
+ * The six published services, in the same order the hub renders them.
+ * Names are read from the localized `Services` messages so the JSON-LD catalogue
+ * always matches the offers a visitor can see in the same language.
+ */
+const SERVICE_IDS = ["network", "web", "mobile", "integration", "ai", "it"] as const;
+
+type MessageTree = { [key: string]: string | MessageTree | undefined };
+
+function serviceOffers(messages: unknown) {
+  const services = (messages as MessageTree | undefined)?.Services as
+    | MessageTree
+    | undefined;
+
+  return SERVICE_IDS.map((id) => {
+    const entry = services?.[id];
+    const title =
+      typeof entry === "object" && entry !== null ? entry.title : undefined;
+
+    return {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: typeof title === "string" ? title : id,
+      },
+    };
+  });
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
@@ -87,6 +116,11 @@ export default async function LocaleLayout({
 
   const messages = await getMessages();
 
+  // FR-028: never assert a region the business does not serve. Panama is the home
+  // market (Spanish copy); the English page advertises remote delivery instead.
+  // ASSUMPTION: "Worldwide" still needs the owner's confirmation before deploy.
+  const areaServed = locale === "es" ? "Panamá" : "Worldwide";
+
   return (
     <html lang={locale} suppressHydrationWarning className={`${dmSans.variable} ${dmSerifDisplay.variable}`}>
       <head>
@@ -121,34 +155,12 @@ export default async function LocaleLayout({
                   "image": "https://nereidsystems.com/nereid-logo.png",
                   "description":
                     "Full-stack development, AI automation, and IT management for companies that want to focus on their business—not their infrastructure.",
-                  "areaServed": "US",
+                  "areaServed": areaServed,
                   "availableLanguage": ["Spanish", "English"],
                   "hasOfferCatalog": {
                     "@type": "OfferCatalog",
                     "name": "Services",
-                    "itemListElement": [
-                      {
-                        "@type": "Offer",
-                        "itemOffered": {
-                          "@type": "Service",
-                          "name": "Full-Stack Development",
-                        },
-                      },
-                      {
-                        "@type": "Offer",
-                        "itemOffered": {
-                          "@type": "Service",
-                          "name": "AI Automation",
-                        },
-                      },
-                      {
-                        "@type": "Offer",
-                        "itemOffered": {
-                          "@type": "Service",
-                          "name": "IT Management",
-                        },
-                      },
-                    ],
+                    "itemListElement": serviceOffers(messages),
                   },
                 },
               ],

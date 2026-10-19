@@ -4,28 +4,39 @@ import { caseStudies } from "@/lib/portfolio";
 import { buildAlternates, localeUrl } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  // FR-029: no `lastModified` here. Stamping the build time on every URL is a
+  // false freshness signal, and we hold no real per-URL modification date, so we
+  // omit the field rather than emit one we cannot stand behind.
+  const staticPaths = [
+    "/",
+    "/contact",
+    "/services",
+    "/estimator",
+    "/portfolio",
+    "/upcoming",
+    "/privacy/stoic-guard",
+    "/privacy/stoic-guard/accessibility",
+    "/privacy/night-game-athletics-command",
+  ];
+
+  const paths = [
+    ...staticPaths,
+    ...caseStudies.map((study) => `/portfolio/${study.slug}`),
+  ];
+
+  const seen = new Set<string>();
   const pages: MetadataRoute.Sitemap = [];
 
-  const add = (locale: string, path: string) => {
-    pages.push({
-      url: localeUrl(locale, path),
-      lastModified: new Date(),
-      alternates: { languages: buildAlternates(locale, path)!.languages! },
-    });
-  };
-
   routing.locales.forEach((locale) => {
-    add(locale, "/");
-    add(locale, "/contact");
-    add(locale, "/services");
-    add(locale, "/portfolio");
-    add(locale, "/upcoming");
-    add(locale, "/privacy/stoic-guard");
-    add(locale, "/privacy/stoic-guard/accessibility");
-    add(locale, "/privacy/night-game-athletics-command");
+    paths.forEach((path) => {
+      const url = localeUrl(locale, path);
+      if (seen.has(url)) return;
+      seen.add(url);
 
-    caseStudies.forEach((study) => {
-      add(locale, `/portfolio/${study.slug}`);
+      pages.push({
+        url,
+        alternates: { languages: buildAlternates(locale, path)!.languages! },
+      });
     });
   });
 

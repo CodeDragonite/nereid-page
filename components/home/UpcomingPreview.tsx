@@ -17,9 +17,9 @@ const projectConfig = [
   {
     key: "medrating",
     category: "healthcare",
-    timeline: "Q3 2026",
-    ctaKey: "requestAccess",
-    ctaUrl: "/contact?project=medrating-panama",
+    timeline: "2026",
+    ctaKey: "visitSite",
+    ctaUrl: "https://medpanama.com",
   },
   {
     key: "football",
@@ -89,6 +89,7 @@ export function UpcomingPreview() {
               </div>
               <Link
                 href={project.ctaUrl}
+                {...(project.ctaUrl.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})}
                 style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--accent)", textDecoration: "none", fontSize: "0.875rem", fontWeight: "500" }}
               >
                 {tUpcoming(project.ctaKey)}

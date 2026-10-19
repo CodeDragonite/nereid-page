@@ -31,7 +31,7 @@ GOAL: Convert visitors into consultation bookings for a dev shop offering: netwo
    - Add real case study pages for each project so link clicks do not dead-end
 
 4. /upcoming
-   - Showcase upcoming products like MedRating Panama and Football Analyzer & Scout
+   - Showcase products: MedPanamá (live, medpanama.com) and upcoming Football Analyzer & Scout
    - Each card: overview, timeline, tech stack, "Notify Me When Live" CTA
    - Add newsletter/signup capture for project updates
 

@@ -145,7 +145,7 @@ describe("UpcomingPage — gradient circle responsive sizing (Task 2.1)", () => 
   });
 
   test("project tech tags render", () => {
-    expect(html).toContain("Next.js");
+    expect(html).toContain("Phoenix LiveView");
     expect(html).toContain("Python");
     expect(html).toContain("TensorFlow");
   });

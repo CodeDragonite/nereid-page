@@ -20,11 +20,11 @@ const projects = [
     category: "healthcare",
     color: "#34d399",
     icon: Heart,
-    timeline: "Q3 2026",
-    phaseKey: "inDevelopment" as const,
-    ctaKey: "requestAccess" as const,
-    ctaUrl: "/contact?project=medrating-panama",
-    tech: ["Next.js", "TypeScript", "AI/ML", "PostgreSQL", "Mapbox"],
+    timeline: "2026",
+    phaseKey: "live" as const,
+    ctaKey: "visitSite" as const,
+    ctaUrl: "https://medpanama.com",
+    tech: ["Elixir", "Phoenix LiveView", "PostgreSQL", "Apache Airflow", "Fly.io"],
     featureCount: 5,
   },
   {
@@ -136,7 +136,7 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
           <span key={tech} style={{ padding: "2px 8px", borderRadius: "4px", fontSize: "0.7rem", background: `color-mix(in srgb, ${project.color} 10%, transparent)`, color: "var(--text-secondary)" }}>{tech}</span>
         ))}
       </div>
-      <Link href={project.ctaUrl} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", background: `color-mix(in srgb, ${project.color} 20%, transparent)`, color: project.color, padding: "12px 20px", borderRadius: "8px", fontWeight: "600", fontSize: "0.9rem", textDecoration: "none", border: `1px solid color-mix(in srgb, ${project.color} 40%, transparent)`, transition: "all 0.22s ease" }}
+      <Link href={project.ctaUrl} {...(project.ctaUrl.startsWith("http") ? { target: "_blank", rel: "noopener" } : {})} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", background: `color-mix(in srgb, ${project.color} 20%, transparent)`, color: project.color, padding: "12px 20px", borderRadius: "8px", fontWeight: "600", fontSize: "0.9rem", textDecoration: "none", border: `1px solid color-mix(in srgb, ${project.color} 40%, transparent)`, transition: "all 0.22s ease" }}
         onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.background = `color-mix(in srgb, ${project.color} 30%, transparent)`; el.style.transform = "translateY(-1px)"; }}
         onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.background = `color-mix(in srgb, ${project.color} 20%, transparent)`; el.style.transform = "translateY(0)"; }}
         aria-label={`${t(project.ctaKey)} — ${t(`${project.key}.title`)}`}

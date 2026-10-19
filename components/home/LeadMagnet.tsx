@@ -2,14 +2,18 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Mail, ArrowRight, CheckCircle } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { CONTACT_EMAILS } from "@/lib/site-config";
+import { trackEvent } from "@/lib/analytics";
 
 export function LeadMagnet() {
   const t = useTranslations("LeadMagnet");
+  const locale = useLocale();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const renderedAt = useRef(Date.now());
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,15 +21,30 @@ export function LeadMagnet() {
     setStatus("loading");
 
     try {
-      // Replace with your actual form endpoint
-      const res = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+      const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, tag: "lead_magnet" }),
+        body: JSON.stringify({
+          email,
+          locale,
+          source: "homepage",
+          hp: "",
+          elapsedMs: Date.now() - renderedAt.current,
+        }),
       });
-      setStatus(res.ok ? "success" : "error");
+
+      // The route returns ok:false with a code when delivery is impossible.
+      // Reporting success there would repeat the bug this replaced.
+      const payload = (await res.json().catch(() => ({ ok: false }))) as { ok?: boolean };
+      if (res.ok && payload.ok) {
+        setStatus("success");
+        trackEvent("email_captured", { source: "homepage", locale });
+      } else {
+        trackEvent("email_capture_failed", { source: "homepage", locale });
+        setStatus("error");
+      }
     } catch {
-      // Log to server-side in production
+      trackEvent("email_capture_failed", { source: "homepage", locale, reason: "network" });
       setStatus("error");
     }
   };
@@ -132,7 +151,7 @@ export function LeadMagnet() {
               placeholder={t("placeholder")}
               required
               aria-required="true"
-              aria-describedby="lead-desc"
+              aria-describedby="lead-disclaimer"
               style={{
                 flex: "1 1 220px",
                 maxWidth: "320px",
@@ -188,18 +207,24 @@ export function LeadMagnet() {
 
             {status === "error" && (
               <p
-                id="lead-desc"
+                id="lead-error"
                 role="alert"
                 style={{ color: "#f87171", fontSize: "0.85rem", width: "100%", textAlign: "center" }}
               >
-                {t("errorMsg")}
+                {t("errorMsg")}{" "}
+                <a
+                  href={`mailto:${CONTACT_EMAILS.hello}`}
+                  style={{ color: "var(--accent)", textDecoration: "underline" }}
+                >
+                  {CONTACT_EMAILS.hello}
+                </a>
               </p>
             )}
           </form>
         )}
 
         <p
-          id="lead-desc"
+          id="lead-disclaimer"
           style={{
             color: "var(--text-muted)",
             fontSize: "0.78rem",

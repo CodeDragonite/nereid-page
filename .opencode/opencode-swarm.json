@@ -1,0 +1,1 @@
+{ "authority": { "rules": { "architect": { "allowedGlobs": ["messages/*.json"] } } } }

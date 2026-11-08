@@ -8,6 +8,7 @@ import { TITLE_TEMPLATE } from "@/lib/seo";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { ScrollProgress } from "@/components/ScrollProgress";
 import "../globals.css";
 
 const dmSans = DM_Sans({
@@ -153,10 +154,19 @@ export default async function LocaleLayout({
                   "name": "Nereid Systems",
                   "url": "https://nereidsystems.com",
                   "image": "https://nereidsystems.com/nereid-logo.png",
+                  "email": "hello@nereidsystems.com",
+                  "priceRange": "$$",
                   "description":
                     "Full-stack development, AI automation, and IT management for companies that want to focus on their business—not their infrastructure.",
                   "areaServed": areaServed,
                   "availableLanguage": ["Spanish", "English"],
+                  "knowsAbout": [
+                    "Full-Stack Web Development",
+                    "Mobile App Development",
+                    "AI Automation & LLM Integration",
+                    "Cloud Network Infrastructure",
+                    "Enterprise IT Management"
+                  ],
                   "hasOfferCatalog": {
                     "@type": "OfferCatalog",
                     "name": "Services",
@@ -171,6 +181,7 @@ export default async function LocaleLayout({
       <body>
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider>
+            <ScrollProgress />
             <a href="#main-content" className="skip-link">
               {locale === "es" ? "Ir al contenido principal" : "Skip to main content"}
             </a>

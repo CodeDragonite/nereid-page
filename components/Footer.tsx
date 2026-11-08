@@ -56,6 +56,8 @@ export function Footer() {
               {[
                 { href: "/", label: tNav("home") },
                 { href: "/services", label: tNav("services") },
+                { href: "/upcoming", label: tNav("upcoming") },
+                { href: "/estimator", label: tNav("estimator") },
                 { href: "/contact", label: tNav("contact") },
               ].map(({ href, label }) => (
                 <li key={href}>

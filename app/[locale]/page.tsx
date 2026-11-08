@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { buildPageMetadata } from "@/lib/seo";
 import { HeroSection } from "@/components/home/HeroSection";
+import { KineticTicker } from "@/components/home/KineticTicker";
 import { ServicesGrid } from "@/components/home/ServicesGrid";
 import { SocialProof } from "@/components/home/SocialProof";
 import { PortfolioPreview } from "@/components/home/PortfolioPreview";
@@ -35,10 +36,8 @@ export default async function HomePage({
   return (
     <>
       <HeroSection />
+      <KineticTicker />
       <ServicesGrid />
-      {/* <SocialProof />
-      <Testimonials /> */}
-      {/* <PortfolioPreview /> */}
       <UpcomingPreview />
       <LeadMagnet />
     </>

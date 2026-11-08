@@ -23,8 +23,12 @@
   --radius-md: 10px;
   --radius-lg: 16px;
   --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.24), 0 1px 4px rgba(0, 0, 0, 0.16);
-  --shadow-card-hover: 0 8px 40px rgba(0, 0, 0, 0.22), 0 0 24px rgba(0, 210, 210, 0.08);
+  --shadow-card-hover: 0 8px 40px rgba(0, 0, 0, 0.22), 0 0 28px rgba(0, 212, 170, 0.14);
   --transition: 220ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Motion extras */
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 @keyframes typing-dot {
@@ -54,8 +58,38 @@
   }
 }
 
+/* New motion keyframes */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+  50% { box-shadow: 0 0 32px 8px var(--accent-glow); }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes borderTrace {
+  0% { clip-path: inset(0 100% 100% 0); }
+  25% { clip-path: inset(0 0 100% 0); }
+  50% { clip-path: inset(0 0 0 0); }
+  75% { clip-path: inset(100% 0 0 0); }
+  100% { clip-path: inset(100% 100% 0 100%); }
+}
+
 .hero-enter {
-  animation: heroFadeUp 0.55s ease-out both;
+  animation: heroFadeUp 0.65s var(--ease-spring, cubic-bezier(0.22, 1, 0.36, 1)) both;
 }
 
 .hero-enter:nth-child(2) {
@@ -72,6 +106,32 @@
 
 .hero-enter:nth-child(5) {
   animation-delay: 0.48s;
+}
+
+/* Shimmer text effect */
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--text-primary) 0%,
+    var(--accent) 40%,
+    var(--accent2) 60%,
+    var(--text-primary) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+/* Float utility */
+.float-anim {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Glow pulse on interactive elements */
+.glow-pulse:hover {
+  animation: pulseGlow 1.5s ease-in-out infinite;
 }
 
 .light {

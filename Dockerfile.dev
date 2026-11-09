@@ -1,0 +1,33 @@
+# Development image for nereid-page (Next.js 16 + next-intl).
+# Source code is bind-mounted at runtime (see compose.yaml); this image only
+# provides the toolchain. Dependencies are installed into a named volume by
+# docker/dev-entrypoint.sh so Linux-native binaries (SWC, Tailwind oxide,
+# lightningcss) never mix with the host's macOS node_modules.
+FROM node:24-bookworm-slim
+
+# bun runs the test suite (tests import from "bun:test").
+RUN npm install -g bun@1 \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends ca-certificates git \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Pre-create the volume mount points owned by `node`, so the named volumes
+# inherit that ownership on first creation instead of being root-owned.
+RUN mkdir -p /app/node_modules /app/.next \
+  && chown -R node:node /app
+
+COPY --chown=node:node docker/dev-entrypoint.sh /usr/local/bin/dev-entrypoint.sh
+RUN chmod +x /usr/local/bin/dev-entrypoint.sh
+
+USER node
+
+ENV NODE_ENV=development \
+    NEXT_TELEMETRY_DISABLED=1 \
+    NODE_OPTIONS=--max-old-space-size=4096
+
+EXPOSE 3000
+
+ENTRYPOINT ["dev-entrypoint.sh"]
+CMD ["npm", "run", "dev", "--", "--hostname", "0.0.0.0", "--port", "3000"]

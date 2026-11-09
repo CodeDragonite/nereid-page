@@ -1,5 +1,6 @@
 "use client";
 import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export type BreadcrumbItem = {
   label: string;
@@ -7,8 +8,9 @@ export type BreadcrumbItem = {
 };
 
 export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
+  const t = useTranslations("Breadcrumb");
   return (
-    <nav aria-label="Breadcrumb" style={{ marginBottom: "1.5rem" }}>
+    <nav aria-label={t("label")} style={{ marginBottom: "1.5rem" }}>
       <ol
         style={{
           display: "flex",
@@ -27,21 +29,12 @@ export function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
           return (
             <li key={item.label} style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
               {i > 0 && (
-                <span aria-hidden="true" style={{ color: "var(--border-hover)", margin: "0 0.25rem" }}>
+                <span aria-hidden="true" style={{ color: "var(--text-muted)", margin: "0 0.25rem" }}>
                   /
                 </span>
               )}
               {item.href && !isLast ? (
-                <Link
-                  href={item.href}
-                  style={{
-                    color: "var(--text-muted)",
-                    textDecoration: "none",
-                    transition: "color 0.15s ease",
-                  }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-muted)"; }}
-                >
+                <Link href={item.href} className="text-link">
                   {item.label}
                 </Link>
               ) : (

@@ -1,10 +1,15 @@
 "use client";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
 import { useTranslations } from "next-intl";
 
 export function KineticTicker() {
   const t = useTranslations("KineticTicker");
   const reduced = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  // Not `once`: the loop pauses whenever the ticker scrolls out of view.
+  const inView = useInView(ref);
+  const moving = inView && !reduced;
 
   const tags = [
     t("tag0"),
@@ -19,15 +24,17 @@ export function KineticTicker() {
 
   return (
     <div
+      ref={ref}
       aria-hidden="true"
       style={{
         position: "relative",
         width: "100%",
         overflow: "hidden",
         padding: "18px 0",
-        background: "linear-gradient(90deg, rgba(7,27,43,0.9) 0%, rgba(13,34,56,0.9) 50%, rgba(7,27,43,0.9) 100%)",
-        borderTop: "1px solid rgba(0, 210, 210, 0.15)",
-        borderBottom: "1px solid rgba(0, 210, 210, 0.15)",
+        background:
+          "linear-gradient(90deg, color-mix(in srgb, var(--bg-base) 90%, transparent) 0%, color-mix(in srgb, var(--bg-surface) 90%, transparent) 50%, color-mix(in srgb, var(--bg-base) 90%, transparent) 100%)",
+        borderTop: "1px solid var(--border)",
+        borderBottom: "1px solid var(--border)",
         boxShadow: "0 0 24px rgba(0, 212, 170, 0.05)",
       }}
     >
@@ -63,12 +70,8 @@ export function KineticTicker() {
           gap: "2.5rem",
           width: "max-content",
         }}
-        animate={reduced ? {} : { x: ["0%", "-50%"] }}
-        transition={{
-          duration: 32,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+        animate={moving ? { x: ["0%", "-50%"] } : { x: "0%" }}
+        transition={moving ? { duration: 32, repeat: Infinity, ease: "linear" } : { duration: 0 }}
       >
         {/* Double array for infinite seamless loop */}
         {[...tags, ...tags].map((tag, idx) => (
@@ -87,7 +90,7 @@ export function KineticTicker() {
                 fontSize: "12px",
                 fontWeight: "700",
                 letterSpacing: "0.18em",
-                color: idx % 2 === 0 ? "var(--text-primary)" : "var(--accent)",
+                color: idx % 2 === 0 ? "var(--text-primary)" : "var(--accent-text)",
                 textTransform: "uppercase",
               }}
             >

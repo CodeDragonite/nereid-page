@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
+import { fadeUp, popIn, VIEWPORT } from "@/lib/motion";
 import { Mail, ArrowRight, CheckCircle, Loader2 } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { CONTACT_EMAILS } from "@/lib/site-config";
@@ -12,7 +13,7 @@ export function LeadMagnet() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  const inView = useInView(ref, VIEWPORT);
   const reduced = useReducedMotion();
   const renderedAt = useRef(Date.now());
 
@@ -70,15 +71,15 @@ export function LeadMagnet() {
           transform: "translate(-50%, -50%)",
           width: "min(600px, 90vw)",
           height: "300px",
-          background: "radial-gradient(ellipse, rgba(0, 210, 210, 0.05) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse, color-mix(in srgb, var(--accent) 5%, transparent) 0%, transparent 70%)",
           pointerEvents: "none",
         }}
       />
 
       <motion.div
-        initial={reduced ? { opacity: 1 } : { opacity: 0, y: 24 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        variants={fadeUp}
+        initial="hidden"
+        animate={inView ? "visible" : "hidden"}
         style={{
           maxWidth: "600px",
           margin: "0 auto",
@@ -87,7 +88,8 @@ export function LeadMagnet() {
           zIndex: 1,
         }}
       >
-        <motion.div
+        <div
+          aria-hidden="true"
           style={{
             width: "56px",
             height: "56px",
@@ -98,13 +100,11 @@ export function LeadMagnet() {
             alignItems: "center",
             justifyContent: "center",
             margin: "0 auto 1.5rem",
-            boxShadow: "0 0 20px rgba(0, 210, 210, 0.1)",
+            boxShadow: "0 0 20px var(--accent-dim)",
           }}
-          whileHover={reduced ? {} : { scale: 1.08, rotate: [0, -5, 5, 0] }}
-          transition={{ duration: 0.4 }}
         >
-          <Mail size={24} style={{ color: "var(--accent)" }} aria-hidden="true" />
-        </motion.div>
+          <Mail size={24} style={{ color: "var(--accent-text)" }} aria-hidden="true" />
+        </div>
 
         <h2
           id="lead-heading"
@@ -131,21 +131,23 @@ export function LeadMagnet() {
 
         {status === "success" ? (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
+            variants={popIn}
+            initial="initial"
+            animate="animate"
             style={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               gap: "10px",
               padding: "16px 24px",
-              background: "rgba(52,211,153,0.1)",
-              border: "1px solid rgba(52,211,153,0.3)",
-              borderRadius: "10px",
-              color: "#34d399",
+              background: "color-mix(in srgb, var(--success) 10%, transparent)",
+              border: "1px solid color-mix(in srgb, var(--success) 30%, transparent)",
+              borderRadius: "var(--radius-md)",
+              color: "var(--success)",
               fontWeight: "500",
             }}
-            role="alert"
+            role="status"
+            aria-live="polite"
           >
             <CheckCircle size={20} aria-hidden="true" />
             {t("successMsg")}
@@ -167,79 +169,63 @@ export function LeadMagnet() {
             <input
               id="lead-email"
               type="email"
+              className="field"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t("placeholder")}
               required
               aria-required="true"
-              aria-describedby="lead-disclaimer"
+              aria-invalid={status === "error" ? true : undefined}
+              aria-describedby={status === "error" ? "lead-error lead-disclaimer" : "lead-disclaimer"}
               style={{
                 flex: "1 1 220px",
                 maxWidth: "320px",
-                padding: "12px 16px",
-                background: "var(--bg-card)",
-                border: "1px solid var(--border)",
-                borderRadius: "9px",
-                color: "var(--text-primary)",
-                fontSize: "0.9rem",
-                outline: "none",
-                transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-              }}
-              onFocus={(e) => {
-                e.target.style.borderColor = "var(--accent)";
-                e.target.style.boxShadow = "0 0 12px var(--accent-glow)";
-              }}
-              onBlur={(e) => {
-                e.target.style.borderColor = "var(--border)";
-                e.target.style.boxShadow = "none";
+                width: "auto",
               }}
             />
-            <motion.button
-              type="submit"
-              disabled={status === "loading"}
-              aria-busy={status === "loading"}
-              whileHover={reduced || status === "loading" ? {} : { scale: 1.03 }}
-              whileTap={reduced || status === "loading" ? {} : { scale: 0.97 }}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                background: "var(--accent)",
-                color: "#05080f",
-                padding: "12px 22px",
-                borderRadius: "9px",
-                fontWeight: "700",
-                fontSize: "0.9rem",
-                border: "none",
-                cursor: status === "loading" ? "wait" : "pointer",
-                transition: "box-shadow 0.2s ease",
-                opacity: status === "loading" ? 0.7 : 1,
-                boxShadow: "0 0 16px var(--accent-glow)",
-              }}
+            {/* whileTap lives on a wrapper so its inline transform never overrides
+                the .btn-primary :hover/:focus-visible lift. */}
+            <motion.div
+              whileTap={reduced || status === "loading" ? undefined : { scale: 0.97 }}
+              style={{ display: "inline-flex" }}
             >
-              {status === "loading" ? (
-                <>
-                  <Loader2 size={15} className="animate-spin" aria-hidden="true" />
-                  {t("submitting")}
-                </>
-              ) : (
-                <>
-                  {t("submit")}
-                  <ArrowRight size={15} aria-hidden="true" />
-                </>
-              )}
-            </motion.button>
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                aria-busy={status === "loading"}
+                className="btn-primary"
+                style={{
+                  padding: "12px 22px",
+                  fontSize: "0.9rem",
+                  cursor: status === "loading" ? "wait" : "pointer",
+                }}
+              >
+                {status === "loading" ? (
+                  <>
+                    <Loader2 size={15} className="animate-spin" aria-hidden="true" />
+                    {t("submitting")}
+                  </>
+                ) : (
+                  <>
+                    {t("submit")}
+                    <ArrowRight size={15} aria-hidden="true" />
+                  </>
+                )}
+              </button>
+            </motion.div>
 
             {status === "error" && (
               <p
                 id="lead-error"
                 role="alert"
-                style={{ color: "#f87171", fontSize: "0.85rem", width: "100%", textAlign: "center" }}
+                aria-live="assertive"
+                className="field-error"
+                style={{ fontSize: "0.85rem", width: "100%", textAlign: "center" }}
               >
                 {t("errorMsg")}{" "}
                 <a
                   href={`mailto:${CONTACT_EMAILS.hello}`}
-                  style={{ color: "var(--accent)", textDecoration: "underline" }}
+                  style={{ color: "var(--accent-text)", textDecoration: "underline" }}
                 >
                   {CONTACT_EMAILS.hello}
                 </a>

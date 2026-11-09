@@ -2,23 +2,33 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+The development environment runs in Docker Compose. You only need Docker
+Desktop; do not run `npm`, `bun` or `next` on your machine.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker compose up -d            # build (first time) and start with hot reload
+docker compose logs -f web      # follow the dev server
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) (Spanish at `/es`, English at `/en`).
+Edits on your machine hot-reload inside the container.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Task | Command |
+| --- | --- |
+| Tests (bun:test) | `docker compose exec web bun test` |
+| Type check | `docker compose exec web npx tsc --noEmit` |
+| Add a dependency | `docker compose exec web npm install <pkg>` |
+| Rebuild the image after changing `Dockerfile.dev` | `docker compose up -d --build` |
+| Stop | `docker compose down` |
+| Reset `node_modules` and the `.next` cache | `docker compose down -v && docker compose up -d` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family.
+How it works: `compose.yaml` bind-mounts the repo at `/app`; `node_modules` and `.next`
+live in named Docker volumes so Linux binaries never mix with the host's. On start,
+`docker/dev-entrypoint.sh` runs `npm ci` only when `package-lock.json` has changed.
+`.env.local` is loaded automatically if present.
+
+Fonts (DM Sans, DM Serif Display) are loaded with [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts).
+Project conventions for contributors and coding agents are in `AGENTS.md`.
 
 This repository now targets Cloudflare deployment via OpenNext. See `IMPLEMENTATION_README.md` for email, messaging, and contact form setup.
 

@@ -1,0 +1,40 @@
+# Local development environment.
+#
+#   docker compose up            # start with hot reload on http://localhost:3000
+#   docker compose exec web bun test
+#   docker compose exec web npx tsc --noEmit
+#   docker compose down          # stop (volumes kept)
+#   docker compose down -v       # stop and wipe node_modules/.next volumes
+#
+# Source is bind-mounted, so edits on the host hot-reload inside the container.
+# node_modules and .next live in named volumes: the host's macOS binaries are
+# never used, and the bind mount isn't slowed down by thousands of small files.
+name: nereid-page
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: nereid-page-dev
+    container_name: nereid-page-dev
+    ports:
+      - "3000:3000"
+    env_file:
+      - path: .env.local
+        required: false
+    environment:
+      # Fallback file-watching for bind mounts that don't propagate inotify events.
+      WATCHPACK_POLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - .:/app:cached
+      - node_modules:/app/node_modules
+      - next_cache:/app/.next
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+volumes:
+  node_modules:
+  next_cache:

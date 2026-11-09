@@ -19,6 +19,15 @@ mock.module("framer-motion", () => {
   };
 });
 
+// Resolve Chat keys against the real English catalogue so SSR assertions
+// still see user-facing strings.
+mock.module("next-intl", () => {
+  const en = require("../../messages/en.json") as Record<string, Record<string, string>>;
+  return {
+    useTranslations: (ns: string) => (key: string) => en[ns]?.[key] ?? key,
+  };
+});
+
 import { AIChatWidget } from "./AIChatWidget";
 
 describe("AIChatWidget — responsive sizing (Task 1.2)", () => {
@@ -56,7 +65,7 @@ describe("AIChatWidget — responsive sizing (Task 1.2)", () => {
   test("source code sets chat window width to min(380px, calc(100vw - 32px))", () => {
     const fs = require("fs");
     const source = fs.readFileSync(
-      "/Users/dragon/Documents/develop/nereid-page/components/services/AIChatWidget.tsx",
+      require("path").join(import.meta.dir, "AIChatWidget.tsx"),
       "utf-8"
     );
     expect(source).toContain("min(380px, calc(100vw - 32px))");
@@ -65,7 +74,7 @@ describe("AIChatWidget — responsive sizing (Task 1.2)", () => {
   test("source code sets chat window height to min(500px, calc(100vh - 120px))", () => {
     const fs = require("fs");
     const source = fs.readFileSync(
-      "/Users/dragon/Documents/develop/nereid-page/components/services/AIChatWidget.tsx",
+      require("path").join(import.meta.dir, "AIChatWidget.tsx"),
       "utf-8"
     );
     expect(source).toContain("min(500px, calc(100vh - 120px))");
@@ -74,7 +83,7 @@ describe("AIChatWidget — responsive sizing (Task 1.2)", () => {
   test("both width and height min() appear in the same style object in source", () => {
     const fs = require("fs");
     const source = fs.readFileSync(
-      "/Users/dragon/Documents/develop/nereid-page/components/services/AIChatWidget.tsx",
+      require("path").join(import.meta.dir, "AIChatWidget.tsx"),
       "utf-8"
     );
     // The style object should contain both min() values
@@ -90,7 +99,7 @@ describe("AIChatWidget — responsive sizing (Task 1.2)", () => {
   test("source uses min() function for both width and height", () => {
     const fs = require("fs");
     const source = fs.readFileSync(
-      "/Users/dragon/Documents/develop/nereid-page/components/services/AIChatWidget.tsx",
+      require("path").join(import.meta.dir, "AIChatWidget.tsx"),
       "utf-8"
     );
     // Verify the component uses the min() CSS function
@@ -103,60 +112,60 @@ describe("AIChatWidget — responsive sizing (Task 1.2)", () => {
   // 3. Content verification via source (since window is inside isOpen block)
   // =========================================================================
 
-  test("source contains Nereid AI Assistant header", () => {
-    const fs = require("fs");
-    const source = fs.readFileSync(
-      "/Users/dragon/Documents/develop/nereid-page/components/services/AIChatWidget.tsx",
-      "utf-8"
-    );
-    expect(source).toContain("Nereid AI Assistant");
+  test("Chat i18n namespace contains the assistant header", () => {
+    const en = require("../../messages/en.json");
+    expect(en.Chat.title).toBe("Nereid AI Assistant");
   });
 
-  test("source contains close button aria-label", () => {
+  test("close button aria-label comes from i18n", () => {
     const fs = require("fs");
     const source = fs.readFileSync(
-      "/Users/dragon/Documents/develop/nereid-page/components/services/AIChatWidget.tsx",
+      require("path").join(import.meta.dir, "AIChatWidget.tsx"),
       "utf-8"
     );
-    expect(source).toContain('aria-label="Close chat"');
+    expect(source).toContain('aria-label={t("closeLabel")}');
+    const en = require("../../messages/en.json");
+    expect(en.Chat.closeLabel).toBe("Close chat");
   });
 
-  test("source contains send button aria-label", () => {
+  test("send button aria-label comes from i18n", () => {
     const fs = require("fs");
     const source = fs.readFileSync(
-      "/Users/dragon/Documents/develop/nereid-page/components/services/AIChatWidget.tsx",
+      require("path").join(import.meta.dir, "AIChatWidget.tsx"),
       "utf-8"
     );
-    expect(source).toContain('aria-label="Send message"');
+    expect(source).toContain('aria-label={t("sendLabel")}');
+    const en = require("../../messages/en.json");
+    expect(en.Chat.sendLabel).toBe("Send message");
   });
 
   test("source contains chat window positioning values", () => {
     const fs = require("fs");
     const source = fs.readFileSync(
-      "/Users/dragon/Documents/develop/nereid-page/components/services/AIChatWidget.tsx",
+      require("path").join(import.meta.dir, "AIChatWidget.tsx"),
       "utf-8"
     );
     expect(source).toContain("bottom: '88px'");
     expect(source).toContain("right: '24px'");
   });
 
-  test("source contains initial assistant welcome message", () => {
-    const fs = require("fs");
-    const source = fs.readFileSync(
-      "/Users/dragon/Documents/develop/nereid-page/components/services/AIChatWidget.tsx",
-      "utf-8"
-    );
-    // The source has escaped single quotes: 'Hi! I\'m the Nereid AI assistant...'
-    expect(source).toContain("I\\'m the Nereid AI assistant");
+  test("welcome message and placeholder exist in both locales", () => {
+    const en = require("../../messages/en.json");
+    const es = require("../../messages/es.json");
+    expect(en.Chat.welcome).toContain("I'm the Nereid AI assistant");
+    expect(en.Chat.placeholder).toContain("Describe your project idea");
+    expect(Object.keys(es.Chat).sort()).toEqual(Object.keys(en.Chat).sort());
   });
 
-  test("source contains placeholder text", () => {
+  test("chat panel is an accessible dialog labelled by its title", () => {
     const fs = require("fs");
     const source = fs.readFileSync(
-      "/Users/dragon/Documents/develop/nereid-page/components/services/AIChatWidget.tsx",
+      require("path").join(import.meta.dir, "AIChatWidget.tsx"),
       "utf-8"
     );
-    expect(source).toContain("Describe your project idea");
+    expect(source).toContain('role="dialog"');
+    expect(source).toContain("aria-labelledby={titleId}");
+    expect(source).not.toContain("outline: 'none'");
   });
 
   // =========================================================================
@@ -166,7 +175,7 @@ describe("AIChatWidget — responsive sizing (Task 1.2)", () => {
   test("source does not use a bare width: '380px' (should be wrapped in min())", () => {
     const fs = require("fs");
     const source = fs.readFileSync(
-      "/Users/dragon/Documents/develop/nereid-page/components/services/AIChatWidget.tsx",
+      require("path").join(import.meta.dir, "AIChatWidget.tsx"),
       "utf-8"
     );
     // Find width: '380px' but NOT followed by , calc (which would be inside min())
@@ -177,7 +186,7 @@ describe("AIChatWidget — responsive sizing (Task 1.2)", () => {
   test("source does not use a bare height: '500px' (should be wrapped in min())", () => {
     const fs = require("fs");
     const source = fs.readFileSync(
-      "/Users/dragon/Documents/develop/nereid-page/components/services/AIChatWidget.tsx",
+      require("path").join(import.meta.dir, "AIChatWidget.tsx"),
       "utf-8"
     );
     const bareHeight = source.match(/height:\s*'500px'(?!,)/);
@@ -187,7 +196,7 @@ describe("AIChatWidget — responsive sizing (Task 1.2)", () => {
   test("z-index: 1000 appears for both button and window in source", () => {
     const fs = require("fs");
     const source = fs.readFileSync(
-      "/Users/dragon/Documents/develop/nereid-page/components/services/AIChatWidget.tsx",
+      require("path").join(import.meta.dir, "AIChatWidget.tsx"),
       "utf-8"
     );
     const zIndexMatches = source.match(/zIndex:\s*1000/g);

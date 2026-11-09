@@ -2,53 +2,89 @@
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 
+const STAR_COUNT = 45;
+const LINE_COUNT = 8;
+const MAX_DPR = 2;
+const GLOW_SPRITE_SIZE = 32;
+
+/** Pre-render the glowing data-node once so frames use drawImage instead of shadowBlur. */
+function createGlowSprite(dpr: number): HTMLCanvasElement | null {
+  const sprite = document.createElement("canvas");
+  const px = Math.round(GLOW_SPRITE_SIZE * dpr);
+  sprite.width = px;
+  sprite.height = px;
+  const g = sprite.getContext("2d");
+  if (!g) return null;
+  const c = px / 2;
+  const glow = g.createRadialGradient(c, c, 0, c, c, c);
+  glow.addColorStop(0, "rgba(0, 212, 170, 0.9)");
+  glow.addColorStop(0.18, "rgba(0, 212, 170, 0.75)");
+  glow.addColorStop(0.45, "rgba(0, 212, 170, 0.18)");
+  glow.addColorStop(1, "rgba(0, 212, 170, 0)");
+  g.fillStyle = glow;
+  g.fillRect(0, 0, px, px);
+  g.beginPath();
+  g.arc(c, c, 2.4 * dpr, 0, Math.PI * 2);
+  g.fillStyle = "rgba(0, 212, 170, 0.85)";
+  g.fill();
+  return sprite;
+}
+
 /**
- * CosmicWaveCanvas — Combines cosmic galaxy starfield with smooth flowing oceanic wave currents.
- * Highly optimized, zero DOM elements, low memory overhead HTML5 canvas.
+ * CosmicWaveCanvas — cosmic starfield with flowing oceanic wave currents.
+ * The loop only runs while the canvas is on screen and the tab is visible.
+ * With reduced motion a single static frame is drawn.
  */
 export function CosmicWaveCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduced = useReducedMotion();
 
   useEffect(() => {
-    if (reduced) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    let animId: number;
-    let width = (canvas.width = canvas.parentElement?.clientWidth || window.innerWidth);
-    let height = (canvas.height = canvas.parentElement?.clientHeight || window.innerHeight);
+    let animId = 0;
+    let running = false;
+    let inView = true;
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let glowSprite: HTMLCanvasElement | null = null;
 
-    const handleResize = () => {
-      if (!canvas || !canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.clientWidth;
-      height = canvas.height = canvas.parentElement.clientHeight;
+    const resize = () => {
+      const parent = canvas.parentElement;
+      width = parent?.clientWidth || window.innerWidth;
+      height = parent?.clientHeight || window.innerHeight;
+      const nextDpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
+      if (nextDpr !== dpr || !glowSprite) glowSprite = createGlowSprite(nextDpr);
+      dpr = nextDpr;
+      canvas.width = Math.round(width * dpr);
+      canvas.height = Math.round(height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
-    window.addEventListener("resize", handleResize);
+    resize();
 
-    // 1. Galaxy Stars (3 depth layers: distant, mid, near)
-    const STAR_COUNT = 45;
+    // Galaxy stars
     const stars = Array.from({ length: STAR_COUNT }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
       size: Math.random() * 1.8 + 0.6,
-      alpha: Math.random() * 0.7 + 0.2,
       baseAlpha: Math.random() * 0.6 + 0.2,
-      twinkleSpeed: Math.random() * 0.03 + 0.01,
-      color: Math.random() > 0.4 ? "rgba(0, 212, 170," : Math.random() > 0.5 ? "rgba(61, 127, 255," : "rgba(255, 255, 255,",
+      color:
+        Math.random() > 0.4
+          ? "rgba(0, 212, 170,"
+          : Math.random() > 0.5
+            ? "rgba(61, 127, 255,"
+            : "rgba(255, 255, 255,",
     }));
 
-    // 2. Cosmic Wave Currents
-    const LINE_COUNT = 8;
     let time = 0;
 
-    const render = () => {
+    const draw = () => {
       ctx.clearRect(0, 0, width, height);
-      time += 0.007;
 
-      // Draw Galaxy Stars with soft twinkle
       for (let s = 0; s < STAR_COUNT; s++) {
         const star = stars[s];
         const currentAlpha = star.baseAlpha + Math.sin(time * 3 + s) * 0.25;
@@ -58,14 +94,12 @@ export function CosmicWaveCanvas() {
         ctx.fill();
       }
 
-      // Draw Oceanic Flow Waves
       for (let i = 0; i < LINE_COUNT; i++) {
         const progress = i / (LINE_COUNT - 1);
         const baseY = height * 0.2 + progress * (height * 0.6);
 
         ctx.beginPath();
         ctx.moveTo(0, baseY);
-
         const step = 26;
         for (let x = 0; x <= width + step; x += step) {
           const wave1 = Math.sin(x * 0.0022 + time + i * 0.45) * 32;
@@ -76,15 +110,12 @@ export function CosmicWaveCanvas() {
 
         const alpha = 0.07 + progress * 0.06;
         ctx.strokeStyle =
-          i % 2 === 0
-            ? `rgba(0, 212, 170, ${alpha})`
-            : `rgba(61, 127, 255, ${alpha * 0.85})`;
-
+          i % 2 === 0 ? `rgba(0, 212, 170, ${alpha})` : `rgba(61, 127, 255, ${alpha * 0.85})`;
         ctx.lineWidth = i % 2 === 0 ? 1.6 : 1.1;
         ctx.stroke();
 
-        // Glowing data nodes traveling along streams
-        if (i % 2 === 0) {
+        // Glowing data nodes travelling along the streams
+        if (i % 2 === 0 && glowSprite) {
           const packetProgress = (time * 0.45 + i * 0.25) % 1;
           const px = packetProgress * width;
           const py =
@@ -92,29 +123,62 @@ export function CosmicWaveCanvas() {
             Math.sin(px * 0.0022 + time + i * 0.45) * 32 +
             Math.cos(px * 0.0042 - time * 0.8 + i * 0.3) * 16 +
             Math.sin(px * 0.001 + time * 1.2) * 10;
-
-          ctx.beginPath();
-          ctx.arc(px, py, 2.4, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(0, 212, 170, 0.85)";
-          ctx.shadowColor = "rgba(0, 212, 170, 0.9)";
-          ctx.shadowBlur = 8;
-          ctx.fill();
-          ctx.shadowBlur = 0;
+          const half = GLOW_SPRITE_SIZE / 2;
+          ctx.drawImage(glowSprite, px - half, py - half, GLOW_SPRITE_SIZE, GLOW_SPRITE_SIZE);
         }
       }
-
-      animId = requestAnimationFrame(render);
     };
 
-    render();
+    const frame = () => {
+      time += 0.007;
+      draw();
+      animId = requestAnimationFrame(frame);
+    };
+
+    const start = () => {
+      if (running || reduced) return;
+      running = true;
+      animId = requestAnimationFrame(frame);
+    };
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(animId);
+    };
+    const sync = () => {
+      if (inView && !document.hidden) start();
+      else stop();
+    };
+
+    const handleResize = () => {
+      resize();
+      if (!running) draw();
+    };
+    window.addEventListener("resize", handleResize);
+
+    // Reduced motion: one static frame, no loop.
+    draw();
+    if (reduced) {
+      return () => window.removeEventListener("resize", handleResize);
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        inView = entries[0]?.isIntersecting ?? false;
+        sync();
+      },
+      { threshold: 0 },
+    );
+    observer.observe(canvas);
+    document.addEventListener("visibilitychange", sync);
+    sync();
 
     return () => {
-      cancelAnimationFrame(animId);
+      stop();
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", sync);
       window.removeEventListener("resize", handleResize);
     };
   }, [reduced]);
-
-  if (reduced) return null;
 
   return (
     <canvas

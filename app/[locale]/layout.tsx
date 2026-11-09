@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ScrollProgress } from "@/components/ScrollProgress";
+import { MotionProvider } from "@/components/MotionProvider";
 import "../globals.css";
 
 const dmSans = DM_Sans({
@@ -116,6 +117,7 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   const messages = await getMessages();
+  const tNav = await getTranslations({ locale, namespace: "Nav" });
 
   // FR-028: never assert a region the business does not serve. Panama is the home
   // market (Spanish copy); the English page advertises remote delivery instead.
@@ -125,6 +127,12 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} suppressHydrationWarning className={`${dmSans.variable} ${dmSerifDisplay.variable}`}>
       <head>
+        {/* Apply the saved theme before first paint so light-theme users don't see a dark flash. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem("ns-theme")==="light")document.documentElement.classList.add("light")}catch(e){}`,
+          }}
+        />
         <link rel="icon" type="image/png" href="/favicon/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
         <link rel="shortcut icon" href="/favicon/favicon.ico" />
@@ -181,13 +189,15 @@ export default async function LocaleLayout({
       <body>
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider>
-            <ScrollProgress />
-            <a href="#main-content" className="skip-link">
-              {locale === "es" ? "Ir al contenido principal" : "Skip to main content"}
-            </a>
-            <Navbar />
-            <main id="main-content">{children}</main>
-            <Footer />
+            <MotionProvider>
+              <a href="#main-content" className="skip-link">
+                {tNav("skipToContent")}
+              </a>
+              <ScrollProgress />
+              <Navbar />
+              <main id="main-content">{children}</main>
+              <Footer />
+            </MotionProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

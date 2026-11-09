@@ -2,32 +2,17 @@
 import { Link } from "@/i18n/navigation";
 import { ArrowRight, Zap } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { fadeIn, fadeUp, staggerDelay } from "@/lib/motion";
 import { AnimatedCounter } from "./AnimatedCounter";
 import { CosmicWaveCanvas } from "./CosmicWaveCanvas";
 import { HeroSolutionsShowcase } from "./HeroSolutionsShowcase";
 
 export function HeroSection() {
   const t = useTranslations("Hero");
-  const reduced = useReducedMotion();
-
-  // Clean CSS-spring transitions
-  const container = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
-  };
-  const fadeUp = {
-    hidden: { opacity: 0, y: 24 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
-    },
-  };
-  const fadeIn = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.5 } },
-  };
+  // Each child gets an explicit, capped delay (staggerDelay) so the showcase
+  // in the right column enters in the last slot instead of popping in at 0ms.
+  const container = { hidden: {}, visible: {} };
 
   return (
     <section
@@ -97,14 +82,14 @@ export function HeroSection() {
           width: "100%",
         }}
         variants={container}
-        initial={reduced ? "visible" : "hidden"}
+        initial="hidden"
         animate="visible"
       >
         <div className="hero-grid-container">
           {/* Left Column: Messaging & Action */}
           <div>
             {/* Badge */}
-            <motion.div variants={fadeUp} style={{ marginBottom: "1.5rem" }}>
+            <motion.div variants={fadeUp} custom={staggerDelay(0)} style={{ marginBottom: "1.5rem" }}>
               <span
                 style={{
                   display: "inline-flex",
@@ -117,10 +102,10 @@ export function HeroSection() {
                   letterSpacing: "0.12em",
                   textTransform: "uppercase" as const,
                   background: "var(--accent-dim)",
-                  color: "var(--accent)",
+                  color: "var(--accent-text)",
                   border: "1px solid var(--border-hover)",
                   cursor: "default",
-                  boxShadow: "0 0 16px rgba(0, 212, 170, 0.12)",
+                  boxShadow: "0 0 16px var(--accent-dim)",
                 }}
               >
                 <Zap size={11} aria-hidden="true" />
@@ -132,9 +117,10 @@ export function HeroSection() {
             <motion.h1
               id="hero-heading"
               variants={fadeUp}
+              custom={staggerDelay(1)}
               style={{
                 fontFamily: "var(--font-display)",
-                fontSize: "clamp(2.75rem, 5.5vw, 5.25rem)",
+                fontSize: "var(--fs-hero)",
                 lineHeight: "1.06",
                 color: "var(--text-primary)",
                 marginBottom: "1.5rem",
@@ -145,7 +131,7 @@ export function HeroSection() {
               <em
                 style={{
                   fontStyle: "italic",
-                  color: "var(--accent)",
+                  color: "var(--accent-text)",
                   display: "inline-block",
                   position: "relative",
                 }}
@@ -157,6 +143,7 @@ export function HeroSection() {
             {/* Subheadline */}
             <motion.p
               variants={fadeUp}
+              custom={staggerDelay(2)}
               style={{
                 fontSize: "clamp(1rem, 1.8vw, 1.15rem)",
                 color: "var(--text-secondary)",
@@ -171,6 +158,7 @@ export function HeroSection() {
             {/* CTA Buttons */}
             <motion.div
               variants={fadeUp}
+              custom={staggerDelay(3)}
               style={{
                 display: "flex",
                 gap: "1rem",
@@ -178,67 +166,12 @@ export function HeroSection() {
                 alignItems: "center",
               }}
             >
-              <Link
-                href="/contact"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "9px",
-                  background: "var(--accent)",
-                  color: "#05080f",
-                  padding: "14px 28px",
-                  borderRadius: "10px",
-                  fontWeight: "700",
-                  fontSize: "0.95rem",
-                  textDecoration: "none",
-                  boxShadow: "0 0 24px var(--accent-glow)",
-                  transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.transform = "translateY(-2px)";
-                  el.style.boxShadow = "0 6px 28px var(--accent-glow)";
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.transform = "translateY(0)";
-                  el.style.boxShadow = "0 0 24px var(--accent-glow)";
-                }}
-              >
+              <Link href="/contact" className="btn-primary">
                 <span>{t("ctaPrimary")}</span>
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>
 
-              <Link
-                href="/services"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  background: "rgba(13, 34, 56, 0.5)",
-                  color: "var(--text-primary)",
-                  padding: "14px 28px",
-                  borderRadius: "10px",
-                  fontWeight: "600",
-                  fontSize: "0.95rem",
-                  textDecoration: "none",
-                  border: "1px solid var(--border)",
-                  backdropFilter: "blur(10px)",
-                  transition: "all 0.2s ease",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = "var(--accent)";
-                  el.style.color = "var(--accent)";
-                  el.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.borderColor = "var(--border)";
-                  el.style.color = "var(--text-primary)";
-                  el.style.transform = "translateY(0)";
-                }}
-              >
+              <Link href="/services" className="btn-secondary">
                 {t("ctaSecondary")}
               </Link>
             </motion.div>
@@ -246,6 +179,7 @@ export function HeroSection() {
             {/* Stats */}
             <motion.div
               variants={fadeIn}
+              custom={staggerDelay(4)}
               style={{
                 display: "flex",
                 gap: "2.5rem",
@@ -268,9 +202,13 @@ export function HeroSection() {
           </div>
 
           {/* Right Column: Clean Interactive Solutions Showcase */}
-          <div className="hero-console-container">
+          <motion.div
+            className="hero-console-container"
+            variants={fadeUp}
+            custom={staggerDelay(5)}
+          >
             <HeroSolutionsShowcase />
-          </div>
+          </motion.div>
         </div>
       </motion.div>
 

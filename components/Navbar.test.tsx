@@ -189,12 +189,13 @@ describe("Navbar — responsive styling (Task 2.2)", () => {
   });
 
   test("theme toggle button renders", () => {
-    expect(html).toContain("aria-label=\"Switch to light mode\"");
+    // next-intl is mocked to return keys
+    expect(html).toContain("aria-label=\"switchToLight\"");
   });
 
   test("hamburger menu button renders with aria-controls", () => {
     expect(html).toContain("aria-controls=\"mobile-menu\"");
-    expect(html).toContain("aria-label=\"Open menu\"");
+    expect(html).toContain("aria-label=\"openMenu\"");
   });
 
   // =========================================================================

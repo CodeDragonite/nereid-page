@@ -1,17 +1,49 @@
 "use client";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { useRef, type ReactNode, type RefObject } from "react";
 
 interface ServiceVisualProps {
   type: "network" | "web" | "mobile" | "integration" | "ai" | "it";
   color: string;
 }
 
+/** Shared frame: holds the in-view ref so loops only run while visible. */
+function Frame({
+  frameRef,
+  clip,
+  children,
+}: {
+  frameRef: RefObject<HTMLDivElement | null>;
+  clip?: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      ref={frameRef}
+      aria-hidden="true"
+      style={{
+        height: "64px",
+        width: "100%",
+        position: "relative",
+        marginBottom: "1.25rem",
+        ...(clip ? { overflow: "hidden" } : {}),
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
 export function ServiceVisual({ type, color }: ServiceVisualProps) {
   const reduced = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  // Not `once`: looping micro-animations stop (unmount) when scrolled away.
+  const inView = useInView(ref);
+  const active = inView && !reduced;
 
   if (type === "network") {
     return (
-      <div style={{ height: "64px", width: "100%", position: "relative", marginBottom: "1.25rem", overflow: "hidden" }}>
+      <Frame frameRef={ref} clip>
         <svg width="100%" height="100%" viewBox="0 0 240 64" fill="none">
           {/* Grid lines */}
           <line x1="20" y1="32" x2="220" y2="32" stroke={color} strokeOpacity="0.2" strokeDasharray="3 3" />
@@ -21,13 +53,13 @@ export function ServiceVisual({ type, color }: ServiceVisualProps) {
           {/* Nodes */}
           {[20, 80, 140, 200].map((cx, i) => (
             <g key={i}>
-              <circle cx={cx} cy="32" r="6" fill="#0d2238" stroke={color} strokeWidth="2" />
+              <circle cx={cx} cy="32" r="6" fill="var(--bg-surface)" stroke={color} strokeWidth="2" />
               <circle cx={cx} cy="32" r="2.5" fill={color} />
             </g>
           ))}
 
           {/* Traveling packet */}
-          {!reduced && (
+          {active && (
             <motion.circle
               r="3.5"
               fill={color}
@@ -44,13 +76,13 @@ export function ServiceVisual({ type, color }: ServiceVisualProps) {
             />
           )}
         </svg>
-      </div>
+      </Frame>
     );
   }
 
   if (type === "web") {
     return (
-      <div style={{ height: "64px", width: "100%", position: "relative", marginBottom: "1.25rem" }}>
+      <Frame frameRef={ref}>
         <svg width="100%" height="100%" viewBox="0 0 240 64" fill="none">
           {/* Browser frame */}
           <rect x="10" y="6" width="220" height="52" rx="6" fill="rgba(0,0,0,0.25)" stroke={color} strokeOpacity="0.25" />
@@ -66,13 +98,13 @@ export function ServiceVisual({ type, color }: ServiceVisualProps) {
           <rect x="90" y="34" width="90" height="6" rx="3" fill="var(--text-muted)" fillOpacity="0.2" />
           <rect x="90" y="44" width="110" height="6" rx="3" fill={color} fillOpacity="0.4" />
         </svg>
-      </div>
+      </Frame>
     );
   }
 
   if (type === "mobile") {
     return (
-      <div style={{ height: "64px", width: "100%", position: "relative", marginBottom: "1.25rem" }}>
+      <Frame frameRef={ref}>
         <svg width="100%" height="100%" viewBox="0 0 240 64" fill="none">
           {/* Phone frame rotated/centered */}
           <rect x="85" y="4" width="70" height="56" rx="8" fill="rgba(0,0,0,0.3)" stroke={color} strokeOpacity="0.3" />
@@ -84,7 +116,7 @@ export function ServiceVisual({ type, color }: ServiceVisualProps) {
           <rect x="112" y="30" width="20" height="3" rx="1.5" fill="var(--text-muted)" fillOpacity="0.4" />
 
           {/* Signal wave */}
-          {!reduced && (
+          {active && (
             <motion.circle
               cx="120"
               cy="52"
@@ -94,14 +126,15 @@ export function ServiceVisual({ type, color }: ServiceVisualProps) {
               transition={{ duration: 2, repeat: Infinity }}
             />
           )}
+          {!active && <circle cx="120" cy="52" r="3" fill={color} fillOpacity="0.6" />}
         </svg>
-      </div>
+      </Frame>
     );
   }
 
   if (type === "integration") {
     return (
-      <div style={{ height: "64px", width: "100%", position: "relative", marginBottom: "1.25rem" }}>
+      <Frame frameRef={ref}>
         <svg width="100%" height="100%" viewBox="0 0 240 64" fill="none">
           {/* 3 Interlocking gears/nodes */}
           <circle cx="70" cy="32" r="18" stroke={color} strokeOpacity="0.3" strokeWidth="1.5" strokeDasharray="4 4" />
@@ -113,7 +146,7 @@ export function ServiceVisual({ type, color }: ServiceVisualProps) {
           <line x1="138" y1="32" x2="152" y2="32" stroke={color} strokeWidth="2" />
 
           {/* Rotating node pulse */}
-          {!reduced && (
+          {active && (
             <motion.circle
               cx="120"
               cy="32"
@@ -123,14 +156,15 @@ export function ServiceVisual({ type, color }: ServiceVisualProps) {
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             />
           )}
+          {!active && <circle cx="120" cy="32" r="6" fill={color} />}
         </svg>
-      </div>
+      </Frame>
     );
   }
 
   if (type === "ai") {
     return (
-      <div style={{ height: "64px", width: "100%", position: "relative", marginBottom: "1.25rem" }}>
+      <Frame frameRef={ref}>
         <svg width="100%" height="100%" viewBox="0 0 240 64" fill="none">
           {/* Neural layers */}
           {/* Layer 1 */}
@@ -160,7 +194,7 @@ export function ServiceVisual({ type, color }: ServiceVisualProps) {
           <line x1="125" y1="50" x2="186" y2="40" stroke={color} strokeOpacity="0.3" />
 
           {/* Synaptic pulse traveling */}
-          {!reduced && (
+          {active && (
             <motion.circle
               r="2.5"
               fill="#ffffff"
@@ -173,13 +207,13 @@ export function ServiceVisual({ type, color }: ServiceVisualProps) {
             />
           )}
         </svg>
-      </div>
+      </Frame>
     );
   }
 
   // IT & Security
   return (
-    <div style={{ height: "64px", width: "100%", position: "relative", marginBottom: "1.25rem" }}>
+    <Frame frameRef={ref}>
       <svg width="100%" height="100%" viewBox="0 0 240 64" fill="none">
         {/* Rack units */}
         <rect x="40" y="8" width="160" height="14" rx="3" fill="rgba(0,0,0,0.3)" stroke={color} strokeOpacity="0.3" />
@@ -203,6 +237,6 @@ export function ServiceVisual({ type, color }: ServiceVisualProps) {
           </g>
         ))}
       </svg>
-    </div>
+    </Frame>
   );
 }

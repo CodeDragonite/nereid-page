@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { caseStudies } from "@/lib/portfolio";
+import { isEnabled } from "@/lib/features";
 import { buildAlternates, localeUrl } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -11,8 +12,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/",
     "/contact",
     "/services",
-    "/estimator",
-    "/portfolio",
+    ...(isEnabled("estimator") ? ["/estimator"] : []),
+    ...(isEnabled("portfolio") ? ["/portfolio"] : []),
     "/upcoming",
     "/privacy/stoic-guard",
     "/privacy/stoic-guard/accessibility",
@@ -21,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const paths = [
     ...staticPaths,
-    ...caseStudies.map((study) => `/portfolio/${study.slug}`),
+    ...(isEnabled("portfolio") ? caseStudies.map((study) => `/portfolio/${study.slug}`) : []),
   ];
 
   const seen = new Set<string>();

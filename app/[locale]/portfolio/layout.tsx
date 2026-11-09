@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { isEnabled } from "@/lib/features";
 import { getTranslations } from "next-intl/server";
 import { buildPageMetadata, TITLE_TEMPLATE } from "@/lib/seo";
 
@@ -18,5 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 }
 
 export default function PortfolioLayout({ children }: { children: React.ReactNode }) {
+  // Disabled routes 404 (and get noindex) for both /portfolio and /portfolio/[slug].
+  if (!isEnabled("portfolio")) notFound();
   return <>{children}</>;
 }

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import type { CSSProperties } from "react";
 import { buildPageMetadata } from "@/lib/seo";
+import { Breadcrumb } from "@/components/Breadcrumb";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -22,6 +24,16 @@ export async function generateMetadata({
   });
 }
 
+// Shared look for the app-store privacy pages (kept in sync across
+// /privacy/stoic-guard, /privacy/stoic-guard/accessibility and
+// /privacy/night-game-athletics-command).
+const container: CSSProperties = { maxWidth: "860px", margin: "0 auto", padding: "var(--page-top) 1.5rem 4rem" };
+const eyebrow: CSSProperties = { color: "var(--accent-text)", textTransform: "uppercase", fontSize: "0.75rem", letterSpacing: "0.12em", fontWeight: 600, marginBottom: "0.75rem" };
+const title: CSSProperties = { fontSize: "clamp(2rem, 4vw, 2.75rem)" };
+const body: CSSProperties = { color: "var(--text-secondary)", lineHeight: 1.7, maxWidth: "70ch", display: "flex", flexDirection: "column", gap: "1.5rem" };
+const strong: CSSProperties = { color: "var(--text-primary)" };
+const enterCss = `@keyframes privacy-enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}.privacy-enter{animation:privacy-enter var(--dur-long) var(--ease-enter) both}@media (prefers-reduced-motion: reduce){.privacy-enter{animation:none}}`;
+
 export default async function AccessibilityValidationPage({
   params,
 }: {
@@ -29,35 +41,47 @@ export default async function AccessibilityValidationPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const tCrumb = await getTranslations({ locale, namespace: "Breadcrumb" });
+  const tPrivacy = await getTranslations({ locale, namespace: "Privacy" });
 
   return (
-    <main className="mx-auto flex min-h-[70vh] w-full max-w-4xl flex-col px-6 py-16 text-slate-900 dark:text-slate-100 sm:px-8 lg:px-12">
-      <article className="rounded-3xl border border-slate-200 bg-white/90 p-8 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-950/80 sm:p-10">
-        <p className="mb-4 text-sm uppercase tracking-[0.25em] text-cyan-600 dark:text-cyan-400">Google Play Validation</p>
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Accessibility Service Demonstration</h1>
-        <p className="mt-4 text-base text-slate-700 dark:text-slate-200">
-          This video demonstrates how Stoic Guard uses the Accessibility Service to detect the foreground application and enforce user-defined time limits.
-        </p>
+    <div style={container}>
+      <style>{enterCss}</style>
+      <Breadcrumb
+        items={[
+          { label: tCrumb("home"), href: "/" },
+          { label: tPrivacy("stoicGuardMetaTitle"), href: "/privacy/stoic-guard" },
+          { label: tPrivacy("accessibilityMetaTitle") },
+        ]}
+      />
+      <article>
+        <header className="privacy-enter" style={{ marginBottom: "2.5rem" }}>
+          <p style={eyebrow}>Google Play Validation</p>
+          <h1 className="page-title" style={title}>Accessibility Service Demonstration</h1>
+          <p style={{ color: "var(--text-secondary)", lineHeight: 1.7, maxWidth: "70ch", marginTop: "1rem" }}>
+            This video demonstrates how Stoic Guard uses the Accessibility Service to detect the foreground application and enforce user-defined time limits.
+          </p>
+        </header>
 
-        <div className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-black shadow-lg dark:border-slate-800">
-          <video 
-            src="/accesibility-video.webm" 
-            controls 
-            className="w-full aspect-video"
+        <div style={{ overflow: "hidden", borderRadius: "var(--radius-lg)", border: "1px solid var(--border)", background: "#000", boxShadow: "var(--shadow-card)" }}>
+          <video
+            src="/accesibility-video.webm"
+            controls
+            style={{ display: "block", width: "100%", aspectRatio: "16 / 9" }}
           >
             Your browser does not support the video tag.
           </video>
         </div>
 
-        <div className="mt-8 space-y-4 text-sm text-slate-500 dark:text-slate-400">
+        <section className="card" style={{ ...body, gap: "1rem", marginTop: "2rem", fontSize: "0.95rem" }}>
           <p>
-            <strong>App Name:</strong> Stoic Guard
+            <strong style={strong}>App Name:</strong> Stoic Guard
           </p>
           <p>
-            <strong>Purpose:</strong> This demonstration is provided for the Google Play review team to verify compliance with Accessibility Service policies.
+            <strong style={strong}>Purpose:</strong> This demonstration is provided for the Google Play review team to verify compliance with Accessibility Service policies.
           </p>
-        </div>
+        </section>
       </article>
-    </main>
+    </div>
   );
 }

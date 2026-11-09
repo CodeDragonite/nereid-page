@@ -19,7 +19,14 @@
     "estimator": "Estimador",
     "contact": "Contacto",
     "switchLang": "EN",
-    "switchLangLabel": "Switch to English"
+    "switchLangLabel": "Switch to English",
+    "mainNavLabel": "Navegación principal",
+    "homeLabel": "Inicio de Nereid Systems",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "switchToLight": "Cambiar a modo claro",
+    "switchToDark": "Cambiar a modo oscuro",
+    "skipToContent": "Ir al contenido principal"
   },
   "Hero": {
     "tag": "Full-Stack · IA · Gestión de TI",
@@ -28,10 +35,10 @@
     "subheadline": "Desarrollo full-stack, automatización con IA y gestión de TI para empresas que quieren enfocarse en su negocio—no en su infraestructura.",
     "ctaPrimary": "Consulta Gratuita",
     "ctaSecondary": "Ver Nuestros Servicios",
-    "stat1Value": "50+",
-    "stat1Label": "Proyectos entregados",
-    "stat2Value": "10+",
-    "stat2Label": "Años de experiencia",
+    "stat1Value": "1",
+    "stat1Label": "Producto en línea",
+    "stat2Value": "6",
+    "stat2Label": "Servicios, un solo equipo",
     "stat3Value": "24h",
     "stat3Label": "Tiempo de respuesta"
   },
@@ -107,7 +114,8 @@
     "metricSupportDetail": "Un solo punto de contacto en TI",
     "whatWeDeliver": "Lo Que Entregamos",
     "scopesNotice": "Alcances y tiempos transparentes",
-    "exploreServices": "Explorar Servicios"
+    "exploreServices": "Explorar Servicios",
+    "tablistLabel": "Servicios de Nereid Systems"
   },
   "KineticTicker": {
     "tag0": "DESARROLLO FULL-STACK",
@@ -190,7 +198,8 @@
     "contactHeading": "Contacto",
     "responseTime": "Respuesta en 24 horas hábiles",
     "copyright": "© {year} Nereid Systems. Todos los derechos reservados.",
-    "builtWith": "Construido con Next.js"
+    "builtWith": "Construido con Next.js",
+    "navLabel": "Navegación del pie de página"
   },
   "Portfolio": {
     "metaTitle": "Portafolio — Casos de Estudio y Proyectos",
@@ -388,7 +397,8 @@
   },
   "Breadcrumb": {
     "home": "Inicio",
-    "portfolio": "Portafolio"
+    "portfolio": "Portafolio",
+    "label": "Ruta de navegación"
   },
   "Estimator": {
     "metaTitle": "Estimador de Alcance y Costo de Proyecto — Nereid Systems",
@@ -420,5 +430,25 @@
     "ctaContact": "Contactar",
     "ctaBooking": "Agendar Llamada de Alcance",
     "disclaimer": "Las estimaciones son referencias orientativas basadas en ritmos de sprint estándar. Las propuestas finales se personalizan durante la fase de descubrimiento."
+  },
+  "Chat": {
+    "openLabel": "Abrir el asistente de chat con IA",
+    "closeLabel": "Cerrar chat",
+    "sendLabel": "Enviar mensaje",
+    "inputLabel": "Tu mensaje",
+    "title": "Asistente IA de Nereid",
+    "subtitle": "Cotizaciones y asesoría al instante",
+    "welcome": "¡Hola! Soy el asistente IA de Nereid. Cuéntame sobre la idea de tu proyecto y te ayudaré a entender qué servicios necesitas y a obtener una cotización estimada.",
+    "placeholder": "Describe la idea de tu proyecto...",
+    "fallback": "¡Con gusto te ayudo a obtener una cotización! ¿Podrías contarme más sobre lo que quieres construir? Por ejemplo: ¿es un sitio web, una app móvil, una red u otra cosa?",
+    "error": "Lo siento, no puedo generar una cotización en este momento. Inténtalo de nuevo o contáctanos directamente.",
+    "typing": "El asistente está escribiendo",
+    "messagesLabel": "Mensajes del chat",
+    "estimateService": "Servicio:",
+    "estimateComplexity": "Complejidad:",
+    "estimateTimeline": "Plazo:",
+    "estimatePrice": "Rango de precio:",
+    "estimateFeatures": "Funcionalidades clave:",
+    "estimateFollowUp": "¿Te gustaría agendar una consulta para conversarlo en detalle?"
   }
 }

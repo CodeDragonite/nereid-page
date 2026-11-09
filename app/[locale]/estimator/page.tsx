@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { isEnabled } from "@/lib/features";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { buildPageMetadata } from "@/lib/seo";
@@ -28,6 +30,7 @@ export default async function EstimatorPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
+  if (!isEnabled("estimator")) notFound();
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "Estimator" });

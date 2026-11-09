@@ -4,9 +4,6 @@ import { buildPageMetadata } from "@/lib/seo";
 import { HeroSection } from "@/components/home/HeroSection";
 import { KineticTicker } from "@/components/home/KineticTicker";
 import { ServicesGrid } from "@/components/home/ServicesGrid";
-import { SocialProof } from "@/components/home/SocialProof";
-import { PortfolioPreview } from "@/components/home/PortfolioPreview";
-import { Testimonials } from "@/components/home/Testimonials";
 import { UpcomingPreview } from "@/components/home/UpcomingPreview";
 import { LeadMagnet } from "@/components/home/LeadMagnet";
 

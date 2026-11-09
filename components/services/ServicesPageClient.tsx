@@ -1,17 +1,21 @@
 "use client";
-import { useState, useRef } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@/i18n/navigation";
 import {
   Network, Globe, Smartphone, Layers, Bot, Server,
-  ChevronDown, Clock, Code2, DollarSign, ArrowRight,
+  ChevronDown, Clock, Code2, ArrowRight,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { AIChatWidget } from "./AIChatWidget";
+import { EASE, VIEWPORT, fadeUp, staggerDelay } from "@/lib/motion";
 
 const iconMap: Record<string, React.ElementType> = {
   Network, Globe, Smartphone, Layers, Bot, Server,
 };
+
+/** Grid columns at desktop width (auto-fill, minmax(320px) in a 1200px container). */
+const GRID_COLUMNS = 3;
 
 type Service = {
   id: string;
@@ -29,46 +33,40 @@ type Service = {
 function ServiceCard({ service, index }: { service: Service; index: number }) {
   const t = useTranslations("Services");
   const [expanded, setExpanded] = useState(false);
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
   const Icon = iconMap[service.icon] || Server;
 
   return (
-    <motion.article
-      ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.48, delay: index * 0.08, ease: "easeOut" as const }}
-      style={{
-        background: "var(--bg-card)",
-        border: "1px solid var(--border)",
-        borderRadius: "var(--radius-lg)",
-        overflow: "hidden",
-        transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-        boxShadow: "var(--shadow-card)",
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.borderColor = "var(--border-hover)";
-        (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-card-hover)";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
-        (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-card)";
-      }}
+    // Entrance lives on the wrapper so .card-interactive keeps its :hover transform.
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={VIEWPORT}
+      custom={staggerDelay(index, GRID_COLUMNS)}
+      variants={fadeUp}
     >
-      {/* Top bar */}
-      <div
-        aria-hidden="true"
-        style={{ height: "3px", background: `linear-gradient(90deg, ${service.color}, transparent)` }}
-      />
+      <article
+        className="card card-interactive"
+        style={{ position: "relative", overflow: "hidden", height: "100%" }}
+      >
+        {/* Top bar */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "3px",
+            background: `linear-gradient(90deg, ${service.color}, transparent)`,
+          }}
+        />
 
-      <div style={{ padding: "1.75rem" }}>
         <div style={{ display: "flex", alignItems: "flex-start", gap: "1rem", marginBottom: "1rem" }}>
           <div
             style={{
               width: "46px",
               height: "46px",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-md)",
               background: `color-mix(in srgb, ${service.color} 15%, transparent)`,
               display: "flex",
               alignItems: "center",
@@ -88,54 +86,33 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
           </div>
         </div>
 
-        {/* Toggle */}
+        {/* Toggle — hover/focus colours in the scoped <style> below */}
         <button
+          type="button"
+          className="service-toggle"
           onClick={() => setExpanded((p) => !p)}
           aria-expanded={expanded}
           aria-controls={`service-details-${service.id}`}
-          style={{
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            background: "none",
-            border: "1px solid var(--border)",
-            borderRadius: "8px",
-            padding: "9px 14px",
-            color: "var(--text-secondary)",
-            cursor: "pointer",
-            fontSize: "0.85rem",
-            fontWeight: "500",
-            transition: "all 0.2s ease",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.borderColor = "var(--border-hover)";
-            (e.currentTarget as HTMLElement).style.color = "var(--accent)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
-            (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
-          }}
         >
           {expanded ? t("collapseLabel") : t("expandLabel")}
           <ChevronDown
             size={16}
             aria-hidden="true"
             style={{
-              transition: "transform 0.2s ease",
+              transition: "transform var(--dur-short) var(--ease-standard)",
               transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
             }}
           />
         </button>
 
-        <AnimatePresence>
+        <AnimatePresence initial={false}>
           {expanded && (
             <motion.div
               id={`service-details-${service.id}`}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: "easeOut" as const }}
+              exit={{ height: 0 }}
+              transition={{ duration: 0.25, ease: EASE.enter }}
               style={{ overflow: "hidden" }}
             >
               <div style={{ paddingTop: "1.25rem", display: "flex", flexDirection: "column", gap: "0.9rem" }}>
@@ -160,29 +137,8 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
 
                 <Link
                   href={`/contact?service=${encodeURIComponent(service.title)}`}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    marginTop: "0.25rem",
-                    background: service.color,
-                    color: "#05080f",
-                    padding: "10px 18px",
-                    borderRadius: "8px",
-                    fontWeight: "600",
-                    fontSize: "0.875rem",
-                    textDecoration: "none",
-                    alignSelf: "flex-start",
-                    transition: "all 0.2s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
-                    (e.currentTarget as HTMLElement).style.opacity = "0.9";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                    (e.currentTarget as HTMLElement).style.opacity = "1";
-                  }}
+                  className="btn-primary btn-sm"
+                  style={{ marginTop: "0.25rem", alignSelf: "flex-start" }}
                 >
                   {service.cta}
                   <ArrowRight size={14} aria-hidden="true" />
@@ -191,8 +147,8 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-    </motion.article>
+      </article>
+    </motion.div>
   );
 }
 
@@ -203,7 +159,7 @@ export function ServicesPageClient({ services }: { services: Service[] }) {
       {/* Page header */}
       <div
         style={{
-          paddingTop: "120px",
+          paddingTop: "var(--page-top)",
           paddingBottom: "4rem",
           paddingLeft: "1.5rem",
           paddingRight: "1.5rem",
@@ -215,38 +171,36 @@ export function ServicesPageClient({ services }: { services: Service[] }) {
         <div aria-hidden="true" className="grid-overlay" style={{ position: "absolute", inset: 0 }} />
         <div style={{ position: "relative", maxWidth: "1200px", margin: "0 auto", textAlign: "center" }}>
           <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+            initial="hidden"
+            animate="visible"
+            custom={0}
+            variants={fadeUp}
             style={{
               fontSize: "0.75rem",
               fontWeight: "600",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "var(--accent)",
+              color: "var(--accent-text)",
               marginBottom: "0.75rem",
             }}
           >
             {t("heroEyebrow")}
           </motion.p>
           <motion.h1
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.08 }}
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(2.2rem, 5vw, 3.8rem)",
-              color: "var(--text-primary)",
-              letterSpacing: "-0.02em",
-              marginBottom: "1rem",
-            }}
+            initial="hidden"
+            animate="visible"
+            custom={0.08}
+            variants={fadeUp}
+            className="page-title"
+            style={{ marginBottom: "1rem" }}
           >
             {t("heroHeading")}
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.14 }}
+            initial="hidden"
+            animate="visible"
+            custom={0.16}
+            variants={fadeUp}
             style={{
               color: "var(--text-secondary)",
               fontSize: "1.05rem",
@@ -267,7 +221,7 @@ export function ServicesPageClient({ services }: { services: Service[] }) {
           margin: "0 auto",
           padding: "0 1.5rem 6rem",
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fill, minmax(min(320px, 100%), 1fr))",
           gap: "1.25rem",
         }}
       >
@@ -298,35 +252,38 @@ export function ServicesPageClient({ services }: { services: Service[] }) {
         <p style={{ color: "var(--text-secondary)", marginBottom: "1.5rem", fontSize: "0.95rem" }}>
           {t("ctaBody")}
         </p>
-        <Link
-          href="/contact"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "8px",
-            background: "var(--accent)",
-            color: "#05080f",
-            padding: "13px 26px",
-            borderRadius: "9px",
-            fontWeight: "600",
-            fontSize: "0.95rem",
-            textDecoration: "none",
-            transition: "all 0.2s ease",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
-            (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 24px var(--accent-glow)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-            (e.currentTarget as HTMLElement).style.boxShadow = "none";
-          }}
-        >
+        <Link href="/contact" className="btn-primary">
           {t("ctaBtn")}
           <ArrowRight size={16} aria-hidden="true" />
         </Link>
       </div>
       <AIChatWidget />
+
+      <style>{`
+        .service-toggle {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: none;
+          border: 1px solid var(--border);
+          border-radius: var(--radius-md);
+          padding: 9px 14px;
+          color: var(--text-secondary);
+          cursor: pointer;
+          font: inherit;
+          font-size: 0.85rem;
+          font-weight: 500;
+          transition:
+            border-color var(--dur-micro) var(--ease-standard),
+            color var(--dur-micro) var(--ease-standard);
+        }
+        .service-toggle:hover,
+        .service-toggle:focus-visible {
+          border-color: var(--border-hover);
+          color: var(--accent-text);
+        }
+      `}</style>
     </>
   );
 }

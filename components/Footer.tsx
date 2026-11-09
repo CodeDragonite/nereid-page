@@ -2,6 +2,7 @@
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { isEnabled } from "@/lib/features";
 
 export function Footer() {
   const t = useTranslations("Footer");
@@ -39,7 +40,7 @@ export function Footer() {
             </p>
           </div>
 
-          <nav aria-label="Footer navigation">
+          <nav aria-label={t("navLabel")}>
             <p
               style={{
                 fontSize: "0.75rem",
@@ -57,20 +58,14 @@ export function Footer() {
                 { href: "/", label: tNav("home") },
                 { href: "/services", label: tNav("services") },
                 { href: "/upcoming", label: tNav("upcoming") },
-                { href: "/estimator", label: tNav("estimator") },
+                ...(isEnabled("estimator") ? [{ href: "/estimator", label: tNav("estimator") }] : []),
                 { href: "/contact", label: tNav("contact") },
               ].map(({ href, label }) => (
                 <li key={href}>
                   <Link
                     href={href}
-                    style={{
-                      color: "var(--text-secondary)",
-                      textDecoration: "none",
-                      fontSize: "0.875rem",
-                      transition: "color var(--transition)",
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-secondary)")}
+                    className="text-link"
+                    style={{ fontSize: "0.875rem" }}
                   >
                     {label}
                   </Link>
@@ -95,7 +90,7 @@ export function Footer() {
             <a
               href="mailto:hello@nereidsystems.com"
               style={{
-                color: "var(--accent)",
+                color: "var(--accent-text)",
                 textDecoration: "none",
                 fontSize: "0.875rem",
               }}

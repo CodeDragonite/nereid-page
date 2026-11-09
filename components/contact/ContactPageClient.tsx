@@ -4,8 +4,8 @@ import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Mail, Clock, CheckCircle, AlertCircle } from "lucide-react";
 import { z } from "zod";
-import type { Variants } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { fadeUp, popIn, staggerDelay } from "@/lib/motion";
 
 const schema = z.object({
   name: z.string().min(2),
@@ -17,14 +17,6 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 type Errors = Partial<Record<keyof FormData, string>>;
-
-const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { duration: 0.45, delay: i * 0.1, ease: "easeOut" as const },
-  }),
-};
 
 function Field({
   label,
@@ -46,15 +38,15 @@ function Field({
         style={{
           fontSize: "0.8rem",
           fontWeight: "600",
-          color: error ? "#f87171" : "var(--text-secondary)",
+          color: error ? "var(--danger)" : "var(--text-secondary)",
           letterSpacing: "0.04em",
         }}
       >
-        {label}{required && <span aria-hidden="true" style={{ color: "var(--accent)", marginLeft: "3px" }}>*</span>}
+        {label}{required && <span aria-hidden="true" style={{ color: "var(--accent-text)", marginLeft: "3px" }}>*</span>}
       </label>
       {children}
       {error && (
-        <p role="alert" style={{ fontSize: "0.78rem", color: "#f87171", display: "flex", alignItems: "center", gap: "4px" }}>
+        <p id={`${id}-error`} role="alert" className="field-error" style={{ display: "flex", alignItems: "center", gap: "4px", margin: 0 }}>
           <AlertCircle size={12} aria-hidden="true" />
           {error}
         </p>
@@ -63,17 +55,10 @@ function Field({
   );
 }
 
-const inputStyle = (error?: string): React.CSSProperties => ({
-  padding: "11px 14px",
-  background: "var(--bg-card)",
-  border: `1px solid ${error ? "#f87171" : "var(--border)"}`,
-  borderRadius: "8px",
-  color: "var(--text-primary)",
-  fontSize: "0.9rem",
-  outline: "none",
-  transition: "border-color 0.2s ease",
-  width: "100%",
-  fontFamily: "var(--font-body)",
+/** aria attributes for a field whose error is currently shown. */
+const errorProps = (id: string, error?: string) => ({
+  "aria-invalid": !!error,
+  "aria-describedby": error ? `${id}-error` : undefined,
 });
 
 export function ContactPageClient() {
@@ -115,6 +100,9 @@ export function ContactPageClient() {
     if (!data.message || data.message.length < 20) errs.message = t("messageError");
     return errs;
   };
+
+  const shownError = (name: keyof FormData): string | undefined =>
+    touched[name] ? errors[name] : undefined;
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -160,7 +148,7 @@ export function ContactPageClient() {
       {/* Page header */}
       <div
         style={{
-          paddingTop: "100px",
+          paddingTop: "var(--page-top)",
           paddingBottom: "3rem",
           paddingLeft: "1.5rem",
           paddingRight: "1.5rem",
@@ -172,24 +160,29 @@ export function ContactPageClient() {
         <div aria-hidden="true" className="grid-overlay" style={{ position: "absolute", inset: 0 }} />
         <div style={{ position: "relative", maxWidth: "1200px", margin: "0 auto", textAlign: "center" }}>
           <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{ fontSize: "0.75rem", fontWeight: "600", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--accent)", marginBottom: "0.6rem" }}
+            initial="hidden"
+            animate="visible"
+            custom={0}
+            variants={fadeUp}
+            style={{ fontSize: "0.75rem", fontWeight: "600", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--accent-text)", marginBottom: "0.6rem" }}
           >
             {t("eyebrow")}
           </motion.p>
           <motion.h1
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.08 }}
-            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(2rem, 5vw, 3.5rem)", color: "var(--text-primary)", letterSpacing: "-0.02em", marginBottom: "0.75rem" }}
+            initial="hidden"
+            animate="visible"
+            custom={0.08}
+            variants={fadeUp}
+            className="page-title"
+            style={{ marginBottom: "0.75rem" }}
           >
             {t("heading")}
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.14 }}
+            initial="hidden"
+            animate="visible"
+            custom={0.16}
+            variants={fadeUp}
             style={{ color: "var(--text-secondary)", fontSize: "1rem", maxWidth: "480px", margin: "0 auto", lineHeight: "1.7" }}
           >
             {t("subheading")}
@@ -214,15 +207,9 @@ export function ContactPageClient() {
         <motion.div
           initial="hidden"
           animate="visible"
-          custom={0}
+          custom={staggerDelay(0)}
           variants={fadeUp}
-          style={{
-            background: "var(--bg-card)",
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius-lg)",
-            padding: "2rem",
-            boxShadow: "var(--shadow-card)",
-          }}
+          className="card"
         >
           <h2
             style={{
@@ -237,8 +224,8 @@ export function ContactPageClient() {
 
           {status === "success" ? (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={popIn.initial}
+              animate={popIn.animate}
               style={{
                 padding: "2rem",
                 textAlign: "center",
@@ -255,13 +242,13 @@ export function ContactPageClient() {
                   width: "56px",
                   height: "56px",
                   borderRadius: "50%",
-                  background: "rgba(52,211,153,0.15)",
+                  background: "color-mix(in srgb, var(--success) 15%, transparent)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                 }}
               >
-                <CheckCircle size={28} style={{ color: "#34d399" }} />
+                <CheckCircle size={28} style={{ color: "var(--success)" }} aria-hidden="true" />
               </div>
               <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", color: "var(--text-primary)" }}>
                 {t("messageSentHeading")}
@@ -274,7 +261,7 @@ export function ContactPageClient() {
             <form onSubmit={handleSubmit} noValidate aria-label={t("formHeading")}>
               <div style={{ display: "flex", flexDirection: "column", gap: "1.2rem" }}>
                 <div id="contact-form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                  <Field label={t("nameLabel")} id="name" error={touched.name ? errors.name : undefined} required>
+                  <Field label={t("nameLabel")} id="name" error={shownError("name")} required>
                     <input
                       id="name"
                       name="name"
@@ -284,12 +271,11 @@ export function ContactPageClient() {
                       onBlur={handleBlur}
                       autoComplete="name"
                       aria-required="true"
-                      aria-invalid={!!errors.name}
-                      style={inputStyle(touched.name ? errors.name : undefined)}
-                      onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; }}
+                      {...errorProps("name", shownError("name"))}
+                      className="field"
                     />
                   </Field>
-                  <Field label={t("emailLabel")} id="email" error={touched.email ? errors.email : undefined} required>
+                  <Field label={t("emailLabel")} id="email" error={shownError("email")} required>
                     <input
                       id="email"
                       name="email"
@@ -299,9 +285,8 @@ export function ContactPageClient() {
                       onBlur={handleBlur}
                       autoComplete="email"
                       aria-required="true"
-                      aria-invalid={!!errors.email}
-                      style={inputStyle(touched.email ? errors.email : undefined)}
-                      onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; }}
+                      {...errorProps("email", shownError("email"))}
+                      className="field"
                     />
                   </Field>
                 </div>
@@ -315,13 +300,11 @@ export function ContactPageClient() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     autoComplete="organization"
-                    style={inputStyle()}
-                    onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; }}
-                    onBlurCapture={(e) => { e.target.style.borderColor = "var(--border)"; }}
+                    className="field"
                   />
                 </Field>
 
-                <Field label={t("serviceLabel")} id="service" error={touched.service ? errors.service : undefined} required>
+                <Field label={t("serviceLabel")} id="service" error={shownError("service")} required>
                   <select
                     id="service"
                     name="service"
@@ -329,9 +312,9 @@ export function ContactPageClient() {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     aria-required="true"
-                    aria-invalid={!!errors.service}
-                    style={{ ...inputStyle(touched.service ? errors.service : undefined), cursor: "pointer" }}
-                    onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; }}
+                    {...errorProps("service", shownError("service"))}
+                    className="field"
+                    style={{ cursor: "pointer" }}
                   >
                     <option value="">{t("selectService")}</option>
                     {serviceOptions.map((o) => (
@@ -340,7 +323,7 @@ export function ContactPageClient() {
                   </select>
                 </Field>
 
-                <Field label={t("messageLabel")} id="message" error={touched.message ? errors.message : undefined} required>
+                <Field label={t("messageLabel")} id="message" error={shownError("message")} required>
                   <textarea
                     id="message"
                     name="message"
@@ -350,19 +333,15 @@ export function ContactPageClient() {
                     rows={5}
                     placeholder={t("messagePlaceholder")}
                     aria-required="true"
-                    aria-invalid={!!errors.message}
-                    style={{
-                      ...inputStyle(touched.message ? errors.message : undefined),
-                      resize: "vertical",
-                      minHeight: "120px",
-                    }}
-                    onFocus={(e) => { e.target.style.borderColor = "var(--accent)"; }}
+                    {...errorProps("message", shownError("message"))}
+                    className="field"
+                    style={{ resize: "vertical", minHeight: "120px" }}
                   />
                 </Field>
 
                 {status === "error" && (
-                  <p role="alert" style={{ color: "#f87171", fontSize: "0.85rem", display: "flex", gap: "6px", alignItems: "center" }}>
-                    <AlertCircle size={14} />
+                  <p role="alert" className="field-error" style={{ fontSize: "0.85rem", display: "flex", gap: "6px", alignItems: "center", margin: 0 }}>
+                    <AlertCircle size={14} aria-hidden="true" />
                     {t("errorMsg")}
                   </p>
                 )}
@@ -371,28 +350,10 @@ export function ContactPageClient() {
                   type="submit"
                   disabled={status === "loading"}
                   aria-busy={status === "loading"}
+                  className="btn-primary"
                   style={{
-                    background: "var(--accent)",
-                    color: "#05080f",
-                    padding: "13px 24px",
-                    borderRadius: "9px",
-                    fontWeight: "600",
-                    fontSize: "0.95rem",
-                    border: "none",
-                    cursor: status === "loading" ? "wait" : "pointer",
-                    transition: "all 0.2s ease",
-                    opacity: status === "loading" ? 0.7 : 1,
                     alignSelf: "flex-start",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (status !== "loading") {
-                      (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
-                      (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 20px var(--accent-glow)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                    cursor: status === "loading" ? "wait" : undefined,
                   }}
                 >
                   {status === "loading" ? t("submitting") : t("submitBtn")}
@@ -475,15 +436,10 @@ export function ContactPageClient() {
           <motion.div
             initial="hidden"
             animate="visible"
-            custom={2}
+            custom={staggerDelay(1)}
             variants={fadeUp}
-            style={{
-              background: "var(--bg-card)",
-              border: "1px solid var(--border)",
-              borderRadius: "var(--radius-lg)",
-              padding: "1.75rem",
-              boxShadow: "var(--shadow-card)",
-            }}
+            className="card"
+            style={{ padding: "1.75rem" }}
           >
             <h3
               style={{
@@ -498,17 +454,13 @@ export function ContactPageClient() {
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               <a
                 href="mailto:hello@nereidsystems.com"
+                className="text-link"
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: "10px",
-                  color: "var(--text-secondary)",
-                  textDecoration: "none",
                   fontSize: "0.875rem",
-                  transition: "color 0.2s ease",
                 }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--accent)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)"; }}
               >
                 <Mail size={16} style={{ color: "var(--accent)" }} aria-hidden="true" />
                 hello@nereidsystems.com

@@ -37,6 +37,7 @@ mock.module("framer-motion", () => {
 
   return {
     motion: { div: PassthroughDiv, p: PassthroughP, h1: PassthroughH1, span: PassthroughSpan },
+    AnimatePresence: ({ children }: any) => React.createElement(React.Fragment, null, children),
     useReducedMotion: () => false,
     useAnimation: () => ({}),
     useInView: () => false,
@@ -101,16 +102,22 @@ describe("HeroSection — gradient circle responsive sizing (Task 2.1)", () => {
   // 2. Circle visual properties
   // =========================================================================
 
+  // Scoped to the two decorative gradient circles (style contains
+  // `radial-gradient(circle, …`): the showcase window dots, aura, canvas and
+  // bottom overlay also use these properties and must not be counted.
+  const gradientCircleStyles = () =>
+    html.match(/style="[^"]*radial-gradient\(circle,[^"]*"/g) ?? [];
+
   test("gradient circles have border-radius: 50%", () => {
-    const circleDivs = html.match(/border-radius:\s*50%/g);
-    expect(circleDivs).not.toBeNull();
-    expect(circleDivs!.length).toBe(2);
+    const circles = gradientCircleStyles();
+    expect(circles.length).toBe(2);
+    circles.forEach((style) => expect(style).toMatch(/border-radius:\s*50%/));
   });
 
   test("gradient circles have pointer-events: none", () => {
-    const pointerNone = html.match(/pointer-events:\s*none/g);
-    expect(pointerNone).not.toBeNull();
-    expect(pointerNone!.length).toBe(2);
+    const circles = gradientCircleStyles();
+    expect(circles.length).toBe(2);
+    circles.forEach((style) => expect(style).toMatch(/pointer-events:\s*none/));
   });
 
   test("gradient circles have position: absolute", () => {

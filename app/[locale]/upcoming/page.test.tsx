@@ -119,8 +119,8 @@ describe("UpcomingPage — gradient circle responsive sizing (Task 2.1)", () => 
   });
 
   test("gradient circles use radial-gradient backgrounds", () => {
-    expect(html).toContain("radial-gradient(circle, rgba(52,211,153,0.06)");
-    expect(html).toContain("radial-gradient(circle, rgba(251,146,60,0.06)");
+    expect(html).toContain("radial-gradient(circle, var(--accent-dim)");
+    expect(html).toContain("radial-gradient(circle, var(--accent2-dim)");
   });
 
   // =========================================================================
@@ -140,8 +140,14 @@ describe("UpcomingPage — gradient circle responsive sizing (Task 2.1)", () => 
   });
 
   test("project cards render with timeline info", () => {
-    expect(html).toContain("Q3 2026");
+    expect(html).toContain("2026");
     expect(html).toContain("Q4 2026");
+  });
+
+  test("hidden projects (Stoic Guard) do not render", () => {
+    expect(html).not.toContain("stoic.title");
+    expect(html).not.toContain("Jetpack Compose");
+    expect(html).not.toContain("Q3 2026");
   });
 
   test("project tech tags render", () => {

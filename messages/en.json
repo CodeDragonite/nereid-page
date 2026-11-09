@@ -19,7 +19,14 @@
     "estimator": "Estimator",
     "contact": "Contact",
     "switchLang": "ES",
-    "switchLangLabel": "Cambiar a Español"
+    "switchLangLabel": "Cambiar a Español",
+    "mainNavLabel": "Main navigation",
+    "homeLabel": "Nereid Systems home",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode",
+    "skipToContent": "Skip to main content"
   },
   "Hero": {
     "tag": "Full-Stack · AI · IT Management",
@@ -28,10 +35,10 @@
     "subheadline": "Full-stack development, AI automation, and IT management for companies that want to focus on their business—not their infrastructure.",
     "ctaPrimary": "Get a Free Consultation",
     "ctaSecondary": "View Our Services",
-    "stat1Value": "50+",
-    "stat1Label": "Projects delivered",
-    "stat2Value": "10+",
-    "stat2Label": "Years of experience",
+    "stat1Value": "1",
+    "stat1Label": "Product live",
+    "stat2Value": "6",
+    "stat2Label": "Services, one team",
     "stat3Value": "24h",
     "stat3Label": "Response time"
   },
@@ -107,7 +114,8 @@
     "metricSupportDetail": "One point of contact for all IT",
     "whatWeDeliver": "What We Deliver",
     "scopesNotice": "Transparent scopes & timelines",
-    "exploreServices": "Explore Services"
+    "exploreServices": "Explore Services",
+    "tablistLabel": "Nereid Systems services"
   },
   "KineticTicker": {
     "tag0": "FULL-STACK DEVELOPMENT",
@@ -190,7 +198,8 @@
     "contactHeading": "Contact",
     "responseTime": "Response within 24 business hours",
     "copyright": "© {year} Nereid Systems. All rights reserved.",
-    "builtWith": "Built with Next.js"
+    "builtWith": "Built with Next.js",
+    "navLabel": "Footer navigation"
   },
   "Portfolio": {
     "metaTitle": "Portfolio — Case Studies & Projects",
@@ -388,7 +397,8 @@
   },
   "Breadcrumb": {
     "home": "Home",
-    "portfolio": "Portfolio"
+    "portfolio": "Portfolio",
+    "label": "Breadcrumb"
   },
   "Estimator": {
     "metaTitle": "Project Scope & Cost Estimator — Nereid Systems",
@@ -420,5 +430,25 @@
     "ctaContact": "Send Inquiry",
     "ctaBooking": "Schedule Scoping Call",
     "disclaimer": "Estimates are indicative benchmarks based on standard sprint cadences. Final proposals are tailored to your architecture during discovery."
+  },
+  "Chat": {
+    "openLabel": "Open AI chat assistant",
+    "closeLabel": "Close chat",
+    "sendLabel": "Send message",
+    "inputLabel": "Your message",
+    "title": "Nereid AI Assistant",
+    "subtitle": "Get instant quotes & advice",
+    "welcome": "Hi! I'm the Nereid AI assistant. Tell me about your project idea, and I'll help you understand what services you need and provide a rough quote estimate.",
+    "placeholder": "Describe your project idea...",
+    "fallback": "I'd love to help you get a quote! Could you tell me more about what you're trying to build? For example: Is it a website, mobile app, network setup, or something else?",
+    "error": "Sorry, I'm having trouble generating a quote right now. Please try again or contact us directly for assistance.",
+    "typing": "Assistant is typing",
+    "messagesLabel": "Chat messages",
+    "estimateService": "Service:",
+    "estimateComplexity": "Complexity:",
+    "estimateTimeline": "Timeline:",
+    "estimatePrice": "Price Range:",
+    "estimateFeatures": "Key Features:",
+    "estimateFollowUp": "Would you like to schedule a consultation to discuss this in detail?"
   }
 }

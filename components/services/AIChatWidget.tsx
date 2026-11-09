@@ -1,7 +1,9 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useId } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Bot, User } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { DUR, EASE, popIn } from "@/lib/motion";
 
 interface Message {
     id: string;
@@ -10,20 +12,51 @@ interface Message {
     timestamp: Date;
 }
 
+interface QuoteEstimate {
+    service: string;
+    complexity: string;
+    timeline: string;
+    price: { min: number; max: number };
+    features: string[];
+}
+
+interface QuoteResponse {
+    success?: boolean;
+    message?: string;
+    estimate?: QuoteEstimate;
+}
+
+/** Bottom-anchored panel: grows from the launcher corner. */
+const chatPanel = {
+    initial: { opacity: 0, scale: 0.96 },
+    animate: { opacity: 1, scale: 1, transition: { duration: DUR.short, ease: EASE.enter } },
+    exit: { opacity: 0, scale: 0.96, transition: { duration: DUR.micro, ease: EASE.exit } },
+};
+
+const avatarStyle: React.CSSProperties = {
+    width: '24px',
+    height: '24px',
+    borderRadius: '50%',
+    background: 'var(--accent)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+};
+
 export function AIChatWidget() {
+    const t = useTranslations("Chat");
     const [isOpen, setIsOpen] = useState(false);
-    const [messages, setMessages] = useState<Message[]>([
-        {
-            id: '1',
-            role: 'assistant',
-            content: 'Hi! I\'m the Nereid AI assistant. Tell me about your project idea, and I\'ll help you understand what services you need and provide a rough quote estimate.',
-            timestamp: new Date()
-        }
-    ]);
+    // The welcome message is rendered from i18n directly, so it follows the locale.
+    const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState('');
     const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
+    const launcherRef = useRef<HTMLButtonElement>(null);
+    const wasOpenRef = useRef(false);
+    const titleId = useId();
+    const panelId = useId();
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -32,6 +65,16 @@ export function AIChatWidget() {
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
+
+    // Focus management: input on open, launcher on close (not on first mount).
+    useEffect(() => {
+        if (isOpen) {
+            inputRef.current?.focus();
+        } else if (wasOpenRef.current) {
+            launcherRef.current?.focus();
+        }
+        wasOpenRef.current = isOpen;
+    }, [isOpen]);
 
     const handleSendMessage = async () => {
         if (!inputValue.trim()) return;
@@ -56,14 +99,14 @@ export function AIChatWidget() {
                 body: JSON.stringify({ description: userMessage.content }),
             });
 
-            const data = await response.json();
+            const data = (await response.json()) as QuoteResponse;
 
             let aiContent = '';
             if (data.success && data.estimate) {
                 const est = data.estimate;
-                aiContent = `${data.message}\n\n**Service:** ${est.service}\n**Complexity:** ${est.complexity}\n**Timeline:** ${est.timeline}\n**Price Range:** $${est.price.min.toLocaleString()} - $${est.price.max.toLocaleString()}\n\n**Key Features:**\n${est.features.map((f: string) => `• ${f}`).join('\n')}\n\nWould you like to schedule a consultation to discuss this in detail?`;
+                aiContent = `${data.message ?? ''}\n\n**${t("estimateService")}** ${est.service}\n**${t("estimateComplexity")}** ${est.complexity}\n**${t("estimateTimeline")}** ${est.timeline}\n**${t("estimatePrice")}** $${est.price.min.toLocaleString()} - $${est.price.max.toLocaleString()}\n\n**${t("estimateFeatures")}**\n${est.features.map((f) => `• ${f}`).join('\n')}\n\n${t("estimateFollowUp")}`;
             } else {
-                aiContent = "I'd love to help you get a quote! Could you tell me more about what you're trying to build? For example: Is it a website, mobile app, network setup, or something else?";
+                aiContent = t("fallback");
             }
 
             const aiResponse: Message = {
@@ -79,7 +122,7 @@ export function AIChatWidget() {
             const errorResponse: Message = {
                 id: (Date.now() + 1).toString(),
                 role: 'assistant',
-                content: 'Sorry, I\'m having trouble generating a quote right now. Please try again or contact us directly for assistance.',
+                content: t("error"),
                 timestamp: new Date()
             };
             setMessages(prev => [...prev, errorResponse]);
@@ -88,50 +131,109 @@ export function AIChatWidget() {
         }
     };
 
-    const handleKeyPress = (e: React.KeyboardEvent) => {
+    const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleSendMessage();
         }
     };
 
+    const handlePanelKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Escape') {
+            e.stopPropagation();
+            setIsOpen(false);
+        }
+    };
+
+    const canSend = inputValue.trim().length > 0 && !isTyping;
+
+    const renderBubble = (message: Pick<Message, 'id' | 'role' | 'content'>) => (
+        <div
+            key={message.id}
+            style={{
+                display: 'flex',
+                gap: '8px',
+                alignItems: message.role === 'user' ? 'flex-end' : 'flex-start',
+                justifyContent: message.role === 'user' ? 'flex-end' : 'flex-start',
+            }}
+        >
+            {message.role === 'assistant' && (
+                <div aria-hidden="true" style={avatarStyle}>
+                    <Bot size={12} color="var(--on-accent)" />
+                </div>
+            )}
+            <div
+                style={{
+                    maxWidth: '280px',
+                    padding: '10px 14px',
+                    borderRadius: 'var(--radius-md)',
+                    background: message.role === 'user' ? 'var(--accent)' : 'var(--bg-surface)',
+                    color: message.role === 'user' ? 'var(--on-accent)' : 'var(--text-primary)',
+                    fontSize: '14px',
+                    lineHeight: '1.4',
+                    whiteSpace: 'pre-line',
+                }}
+            >
+                {message.content}
+            </div>
+            {message.role === 'user' && (
+                <div aria-hidden="true" style={{ ...avatarStyle, background: 'var(--bg-surface)' }}>
+                    <User size={12} color="var(--text-secondary)" />
+                </div>
+            )}
+        </div>
+    );
+
     return (
         <>
-            {/* Chat Button */}
-            <motion.button
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsOpen(true)}
+            {/* Chat Button — entrance on the wrapper so CSS :hover owns the button transform */}
+            <motion.div
+                initial={popIn.initial}
+                animate={popIn.animate}
                 style={{
                     position: 'fixed',
                     bottom: '24px',
                     right: '24px',
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '50%',
-                    background: 'var(--accent)',
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 4px 20px rgba(0, 212, 170, 0.3)',
                     zIndex: 1000,
                 }}
-                aria-label="Open AI chat assistant"
             >
-                <MessageCircle size={24} color="white" />
-            </motion.button>
+                <button
+                    ref={launcherRef}
+                    type="button"
+                    className="chat-fab"
+                    onClick={() => setIsOpen((open) => !open)}
+                    aria-expanded={isOpen}
+                    aria-controls={isOpen ? panelId : undefined}
+                    style={{
+                        width: '56px',
+                        height: '56px',
+                        borderRadius: '50%',
+                        background: 'var(--accent)',
+                        border: 'none',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 4px 20px var(--accent-glow)',
+                    }}
+                    aria-label={t("openLabel")}
+                >
+                    <MessageCircle size={24} color="var(--on-accent)" aria-hidden="true" />
+                </button>
+            </motion.div>
 
             {/* Chat Window */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.8, y: 20 }}
+                        id={panelId}
+                        role="dialog"
+                        aria-modal="false"
+                        aria-labelledby={titleId}
+                        onKeyDown={handlePanelKeyDown}
+                        initial={chatPanel.initial}
+                        animate={chatPanel.animate}
+                        exit={chatPanel.exit}
                         style={{
                             position: 'fixed',
                             bottom: '88px',
@@ -140,8 +242,9 @@ export function AIChatWidget() {
                             height: 'min(500px, calc(100vh - 120px))',
                             background: 'var(--bg-card)',
                             border: '1px solid var(--border)',
-                            borderRadius: '16px',
+                            borderRadius: 'var(--radius-lg)',
                             boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)',
+                            transformOrigin: 'bottom right',
                             zIndex: 1000,
                             display: 'flex',
                             flexDirection: 'column',
@@ -159,46 +262,41 @@ export function AIChatWidget() {
                             }}
                         >
                             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <div
-                                    style={{
-                                        width: '32px',
-                                        height: '32px',
-                                        borderRadius: '50%',
-                                        background: 'var(--accent)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <Bot size={16} color="white" />
+                                <div aria-hidden="true" style={{ ...avatarStyle, width: '32px', height: '32px' }}>
+                                    <Bot size={16} color="var(--on-accent)" />
                                 </div>
                                 <div>
-                                    <h3 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
-                                        Nereid AI Assistant
+                                    <h3 id={titleId} style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-primary)', margin: 0 }}>
+                                        {t("title")}
                                     </h3>
                                     <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>
-                                        Get instant quotes & advice
+                                        {t("subtitle")}
                                     </p>
                                 </div>
                             </div>
                             <button
+                                type="button"
+                                className="chat-close"
                                 onClick={() => setIsOpen(false)}
                                 style={{
                                     background: 'none',
                                     border: 'none',
                                     cursor: 'pointer',
                                     padding: '4px',
-                                    borderRadius: '4px',
+                                    borderRadius: 'var(--radius-sm)',
                                     color: 'var(--text-muted)',
                                 }}
-                                aria-label="Close chat"
+                                aria-label={t("closeLabel")}
                             >
-                                <X size={18} />
+                                <X size={18} aria-hidden="true" />
                             </button>
                         </div>
 
                         {/* Messages */}
                         <div
+                            role="log"
+                            aria-live="polite"
+                            aria-label={t("messagesLabel")}
                             style={{
                                 flex: 1,
                                 padding: '16px',
@@ -208,88 +306,27 @@ export function AIChatWidget() {
                                 gap: '12px',
                             }}
                         >
-                            {messages.map((message) => (
-                                <div
-                                    key={message.id}
-                                    style={{
-                                        display: 'flex',
-                                        gap: '8px',
-                                        alignItems: message.role === 'user' ? 'flex-end' : 'flex-start',
-                                    }}
-                                >
-                                    {message.role === 'assistant' && (
-                                        <div
-                                            style={{
-                                                width: '24px',
-                                                height: '24px',
-                                                borderRadius: '50%',
-                                                background: 'var(--accent)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                flexShrink: 0,
-                                            }}
-                                        >
-                                            <Bot size={12} color="white" />
-                                        </div>
-                                    )}
-                                    <div
-                                        style={{
-                                            maxWidth: '280px',
-                                            padding: '10px 14px',
-                                            borderRadius: '12px',
-                                            background: message.role === 'user' ? 'var(--accent)' : 'var(--bg-surface)',
-                                            color: message.role === 'user' ? 'white' : 'var(--text-primary)',
-                                            fontSize: '14px',
-                                            lineHeight: '1.4',
-                                        }}
-                                    >
-                                        {message.content}
-                                    </div>
-                                    {message.role === 'user' && (
-                                        <div
-                                            style={{
-                                                width: '24px',
-                                                height: '24px',
-                                                borderRadius: '50%',
-                                                background: 'var(--bg-surface)',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                flexShrink: 0,
-                                            }}
-                                        >
-                                            <User size={12} />
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
+                            {renderBubble({ id: 'welcome', role: 'assistant', content: t("welcome") })}
+                            {messages.map(renderBubble)}
 
+                            {/* Typing indicator: the dot animation communicates state, so it stays */}
                             {isTyping && (
                                 <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
-                                    <div
-                                        style={{
-                                            width: '24px',
-                                            height: '24px',
-                                            borderRadius: '50%',
-                                            background: 'var(--accent)',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            flexShrink: 0,
-                                        }}
-                                    >
-                                        <Bot size={12} color="white" />
+                                    <div aria-hidden="true" style={avatarStyle}>
+                                        <Bot size={12} color="var(--on-accent)" />
                                     </div>
                                     <div
+                                        role="status"
+                                        aria-label={t("typing")}
                                         style={{
                                             padding: '10px 14px',
-                                            borderRadius: '12px',
+                                            borderRadius: 'var(--radius-md)',
                                             background: 'var(--bg-surface)',
                                             fontSize: '14px',
                                         }}
                                     >
                                         <div
+                                            aria-hidden="true"
                                             style={{
                                                 display: 'flex',
                                                 gap: '6px',
@@ -329,50 +366,76 @@ export function AIChatWidget() {
                             <input
                                 ref={inputRef}
                                 type="text"
+                                className="field"
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
-                                onKeyPress={handleKeyPress}
-                                placeholder="Describe your project idea..."
+                                onKeyDown={handleInputKeyDown}
+                                placeholder={t("placeholder")}
+                                aria-label={t("inputLabel")}
                                 style={{
                                     flex: 1,
+                                    minWidth: 0,
                                     padding: '10px 14px',
-                                    border: '1px solid var(--border)',
-                                    borderRadius: '8px',
-                                    background: 'var(--bg-primary)',
-                                    color: 'var(--text-primary)',
                                     fontSize: '14px',
-                                    outline: 'none',
-                                }}
-                                onFocus={(e) => {
-                                    e.target.style.borderColor = 'var(--accent)';
-                                }}
-                                onBlur={(e) => {
-                                    e.target.style.borderColor = 'var(--border)';
                                 }}
                             />
                             <button
+                                type="button"
                                 onClick={handleSendMessage}
-                                disabled={!inputValue.trim() || isTyping}
+                                disabled={!canSend}
                                 style={{
                                     width: '40px',
                                     height: '40px',
-                                    borderRadius: '8px',
-                                    background: inputValue.trim() && !isTyping ? 'var(--accent)' : 'var(--bg-surface)',
+                                    flexShrink: 0,
+                                    borderRadius: 'var(--radius-md)',
+                                    background: canSend ? 'var(--accent)' : 'var(--bg-surface)',
                                     border: '1px solid var(--border)',
-                                    cursor: inputValue.trim() && !isTyping ? 'pointer' : 'not-allowed',
+                                    cursor: canSend ? 'pointer' : 'not-allowed',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    opacity: inputValue.trim() && !isTyping ? 1 : 0.5,
+                                    opacity: canSend ? 1 : 0.5,
+                                    transition: 'background-color var(--dur-micro) var(--ease-standard), opacity var(--dur-micro) var(--ease-standard)',
                                 }}
-                                aria-label="Send message"
+                                aria-label={t("sendLabel")}
                             >
-                                <Send size={16} color={inputValue.trim() && !isTyping ? 'white' : 'var(--text-muted)'} />
+                                <Send size={16} color={canSend ? 'var(--on-accent)' : 'var(--text-muted)'} aria-hidden="true" />
                             </button>
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* Launcher hover/focus feedback lives in CSS so keyboard focus matches hover */}
+            <style>{`
+                .chat-fab {
+                    transition:
+                        transform var(--dur-short) var(--ease-enter),
+                        box-shadow var(--dur-short) var(--ease-standard);
+                }
+                .chat-fab:hover,
+                .chat-fab:focus-visible {
+                    transform: scale(1.05);
+                    box-shadow: 0 6px 28px var(--accent-glow) !important;
+                }
+                .chat-fab:active {
+                    transform: scale(0.95);
+                }
+                .chat-close {
+                    transition: color var(--dur-micro) var(--ease-standard);
+                }
+                .chat-close:hover,
+                .chat-close:focus-visible {
+                    color: var(--text-primary) !important;
+                }
+                @media (prefers-reduced-motion: reduce) {
+                    .chat-fab:hover,
+                    .chat-fab:focus-visible,
+                    .chat-fab:active {
+                        transform: none;
+                    }
+                }
+            `}</style>
         </>
     );
 }

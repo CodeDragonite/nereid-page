@@ -11,7 +11,7 @@ export const CONTACT_EMAILS = {
   /** Public address shown to visitors (footer, error fallbacks). */
   hello: "hello@nereidsystems.com",
   /** Internal inbox that receives new-inquiry notifications. */
-  notify: "nereidsystems@gmail.com",
+  notify: "hello@nereidsystems.com",
   /** Verified Resend sender. Replies are routed to `hello` via Reply-To. */
   from: "Nereid Systems <noreply@nereidsystems.com>",
 } as const;
